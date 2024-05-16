@@ -45,11 +45,14 @@ $breadcrumb_item_active = "Manage";
                             <th>Last Name</th>
                             <th>App. Date</th>
                             <th>Designation</th>
-                            <th></th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+                         $Status = 1;
                         if($result->num_rows> 0){
                             while ($row=$result->fetch_assoc()) {
                         ?>
@@ -59,9 +62,24 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['LastName'] ?></td>
                             <td><?= $row['AppDate'] ?></td>
                             <td><?= $row['Designation'] ?></td>
-                            <td><a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>" class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a></td>
-                            <td><a class="btn btn-info" href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>" onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a></td>
-                        </tr>  
+                            <td><?= ($row['Status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td>
+                            <div class="dropdown no-arrow mb-1">
+                                    <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-cog"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
+                                        aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+
+
+                                        <a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>"
+                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-info"
+                                            href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>"
+                                            onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
+                            </td>
                         
                         <?php
                             }

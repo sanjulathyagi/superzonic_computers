@@ -8,8 +8,7 @@ include '../mail.php';
 
 <main id="main">
     <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact " style="background: rgb(195,167,34);
-background: linear-gradient(0deg, rgba(195,167,34,1) 0%, rgba(17,15,6,1) 100%);">
+    <section id="contact" class="contact" style="border:solid">
         <div class="container " data-aos="fade-up">
 
             <div class="section-title ">

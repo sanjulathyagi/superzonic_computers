@@ -96,6 +96,7 @@ FROM
                     </thead>
                     <tbody>
                         <?php
+                        $status=1;
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 ?>
@@ -108,7 +109,7 @@ FROM
                             <td><?= $row['qty'] ?></td>
                             <td><?= $row['purchase_date'] ?></td>
                             <td><?= $row['SupplierName'] ?></td>
-                            <td><?= $row['status'] ?></td>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"

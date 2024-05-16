@@ -55,19 +55,20 @@ $breadcrumb_item_active = "Manage";
                     </thead>
                     <tbody>
                         <?php
+                        $Status=1;
                         if($result->num_rows> 0){
                             while ($row=$result->fetch_assoc()) {
                         ?>
                         <tr>
-                            <td><?= $row['SupplierId'] ?></td>
+                            <td><?= $row['id'] ?></td>
                             <td><?= $row['SupplierName'] ?></td>
                             <td><?= $row['Email'] ?></td>
-                            <td><?= $row['AddressLine1'] ?></td>
-                            <td><?= $row['AddressLine2'] ?></td>
-                            <td><?= $row['AddressLine3'] ?></td>
+                            <td><?= $row['Addressline1'] ?></td>
+                            <td><?= $row['Addressline2'] ?></td>
+                            <td><?= $row['Addressline3'] ?></td>
                             <td><?= $row['TelNo'] ?></td>
                             <td><?= $row['RegisterDate'] ?></td>
-                            <td><?= $row['status'] ?></td>                     
+                            <td><?= ($row['Status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>                    
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
@@ -79,10 +80,10 @@ $breadcrumb_item_active = "Manage";
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
 
 
-                                        <a href="<?= SYS_URL ?>suppliers/edit.php?supplierid=<?= $row['SupplierId'] ?>"
+                                        <a href="<?= SYS_URL ?>suppliers/edit.php?id=<?= $row['id'] ?>"
                                             class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
                                         <a class="btn btn-info"
-                                            href="<?= SYS_URL ?>suppliers/delete.php?supplierid=<?= $row['SupplierId'] ?>"
+                                            href="<?= SYS_URL ?>suppliers/delete.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 
                                     </div>

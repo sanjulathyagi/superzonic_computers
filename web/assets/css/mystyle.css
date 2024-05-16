@@ -1,6 +1,8 @@
 .my-header-bg{
-    background-color: #b99a45 !important;
+    background-color: #fff !important;
     height: 55px !important;
+    font-color:black !important;
+    
 }
 .services .icon-box {
     padding: 30px;
@@ -14,9 +16,10 @@
     text-align: center;
     border-bottom: 3px solid #fff;
 }
-/* .register-btn{
-    margin-right: -100px !important;
-} */
+.register-btn{
+    margin-right: -370px !important;
+    border-radius: 50px !important;
+}
 
 .php-email-form{
     width: 100%;

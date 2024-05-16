@@ -6,57 +6,45 @@ include '../function.php';
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center justify-content-center">
     <div class="container" data-aos="fade-up">
-        
-        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="150">
-            <div class="col-xl-6 col-lg-8">
-                <h1>Powerful Digital Solutions With SuperZonic<span></span></h1>
-                <!-- <h2>We are team of talented digital marketers</h2> -->
-            </div>
-        </div>
 
-        <div class="row gy-4 mt-5 justify-content-center" data-aos="zoom-in" data-aos-delay="250">
-            <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                    <i class="ri-store-line"></i>
-                    <h3><a href="view_image.php">Laptops</a></h3>
-
-                </div>
-
-            </div>
-            <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                    <i class="ri-bar-chart-box-line"></i>
-                    <h3><a href="view_image.php">Desktops & servers</a></h3>
+        <div class="row bg-white">
+            <div class="col-lg-3">
+                <div class="container bg-white" width="500px" height="500px">
+                    <div class="hero__text">
+                        <a href=""><img src="assets/img/image11.jpg" alt="" width="800px" height="500px"></a>
+                    </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                    <i class="ri-calendar-todo-line"></i>
-                    <h3><a href="view_image.php">Pc components</a></h3>
-                </div>
-            </div>
-            <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                    <i class="ri-paint-brush-line"></i>
-                    <h3><a href="view_image.php">Peripherals</a></h3>
-                </div>
-            </div>
-            <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                    <i class="ri-database-2-line"></i>
-                    <h3><a href="view_image.php">Accessories</a></h3>
+            <div class="col-lg-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="text-dark" style="text-align:right;">
+                                Powerful Digital<br> Solutions With <br>SuperZonic<br></h1><br>
+                            <h3 style="text-align:right;"><a href="shop.php" class="btn btn-dark">SHOP NOW</a></h3><br>
+                            <h2 class="text-dark" style="text-align:right;">
+                                <strong>Experience hassle-free repairs!</strong></h2>
+                            <h4 style="text-align:right;">Transform your tech <br> troubles into <br> smooth
+                                solutions<br> with us!<br></h4>
+                            <h4 style="text-align:right;"><a href="appointment.php" class="btn btn-dark">BOOK NOW</a>
+                            </h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
-</section><!-- End Hero -->
+</section>
+
 
 <main id="main">
 
     <!-- ======= About Section ======= -->
     <section id="about" class="about">
+
         <div class="container" data-aos="fade-up">
+
 
             <div class="row">
                 <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
@@ -66,31 +54,22 @@ include '../function.php';
                     data-aos-delay="100">
                     <h3>SuperZonic Computers is a reputable store in Kegalle Town offering premium computer
                         accessories and services. </h3>
-                    <!-- <p class="fst-italic">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                          labore et dolore
-                          magna aliqua.
-                      </p> -->
-                    <ul>
-                        <li><i class="ri-check-double-line"></i> It features a wide variety of products with the
-                            newest technologies and
-                            including different types and brands.</li>
-                        <li><i class="ri-check-double-line"></i> Their steadfast dedication to providing outstanding
-                            service
-                            has allowed them to establish a superb reputation as a well-known and trusted computer
-                            business
-                            from the very beginning. </li>
-                        <!-- <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                              consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda
-                              mastiro dolore eu fugiat nulla pariatur.</li> -->
-                    </ul>
-                    <p>
-                        Besides offering top-notch computer accessories, they’re diving into repairs. This means you
-                        not
-                        only get the coolest gadgets but also reliable fixes for your devices. SuperZonic is all about
+
+                    <li> It features a wide variety of products with the
+                        newest technologies and
+                        including different types and brands.</li><br>
+                    <li> Their steadfast dedication to providing outstanding
+                        service
+                        has allowed them to establish a superb reputation as a well-known and trusted computer
+                        business
+                        from the very beginning. </li><br>
+                    <li> Besides offering top-notch computer accessories, they’re diving into repairs. This means you
+                        not only get the coolest gadgets but also reliable fixes for your devices. SuperZonic is all
+                        about
                         making your Tech experience hassle-free, using the latest tech and keeping up with what you
-                        need.
-                    </p>
+                        need. </li><br>
+                    </ul>
+
                 </div>
             </div>
 
@@ -126,39 +105,7 @@ include '../function.php';
         </div>
     </section><!-- End Clients Section -->
 
-    <!-- ======= Features Section ======= -->
-    <section id="features" class="features">
-        <div class="container" data-aos="fade-up">
 
-            <!-- <div class="row">
-                <div class="image col-lg-6" style='background-image: url("assets/img/AI-Native-Networks.jpg");'
-                    data-aos="fade-right"></div>
-                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="100">
-                    <div class="icon-box mt-5 mt-lg-0" data-aos="zoom-in" data-aos-delay="150">
-                        <i class="bx bx-receipt"></i>
-                        <h4>Est labore ad</h4>
-                        <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
-                    </div>
-                    <div class="icon-box mt-5" data-aos="zoom-in" data-aos-delay="150">
-                        <i class="bx bx-cube-alt"></i>
-                        <h4>Harum esse qui</h4>
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
-                    </div>
-                    <div class="icon-box mt-5" data-aos="zoom-in" data-aos-delay="150">
-                        <i class="bx bx-images"></i>
-                        <h4>Aut occaecati</h4>
-                        <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
-                    </div>
-                    <div class="icon-box mt-5" data-aos="zoom-in" data-aos-delay="150">
-                        <i class="bx bx-shield"></i>
-                        <h4>Beatae veritatis</h4>
-                        <p>Expedita veritatis consequuntur nihil tempore laudantium vitae denat pacta</p>
-                    </div>
-                </div>
-            </div> -->
-
-        </div>
-    </section><!-- End Features Section -->
 
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">

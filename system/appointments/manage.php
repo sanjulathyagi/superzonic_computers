@@ -39,23 +39,36 @@ $breadcrumb_item_active = "Manage";
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>App ID</th>
+                            <th>Customer Id</th>
+                            <th>Service Type</th>
+                            <th>Item Brand</th>
+                            <th>Item</th>
+                            <th>Repair Note</th>
                             <th>Date</th>
                             <th>Start_time</th>
                             <th>End_time</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+                        $status=1;
                         if($result->num_rows> 0){
                             while ($row=$result->fetch_assoc()) {
                         ?>
                         <tr>
                             <td><?= $row['AppId'] ?></td>
+                            <td><?= $row['customer_id'] ?></td>
+                            <td><?= $row['service_type'] ?></td>
+                            <td><?= $row['item_brand'] ?></td>
+                            <td><?= $row['item_name'] ?></td>
+                            <td><?= $row['repair_note'] ?></td>
                             <td><?= $row['date'] ?></td>
                             <td><?= $row['start_time'] ?></td>
                             <td><?= $row['end_time'] ?></td>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
                                              
                             <td>
                                 <div class="dropdown no-arrow mb-1">

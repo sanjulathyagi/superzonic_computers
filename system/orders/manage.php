@@ -72,6 +72,7 @@ $breadcrumb_item_active = "Manage";
                     </thead>
                     <tbody>
                         <?php
+                        $status=1;
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 ?>
@@ -80,7 +81,7 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['order_date'] ?></td>
                             <td><?= $row['shipping_address'] ?></td>
                             <td><?= $row['billing_address'] ?></td>
-                            <td><?= $row['status'] ?></td>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"

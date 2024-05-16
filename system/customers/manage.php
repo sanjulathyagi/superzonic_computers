@@ -45,13 +45,12 @@ $breadcrumb_item_active = "Manage";
                             <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Add.Line1</th>
-                            <th>Add.Line2</th>
-                            <th>city</th>
+                            <th>Address</th>
                             <th>TelNo</th>
                             <th>MobileNo</th>
                             <th>District</th>
                             <th>Reg.no</th>
+                            <th>Status</th>
                             <th>Actions</th>
 
                             <th></th>
@@ -59,6 +58,7 @@ $breadcrumb_item_active = "Manage";
                     </thead>
                     <tbody>
                         <?php
+                        $Status=1;
                         if($result->num_rows> 0){
                             while ($row=$result->fetch_assoc()) {
                         ?>
@@ -66,13 +66,12 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['CustomerId'] ?></td>
                             <td><?= $row['FirstName'] ?> <?= $row['LastName'] ?></td>
                             <td><?= $row['Email'] ?></td>
-                            <td><?= $row['AddressLine1'] ?></td>
-                            <td><?= $row['AddressLine2'] ?></td>
-                            <td><?= $row['AddressLine3'] ?></td>
+                            <td><?= $row['AddressLine1'] ?>,<?= $row['AddressLine2'] ?>,<?= $row['AddressLine3'] ?></td>
                             <td><?= $row['TelNo'] ?></td>
                             <td><?= $row['MobileNo'] ?></td>
                             <td><?= $row['Name'] ?></td>
-                            <td><?= $row['RegNo'] ?></td>                     
+                            <td><?= $row['RegNo'] ?></td> 
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>                    
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"

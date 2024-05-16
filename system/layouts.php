@@ -167,7 +167,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " href="<?= SYS_URL ?>appointments/manage.php">
-                                <i class="fas fa-bug" aria-hidden="true"></i>
+                                <i class="fas fa-tools" aria-hidden="true"></i>
                                 <span class="hide-menu">Appointment Management</span></span>
                             </a>
                         </li>

@@ -11,8 +11,10 @@ $breadcrumb_item_active = "Manage";
 <div class="row">
     <div class="col-lg-12">
 
+
         <div class="row justify-content-center ">
-            
+            <div class="col-lg-12 align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+
                 <!-- <?php
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
@@ -56,41 +58,39 @@ $breadcrumb_item_active = "Manage";
                   ?> -->
                 <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form"
                     class="php-email-form" novalidate>
-                    <div class="card-header bg-dark">
-                        <h3 class="card-title">Shipping fee</h3>
-                    </div>
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-name"> Price</label>
-                                    <input type="text" id="input-name" name="price"
-                                        class="form-control form-control-alternative" placeholder="Price" value="">
-                                </div>
+                    <div class="card border-dark">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="card-title mb-0">Shipping Fee</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="input-distance">Distance (in kilometers):</label>
+                                <input type="number" id="input-distance" name="distance" class="form-control"
+                                    placeholder="Enter distance">
+                            </div>
+                            <div class="form-group">
+                                <label for="input-price">Price:</label>
+                                <input type="text" id="input-price" name="price" class="form-control"
+                                    placeholder="Calculated price" readonly>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <div class=" text-center">
-                                        <button type="submit" class="btn btn-warning">Update</button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card-footer bg-transparent border-dark text-center">
+                            <button type="submit" class="btn btn-warning">Calculate Shipping Fee</button>
                         </div>
                     </div>
-
                 </form>
-          
 
 
+
+
+            </div>
+            </div>
         </div>
+        <!-- /.card -->
     </div>
-    <!-- /.card -->
-</div>
 
 
-<?php
+    <?php
 $content= ob_get_clean();
 include '../layouts.php';
 ?>
