@@ -142,7 +142,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#item-menu" data-toggle="collapse" aria-expanded="true"
                                 class="dropdown-toggle">
-                                <i class="fas fa-people-carry"></i>&nbsp;&nbsp;Supplier Management</a>
+                                <i class="fas fa-users"></i>&nbsp;&nbsp;Supplier Management</a>
                             <ul class="collapse list-unstyled" id="item-menu">
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?= SYS_URL ?>suppliers/manage.php">
@@ -169,6 +169,12 @@
                             <a class="nav-link " href="<?= SYS_URL ?>appointments/manage.php">
                                 <i class="fas fa-tools" aria-hidden="true"></i>
                                 <span class="hide-menu">Appointment Management</span></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="<?= SYS_URL ?>brands/manage.php">
+                                <i class="fab fa-bandcamp" aria-hidden="true"></i>
+                                <span class="hide-menu">Item Brands</span></span>
                             </a>
                         </li>
                         <li class="nav-item">
