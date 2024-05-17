@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-
+    <a href="<?= SYS_URL ?>customers/manage.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View Stock</a>
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Add New customer</h3>

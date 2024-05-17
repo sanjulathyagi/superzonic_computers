@@ -15,7 +15,7 @@ $breadcrumb_item_active = "Manage";
     <div class="col-12">
 
         <div class="row justify-content-center ">
-            <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="col-lg-7 mt-5 mt-lg-0 align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                 <!-- <?php
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 

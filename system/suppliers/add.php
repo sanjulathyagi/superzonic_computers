@@ -2,8 +2,8 @@
 ob_start();
 include_once '../init.php';
 
-$link = "Inventory Management";
-$breadcrumb_item = "Inventory";
+$link = "Suppliers Management";
+$breadcrumb_item = "Suppliers";
 $breadcrumb_item_active = "Add";
 
 
@@ -71,10 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-    <a href="<?= SYS_URL ?>inventory/manage.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View Inventory</a>
+    <a href="<?= SYS_URL ?>users/manage.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View Supplier</a>
         <div class="card card-dark">
             <div class="card-header">
-                <h3 class="card-title">Add New item</h3>
+                <h3 class="card-title">Add New Supplier</h3>
             </div>
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="card-body">

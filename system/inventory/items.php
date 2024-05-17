@@ -127,10 +127,10 @@ FROM
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
 
 
-                                        <a href="<?= SYS_URL ?>orders/edit.php?id=<?= $row['id'] ?>"
+                                        <a href="<?= SYS_URL ?>inventory/edit.php?id=<?= $row['id'] ?>"
                                             class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
                                         <a class="btn btn-info"
-                                            href="<?= SYS_URL ?>orders/delete.php?id=<?= $row['id'] ?>"
+                                            href="<?= SYS_URL ?>inventory/delete.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 
                                     </div>

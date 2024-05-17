@@ -71,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-
-        <div class="card card-primary">
+    <a href="<?= SYS_URL ?>users/manage.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View User</a>
+        <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title">Add New User</h3>
             </div>
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
             </form>
 

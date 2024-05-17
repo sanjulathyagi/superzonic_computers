@@ -9,7 +9,7 @@ $breadcrumb_item_active = "Manage";
 
 <div class="row">
     <div class="col-12">
-        <a href="add.php" class="btn btn-warning mb-2"><i class="fas fa-plus-circle"></i>New</a>
+        <a  href="<?= SYS_URL ?>suppliers/add.php" class="btn btn-warning mb-2"><i class="fas fa-plus-circle"></i>New</a>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Supplier details</h3>

@@ -10,46 +10,28 @@ $breadcrumb_item_active = "Add";
 //check post and data clean
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $FirstName = dataClean($FirstName);
-    $LastName = dataClean($LastName);
-    $Email = dataClean($Email);
-    $AddressLine1 = dataClean($AddressLine1);
-    $AddressLine2 = dataClean($AddressLine2);
-    $AddressLine3 = dataClean($AddressLine3);
-    $Gender = dataClean($Gender);
-    
+    $brand = dataClean($brand);
+    $item_name = dataClean($item_name);
+    $item_quantity = dataClean($item_quantity);
     
     $message = array();
-    if (empty($FirstName)) {
-        $message['FirstName'] = "The First Name should not be blank...!";
+    if (empty($brand)) {
+        $message['brand'] = "The brand should not be blank...!";
     }
-    if (empty($LastName)) {
-        $message['LastName'] = "The Last Name should not be blank...!";
+    if (empty($item_name)) {
+        $message['item_name'] = "The item name should not be blank...!";
     }
-    if (empty($Email)) {
-        $message['Email'] = "The Email should not be blank...!";
-    }
-    if (empty($AddressLine1)) {
-        $message['AddressLine1'] = "The AddressLine1 Date should not be blank...!";
-    }
-    if (empty($AddressLine2)) {
-        $message['AddressLine2'] = "The AddressLine2 should not be blank...!";
-    }
-    if (empty($AddressLine3)) {
-        $message['AddressLine3'] = "The AddressLine3 should not be blank...!";
-    }
-    if (empty($Gender)) {
-        $message['Gender'] = "The Gender should not be blank...!";
+    if (empty($item_quantity)) {
+        $message['item_quantity'] = "The item quantity should not be blank...!";
     }
     
   
- 
 }
 ?>
 <div class="row">
     <div class="col-12">
-
-        <div class="card card-primary">
+    <a href="<?= SYS_URL ?>brands/manage.php" class="btn btn-warning mb-2"><i class="fas fa-plus-circle"></i>view</a>
+        <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title">Add New brand</h3>
             </div>
@@ -57,52 +39,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="inputFirstName">First Name</label>
-                        <input type="text" class="form-control" id="FirstName" name="FirstName"
-                            placeholder="Enter First Name" value="<?= @$FirstName ?>">
-                        <span class="text-danger"><?= @$message['FirstName'] ?></span>
+                        <label for="inputBrand">Brand</label>
+                        <input type="text" class="form-control" id="brand" name="brand"
+                            placeholder="Enter Brand" value="<?= @$brand ?>">
+                        <span class="text-danger"><?= @$message['brand'] ?></span>
                     </div>
                     <div class="form-group">
-                        <label for="inputLastName">Last Name</label>
-                        <input type="text" class="form-control" id="LastName" name="LastName"
-                            placeholder="Enter Last Name" value="<?= @$LastName ?>">
-                        <span class="text-danger"><?= @$message['LastName'] ?></span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="Email">Email</label>
-                        <input type="date" class="form-control" id="Email" name="Email" value="<?= @$Email ?>">
-                        <span class="text-danger"><?= @$message['Email'] ?></span>
+                        <label for="inputItem_name">Item Name</label>
+                        <input type="text" class="form-control" id="item_name" name="item_name"
+                            placeholder="Enter item name" value="<?= @$item_name ?>">
+                        <span class="text-danger"><?= @$message['item_name'] ?></span>
                     </div>
                     <div class="form-group">
-                        <label for="AddressLine1">AddressLine1</label>
-                        <input type="text" class="form-control" id=AddressLine1" name="AddressLine1" value="<?= @$AddressLine1 ?>"
-                            placeholder="Enter AddressLine1">
-                        <span class="text-danger"><?= @$message['AddressLine1'] ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="AddressLine2">AddressLine2</label>
-                        <input type="text" class="form-control" id="AddressLine2" name="AddressLine2" value="<?= @$AddressLine2 ?>"
-                            placeholder="Enter AddressLine2">
-                        <span class="text-danger"><?= @$message['AddressLine2'] ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="AddressLine3">AddressLine3</label>
-                        <input type="text" class="form-control" id="AddressLine3" name="AddressLine3" value="<?= @$AddressLine3 ?>"
-                            placeholder="Enter AddressLine3">
-                        <span class="text-danger"><?= @$message['AddressLine3'] ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="Gender">Gender</label>
-                        <input type="Gender" class="form-control" id="Gender" name="Gender"
-                            placeholder="Gender">
-                        <span class="text-danger"><?= @$message['Gender'] ?></span>
+                        <label for="inputItem_quantity">Item Name</label>
+                        <input type="text" class="form-control" id="item_quantity" name="item_quantity"
+                            placeholder="Enter item quantity" value="<?= @$item_quantity ?>">
+                        <span class="text-danger"><?= @$message['item_quantity'] ?></span>
                     </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
             </form>
 
