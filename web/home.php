@@ -427,145 +427,43 @@ include '../function.php';
     <!-- ======= Testimonials Section ======= -->
     <section id="testimonials" class="testimonials">
         <div class="container" data-aos="zoom-in">
-
             <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
                 <div class="swiper-wrapper">
-
                     <div class="swiper-slide">
                         <div class="testimonial-item">
-                            <div class="row " style="width:30%">
-                                <div class="item-grid">
-                                    <div class="item-image">
-                                        <a href class="">
-                                            <img src="assets/img/download image/1.jpg" alt="" class="image1">
-                                            <img src="assets/img/download image/1.jpg" alt="" class="image2">
-                                        </a>
-                                        <span class="item-trend-label">Trending</span>
-                                        <ul class="social">
-                                            <li><a href="cart.php" data-tip="ADD to cart"><i
-                                                        class="fa fa-shopping-cart"></i></a></li>
-                                            <li><a href="wishlist.php" data-tip="wishlist"><i
-                                                        class="fas fa-heart"></i></a></li>
-                                            <li><a href="view_image.php" data-tip="view"><i
-                                                        class="fas fa-search"></i></a></li>
-                                        </ul>
+                            <div class="row" id="item-row">
+                                <?php
+                        $db = dbConn();
+                        $model_id = 1; 
+                        $sql = "SELECT * FROM items WHERE model_id = $model_id";
+                        $result = $db->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                        ?>
+                                <div class="col-md-3">
+                                    <div class="item-grid">
+                                        <div class="item-image">
+                                            <a href="">
+                                                <img src="assets/img/<?= $row['item_image'] ?>" width="200px"
+                                                    height="200px">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <?php
+                            }
+                        }
+                        ?>
                             </div>
                         </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="row " style="width:30%">
-                                <div class="item-grid">
-                                    <div class="item-image">
-                                        <a href class="">
-                                            <img src="assets/img/download image/3.jpg" alt="" class="image1">
-                                            <img src="assets/img/download image/3.jpg" alt="" class="image2">
-                                        </a>
-                                        <span class="item-trend-label">Trending</span>
-                                        <ul class="social">
-                                            <li><a href="cart.php" data-tip="ADD to cart"><i
-                                                        class="fa fa-shopping-cart"></i></a></li>
-                                            <li><a href="wishlist.php" data-tip="wishlist"><i
-                                                        class="fas fa-heart"></i></a></li>
-                                            <li><a href="view_image.php" data-tip="view"><i
-                                                        class="fas fa-search"></i></a></li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="row " style="width:30%">
-                                <div class="item-grid">
-                                    <div class="item-image">
-                                        <a href class="">
-                                            <img src="assets/img/download image/4.jpg" alt="" class="image1">
-                                            <img src="assets/img/download image/4.jpg" alt="" class="image2">
-                                        </a>
-                                        <span class="item-trend-label">Trending</span>
-                                        <ul class="social">
-                                            <li><a href="cart.php" data-tip="ADD to cart"><i
-                                                        class="fa fa-shopping-cart"></i></a></li>
-                                            <li><a href="wishlist.php" data-tip="wishlist"><i
-                                                        class="fas fa-heart"></i></a></li>
-                                            <li><a href="view_image.php" data-tip="view"><i
-                                                        class="fas fa-search"></i></a></li>
-                                        </ul>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="row " style="width:30%">
-                                <div class="item-grid">
-                                    <div class="item-image">
-                                        <a href class="">
-                                            <img src="assets/img/download image/5.jpg" alt="" class="image1">
-                                            <img src="assets/img/download image/5.jpg" alt="" class="image2">
-                                        </a>
-                                        <span class="item-trend-label">Trending</span>
-                                        <ul class="social">
-                                            <li><a href="cart.php" data-tip="ADD to cart"><i
-                                                        class="fa fa-shopping-cart"></i></a></li>
-                                            <li><a href="wishlist.php" data-tip="wishlist"><i
-                                                        class="fas fa-heart"></i></a></li>
-                                            <li><a href="view_image.php" data-tip="view"><i
-                                                        class="fas fa-search"></i></a></li>
-                                        </ul>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="row justify-content-center" style="width:30%">
-                                <div class="item-grid">
-                                    <div class="item-image">
-                                        <a href class="">
-                                            <img src="assets/img/download image/7.jpg" alt="" class="image1">
-                                            <img src="assets/img/download image/7.jpg" alt="" class="image2">
-                                        </a>
-                                        <span class="item-trend-label">Trending</span>
-                                        <ul class="social">
-                                            <li><a href="cart.php" data-tip="ADD to cart"><i
-                                                        class="fa fa-shopping-cart"></i></a></li>
-                                            <li><a href="wishlist.php" data-tip="wishlist"><i
-                                                        class="fas fa-heart"></i></a></li>
-                                            <li><a href="view_image.php" data-tip="view"><i
-                                                        class="fas fa-search"></i></a></li>
-                                        </ul>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- End testimonial item -->
+                    </div>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
-
         </div>
+
+
     </section><!-- End Testimonials Section -->
 
     <section id="faq" class="faq section-bg">

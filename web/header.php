@@ -146,7 +146,7 @@ ob_start();
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
 
-            <a href="shopping_cart.php" style="margin-right:-250px !important;"><i class="fa fa-shopping-cart"></i></a>
+            <a href="cart.php" style="margin-right:-250px !important;"><i class="fa fa-shopping-cart"></i></a>
             <a href="appointment.php"  style="margin-right:-250px !important;"><i class="fas fa-laptop-house"></i></a>
             <a href="contact.php" ><i class="fas fa-phone"></i></a>
 
