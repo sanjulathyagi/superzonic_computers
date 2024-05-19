@@ -89,6 +89,53 @@
     box-shadow: 0 0 24px 0 #b99a45;
   }
   
+
+
+  .banner-slider img {
+    width: 100%;
+    height: auto;
+  }
+  .thumbnail-image {
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .thumbnail-image img {
+    width: 100%;
+    height: auto;
+  }
+  .product-details-desc {
+    padding: 20px;
+  }
+  .add-cart-btn {
+    margin-top: 20px;
+  }
+  .wdp-ribbon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+
+
+  .item-grid {
+    width: 25%; /* Each image container takes up 25% of the row */
+    float: left; /* Float left so they align horizontally */
+    box-sizing: border-box; /* Include padding and border in the width */
+    padding: 0 15px; /* Optional padding to create space between images */
+}
+.item-grid img {
+    /* Set pointer events to none by default to allow clicks to pass through the image */
+    pointer-events: none;
+}
+
+.item-grid:hover img {
+    /* On hover, enable pointer events to allow interaction with the image */
+    pointer-events: auto;
+}
+
 ---------------------------------------------item-----------------------------------------
 
 :root{

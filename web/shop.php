@@ -121,7 +121,7 @@ include '../function.php';
                     </div>
                     <div class="col-lg-8">
                         <div class="container">
-                            yy
+                            
                         </div>
 
                     </div>

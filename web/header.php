@@ -43,7 +43,7 @@ ob_start();
 <body>
 
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top" >
+    <header id="header" class="fixed-top header-inner-pages" >
         <div class="container-fluid d-flex align-items-center justify-content-lg-between my-header-bg ">
 
             <!-- <h1 class="logo me-auto me-lg-0"><a href="index.html">SuperZonic<span><br/>Computers</span></a></h1> -->

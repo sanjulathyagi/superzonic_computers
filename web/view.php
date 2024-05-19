@@ -1,12 +1,6 @@
-<?php 
+<?php
 include '../function.php';
-session_start(); 
-if(!isset($_SESSION['USERID'])){
-    header("Location:login.php");
-}
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +15,6 @@ if(!isset($_SESSION['USERID'])){
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-    <link href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" rel="stylesheet">
 
     <!-- Google Fonts -->
     <link
@@ -40,6 +33,8 @@ if(!isset($_SESSION['USERID'])){
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/mystyle.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" rel="stylesheet">
 
 
 </head>
@@ -47,7 +42,7 @@ if(!isset($_SESSION['USERID'])){
 <body>
 
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top ">
+    <header id="header" class="fixed-top header-inner-pages">
         <div class="container-fluid d-flex align-items-center justify-content-lg-between my-header-bg ">
 
             <!-- <h1 class="logo me-auto me-lg-0"><a href="index.html">SuperZonic<span><br/>Computers</span></a></h1> -->
@@ -69,60 +64,46 @@ if(!isset($_SESSION['USERID'])){
 
 
 
-
-
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
-
             </nav><!-- .navbar -->
-
             <?php 
-    if(isset($_SESSION['USERID'])){
-      ?>
-            <a href="register.php" class="get-started-btn  bg-dark register-btn scrollto"
-                style="border-radius: 50px !important;margin-left:-100px;">Welcome,
+                if(isset($_SESSION['USERID'])){
+                  ?>
+            <a href="register.php" class="get-started-btn register-btn scrollto">Welcome,
                 <?= $_SESSION['FIRSTNAME'] ?></a>
-            <a href="login.php" class="get-started-btn bg-dark scrollto"
-                style="border-radius: 50px !important;">Logout</a>
+            <a href="login.php" class="get-started-btn bg-dark scrollto">Logout</a>
             <?php
-    }else {
-    ?>
+                }else {
+                ?>
             <a href="register.php" class="get-started-btn bg-dark register-btn scrollto">Register</a>
             <a href="login.php" class="get-started-btn bg-dark  scrollto"
                 style="border-radius: 50px !important;">Login</a>
             <?php
-      }
-      ?>
+              	}
+              	?>
 
 
         </div>
+
     </header><!-- End Header -->
+
     <main id="main">
 
         <!-- ======= Breadcrumbs ======= -->
-        <section class="breadcrumbs">
+        <section id="breadcrumbs" class="breadcrumbs">
             <div class="container">
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="container">
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="shopping_cart.php" style="margin-left:1150px !important;text-align:right;"><i
-                                    class="fa fa-shopping-cart"></i></a>
-                            <a href="appointment.php" style="text-align:right;"><i class="fas fa-laptop-house"></i></a>
-                            <a href="contact.php"><i class="fas fa-phone"></i></a>
-
-                        </div>
-
-                    </div>
+                    <h2>Item Details</h2>
 
                 </div>
 
             </div>
-            <?php
-       
-        $total = 0;
-        $num_items = 0;
+        </section><!-- End Breadcrumbs -->
+        <?php
+         $total = 0;
+         $num_items = 0;
         if (isset($_SESSION['cart'])) {
             $cart=$_SESSION['cart'];
             foreach ($cart as $key => $value) {
@@ -133,7 +114,7 @@ if(!isset($_SESSION['USERID'])){
          "<a href='cart.php'>" . $total . "[" . $num_items . "]" . "</a>";
         ?>
 
-            <?php   
+        <?php   
         $db = dbConn();
         $sql = "SELECT item_stock.id, items.item_name, items.item_image, item_stock.qty,
          item_stock.qty, item_stock.unit_price, item_category.category_name
@@ -145,44 +126,61 @@ if(!isset($_SESSION['USERID'])){
             GROUP BY items.id, item_stock.unit_price";
         $result = $db->query($sql);
         ?>
-        </section><!-- End Breadcrumbs -->
 
-        <section class="inner-page">
+        <!-- ======= Portfolio Details Section ======= -->
+        <section id="portfolio-details" class="portfolio-details">
             <div class="container">
-                <div class="row">
-                    <?php
+                <?php
                     while ($row = $result->fetch_assoc()) {
                     ?>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="item-grid">
-                            <div class="item-image">
-                                <a href="">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-8">
+                        <div class="portfolio-details-slider swiper">
+                            <div class="swiper-wrapper align-items-center">
+
+                                <div class="swiper-slide">
                                     <img src="assets/img/<?= $row['item_image'] ?>" alt="<?= $row['item_name'] ?>"
                                         class="image">
-                                </a>
-                            </div><br>
-                            <form method="post" action="shopping_cart.php">
-                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                <button type="submit" name="operate" value="add_cart" class="btn btn-warning">Add to
-                                    Cart</button>
-                                <button type="submit"name="operate" value="add_cart" class="btn btn-success"><a href="view.php">View
-                                    Item</a></button>
-                            </form>
-                            <div class="item-content">
-                                <h3 class="title"><a href=""><?= $row['item_name'] ?></a></h3>
-                                <div class="price">Rs.<?= $row['unit_price'] ?></div>
+                                </div>
+
+
                             </div>
+                            <div class="swiper-pagination"></div>
                         </div>
                     </div>
-                    <?php
+
+                    <div class="col-lg-4">
+                        <div class="portfolio-info">
+                            <h3>Item Details</h3>
+                            <ul>
+                                <li><strong>Category</strong>: Web design</li>
+                                <li><strong>Brand</strong>: ASU Company</li>
+                                <li><strong>Model</strong>: 01 March, 2020</li>
+                                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
+                            </ul>
+                        </div>
+                        <div class="portfolio-description">
+                            <h2> Item details</h2>
+                            <p>
+                                Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi
+                                labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque
+                                itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur
+                                dignissimos. Sequi nulla at esse enim cum deserunt eius.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <?php
                     }
                     ?>
-                </div>
             </div>
-        </section>
+        </section><!-- End Portfolio Details Section -->
 
-    </main>
-    <!-- ======= Footer ======= -->
+    </main><!-- End #main -->
     <?php
+
 include 'footer.php';
 ?>

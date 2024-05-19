@@ -7,56 +7,12 @@ $breadcrumb_item = "Contact";
 $breadcrumb_item_active = "Manage";
 ?>
 
-
-
-
-
 <div class="row">
     <div class="col-12">
 
         <div class="row justify-content-center ">
             <div class="col-lg-7 mt-5 mt-lg-0 align-items-stretch" data-aos="fade-up" data-aos-delay="200">
-                <!-- <?php
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-
-                    extract($_GET);
-                    $db = dbConn();
-                    $sql = "SELECT *
-                            FROM contact ";
-             
-                    $result = $db->query($sql);
-                    $row = $result->fetch_assoc();
-                
-                    $address = $row['address'];
-                    $telephone = $row['telephone'];
-                    $mobile = $row['mobile'];
-                    $email = $row['email '];
-                    $note = $row['note'];
-                   
-                }
-                
-                  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    extract($_POST);
-                    $address = dataClean($address);
-                    $telephone = dataClean($telephone);
-                    $mobile = dataClean($mobile);
-                    $email = dataClean($email);
-                    $note = dataClean($note);
-
-                    $message = array();
-            
-
-                    if (empty($message)) {
-              
-                        $db = dbConn();
-                        $sql = "UPDATE contact  SET address='$address',Email='$Email',telephone='$telephone',mobile='$mobile',
-                        note='$note',telephone='$telephone' WHERE ContactId='$ContactId'";
-                        $db->query($sql);
-                
-                        header("Location:manage.php");
-                    }
-                }
-                  ?> -->
+          
                 <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form"
                     class="php-email-form" novalidate>
                     <div class="card-header bg-dark">
@@ -64,6 +20,7 @@ $breadcrumb_item_active = "Manage";
                     </div>
 
                     <div class="container-fluid">
+                    <!-- for ($i = 0; $i < 7; $i++) { -->
                         <div class="col-lg-12">
                             <label class="form-control-label" for="input-name">Monday</label>
                             <div class="input-group mb-3">
@@ -80,8 +37,6 @@ $breadcrumb_item_active = "Manage";
                                     required name="close">
                             </div>
                         </div>
-
-
                         <div class="col-lg-12">
                             <label class="form-control-label" for="input-name">Tuesday</label>
                             <div class="input-group mb-3">
