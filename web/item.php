@@ -5,6 +5,16 @@ if(!isset($_SESSION['USERID'])){
     header("Location:login.php");
 }
 
+    // $total = 0;
+    //     $no_items = 0;
+    //     if (isset($_SESSION['cart'])) {
+    //         foreach ($_SESSION['cart'] as $key => $value) {
+    //             $total += $value['qty'] * $value['unit_price'];
+    //             $noitmes += $value['qty'];
+    //         }
+    //     }
+    //     "<a href='cart.php'>".$total . "[" . $no_items . "]"."</a>";
+      
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +69,7 @@ if(!isset($_SESSION['USERID'])){
                 <ul>
                     <li><a class="nav-link scrollto active" style="color:black !important;" href="index.php">Home</a>
                     </li>
-                    <li><a class="nav-link scrollto" style="color:black !important;" href="shop.php">Shop</a></li>
+                    <li><a class="nav-link scrollto" style="color:black !important;" href="item.php">Shop</a></li>
                     <li><a class="nav-link scrollto" style="color:black !important;" href="services.php">Services</a>
                     </li>
                     <li><a class="nav-link scrollto" style="color:black !important;"
@@ -89,19 +99,14 @@ if(!isset($_SESSION['USERID'])){
             <?php
       }
       ?>
-
-
         </div>
     </header><!-- End Header -->
     <main id="main">
-
         <!-- ======= Breadcrumbs ======= -->
         <section class="breadcrumbs">
             <div class="container">
-
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="container">
-
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="cart.php" style="margin-left:1150px !important;text-align:right;"><i
                                     class="fa fa-shopping-cart"></i></a>
@@ -115,8 +120,8 @@ if(!isset($_SESSION['USERID'])){
                 </div>
 
             </div>
-
-        </section><!-- End Breadcrumbs -->
+        </section><br><!-- End Breadcrumbs -->
+        <!-- item_stock.qty - item_stock.issued_qty as availableqty -->
         <?php   
                  $db = dbConn();
                 $sql = "SELECT item_stock.id, items.item_name, items.item_image, item_stock.qty,
@@ -131,8 +136,6 @@ if(!isset($_SESSION['USERID'])){
                 GROUP BY items.id, item_stock.unit_price";
                 $result1 = $db->query($sql);
                 ?>
-
-
         <div class="container">
             <div class="row">
                 <div class="col-md-2">
@@ -171,8 +174,6 @@ if(!isset($_SESSION['USERID'])){
                         </div>
                     </div>
                 </div>
-
-
                 <div class="col-md-10">
                     <div class="row">
                         <?php
@@ -188,20 +189,19 @@ if(!isset($_SESSION['USERID'])){
                                     </a>
                                 </div>
                                 <div class="item-content">
-                                    <h5 style="width: 200px;"><?= $row['item_name'] ?></h5>
+                                    <h5 style="width: 220px;"><b><?= $row['item_name'] ?></b></h5>
                                     <h6 style="width: 300px;"><?= $row['model_name'] ?></h6>
 
                                     <div class="price" style="width: 250px;"><b>Rs. <span
-                                            class="price-value"><?= number_format($row['unit_price'], 2) ?></b></span></div>
-                                    <br>
-
+                                                class="price-value"><?= number_format($row['unit_price'], 2) ?></b></span>
+                                    </div>
                                 </div>
-
+                                <!-- store stock id inside hidden field -->
                                 <form method="post" action="shopping_cart.php" style="width: 210px;">
                                     <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                     <button type="submit" name="operate" value="add_cart" class="btn btn-warning"
-                                        style="width: 120px; height: 40px;font-size:15px !important;">
-                                        Add to cart
+                                        style="width: 100px; height: 40px;font-size:15px !important;">
+                                        <i class="fa fa-shopping-cart"></i>
                                     </button>
 
                                 </form>
@@ -215,9 +215,6 @@ if(!isset($_SESSION['USERID'])){
                     </div>
                 </div>
             </div>
-
-
-
 
 
         </div>

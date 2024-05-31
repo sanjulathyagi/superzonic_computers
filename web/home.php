@@ -6,10 +6,74 @@ include '../function.php';
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center justify-content-center">
     <div class="container" data-aos="fade-up">
+        <div class="container-fluid align-items-center justify-content-lg-between ">
+            <a href="index.html" class="logo me-auto me-lg-0 "><img src="" alt="" class="img-fluid" width="100%"></a>
 
+            <nav id="navbar" class="navbar order-last order-lg-0 ">
+                <ul class="justify-content-center">
+
+                    <li class="dropdown"><a href="#"><span>Laptops</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="#"><img src="assets/img/hp-300x300-1.png" class="img-fluid" alt=""
+                                        width="35%"></a></li>
+                            <li><a href="#"><img src="assets/img/Dell-300x300.png" class="img-fluid" alt="" width="35%">
+                                </a></li>
+                            <li><a href="#"><img src="assets/img/LENOVO-LOGO.jpg" class="img-fluid" alt=""
+                                        width="35%"></a></li></a>
+                    </li>
+                    <li><a href="#"><img src="assets/img/Asus-Logoo.png" class="img-fluid" alt="" width="35%"></a></li>
+                    <li><a href="#"><img src="assets/img/msi-as.png" class="img-fluid" alt="" width="35%"></a></li>
+                    <li><a href="#"><img src="assets/img/mac.jpg" class="img-fluid" alt="" width="35%"></a></li>
+                    <li><a href="#"><img src="assets/img/OIP.jpg" class="img-fluid" alt="" width="35%"></a></li>
+                </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Desktop and servers</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="#">Branded PC</a></li>
+                        <li><a href="#">Desktops PC</a></li>
+                        <li><a href="#">Gaming Pc</a></li>
+                        <li><a href="#">workstations</a></li>
+                        <li><a href="#">servers</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Pc Components</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="#">Processors</a></li>
+                        <li><a href="#">Motherboards</a></li>
+                        <li><a href="#">Memory</a></li>
+                        <li><a href="#">Graphic Cards</a></li>
+                        <li><a href="#">power supply</a></li>
+
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Peripherals</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="#">USB</a></li>
+                        <li><a href="#">Speakers</a></li>
+                        <li><a href="#">Mouse</a></li>
+                        <li><a href="#">Headphones</a></a></li>
+                        <li><a href="#">Microphones</a></a></li>
+                        <li><a href="#">Webcam</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Accessories</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="#">Mouse Mat</a></li>
+                        <li><a href="#">Cables</a></li>
+                        <li><a href="#">LED Stripes</a></li>
+                        <li><a href="#">Cooling Pad</a></li>
+                        <li><a href="#">Fan</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="#contact">Softwares</a></li>
+
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
         <div class="row bg-white">
             <div class="col-lg-3">
-                <div class="container bg-white" width="500px" height="500px">
+                <div class="container bg-white" width="800px" height="800px">
                     <div class="hero__text">
                         <a href=""><img src="assets/img/image11.jpg" alt="" width="800px" height="500px"></a>
                     </div>
@@ -33,7 +97,6 @@ include '../function.php';
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
@@ -517,3 +580,9 @@ include '../function.php';
     </section>
 
 </main><!-- End #main -->
+<script>
+    // JavaScript to toggle the categories dropdown
+    document.getElementById('toggleCategories').addEventListener('click', function () {
+        document.getElementById('categoriesList').classList.toggle('show-categories');
+    });
+</script>

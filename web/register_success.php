@@ -15,16 +15,19 @@ include 'header.php';
     <section id="contact" class="contact">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
-                <h2 class="text-success">SUCCESS</h2>
-
+                <h2 class="text-warning fw-bold mb-4">Your account has been successfully created</h2>
             </div>
             <div class="row justify-content-center">
-                <div class="col-lg-7 border border-3  border-success" data-aos="fade-up" data-aos-delay="200">
-                    <h1 class="text-center">Congratulations</h1>
+                <div class="col-lg-8">
+                    <div class="card border border-warning rounded-3 shadow">
+                        <div class="card-body">
+                            <h1 class="text-center mb-4">Congratulations!</h1>
+                            <h2 class="text-center mb-4">Your account has been successfully created</h2>
+                            <p class="text-center mb-4">Your Order Number: <span class="fw-bold"><?= $_SESSION['RNO'] ?>
+                                </span></p>
 
-                    <h2 class="text-center">Your account has been successfully created</h2>
-
-                    <h1 class="text-center">Your Registration Number is <?= $_SESSION['RNO'] ?> </h1>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

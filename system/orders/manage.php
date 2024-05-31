@@ -51,7 +51,7 @@ $breadcrumb_item_active = "Manage";
                 }
 
                 $db = dbConn();
-                $sql = "SELECT * FROM orders";
+                $sql = "SELECT o.*,c.FirstName,c.LastName FROM orders o INNER JOIN customers c ON c.CustomerId=o.customer_id";
 
                 $result = $db->query($sql);
                 ?>
@@ -61,8 +61,8 @@ $breadcrumb_item_active = "Manage";
                         <tr>
                             <th>Order Id</th>
                             <th>Order Date</th>
-                            <th>Shipping_address</th>
-                            <th>Billing_address</th>
+                            <th>Customer</th>
+                            <th>Order Number</th>
                             <th>Status</th>
                             <th>Actions</th>
 
@@ -72,32 +72,36 @@ $breadcrumb_item_active = "Manage";
                     </thead>
                     <tbody>
                         <?php
+
                         $status=1;
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 ?>
                         <tr>
-                            <td><?= $row['order_id'] ?></td>
+                            <td><?= $row['id'] ?></td>
                             <td><?= $row['order_date'] ?></td>
-                            <td><?= $row['shipping_address'] ?></td>
-                            <td><?= $row['billing_address'] ?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td><?= $row['FirstName'] ?> <?= $row['LastName'] ?></td>
+                            <td><?= $row['order_number'] ?></td>
                             <td>
-                                <div class="dropdown no-arrow mb-1">
+                                <!-- <? $row['status']==1 ?>
+                                 ($status == 1) ? '<button class="btn btn-warning btn-sm" style="width: 80px;">Pending</button>':
+                                    (($status == 2) ? '<button class="btn btn-success btn-sm" style="width: 80px;">Paid</button>' :
+                                    (($status == 3) ? '<button class="btn btn-primary btn-sm" style="width: 80px;">Shipping</button>' :
+                                    (($status == 4) ? '<button class="btn btn-info btn-sm" style="width: 80px;">Delivered</button>'))):''; ?> -->
+                            </td>
+                            <td>
+                                <div class="dropdown no-arrow mb-1" >
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-cog"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
+                                    <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in" style="min-width: 7rem !important";
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;
 
 
-                                        <a href="<?= SYS_URL ?>orders/edit.php?order_id=<?= $row['order_id'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
-                                            href="<?= SYS_URL ?>orders/delete.php?order_id=<?= $row['order_id'] ?>"
-                                            onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
+                                        <a href="<?= SYS_URL ?>orders/view.php?order_id=<?= $row['id'] ?>"
+                                            class="btn btn-warning btn-sm" style="width: 90px;"><i class="fas fa-eye"></i>&nbsp;view order</a>
 
                                     </div>
                                 </div>

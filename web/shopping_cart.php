@@ -5,7 +5,7 @@ session_start();
 include '../function.php';
 
 extract($_POST);
-//extract the id and check add to cart button click or not by operate
+//extract the stock id and check add to cart button click or not by operate
 if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'add_cart') {
 
     $db = dbConn();
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'add_cart') {
      'unit_price' => $row['unit_price'],
       'qty' => $current_qty);
    
-    //   print_r($_SESSION['cart']); 
+    //    print_r($_SESSION['cart']); 
     header('Location:item.php');
 }
 

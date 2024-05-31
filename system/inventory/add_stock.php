@@ -7,61 +7,103 @@ $breadcrumb_item = "Inventory";
 $breadcrumb_item_active = "Add";
 
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $message = array();
+    if (isset($_FILES['itemImages'])) {
+        $itemImages = $_FILES['itemImages'];
+        $uploadResult = uploadFiles($itemImages);
+        foreach ($uploadResult as $key => $value) {
+            if (@$value['upload']) {
+                echo $value['file'];
+            } else {
+                foreach ($value as $result) {
+                    echo $result;
+                }
+            }
+        }
+    }
+}
+function uploadFiles($files) {
+    $messages = array();
+    foreach ($files['name'] as $key => $filename) {
+        $filetmp = $files['tmp_name'][$key];
+        $filesize = $files['size'][$key];
+        $fileerror = $files['error'][$key];
+
+        $file_ext = explode('.', $filename);
+        $file_ext = strtolower(end($file_ext));
+
+        $allowed_ext = array('pdf', 'png', 'jpg', 'gif', 'jpeg');
+
+        if (in_array($file_ext, $allowed_ext)) {
+            if ($fileerror === 0) {
+                if ($filesize <= 2097152) {
+                    $file_name = uniqid('', true) . '.' . $file_ext;
+                    $file_destination = '../uploads/' . $file_name;
+                    move_uploaded_file($filetmp, $file_destination);
+                    $messages[$key]['upload'] = true;
+                    $messages[$key]['file'] = $file_name;
+                } else {
+                    $messages[$key]['upload'] = false;
+                    $messages[$key]['size'] = "The file size is invalid for $filename";
+                }
+            } else {
+                $messages[$key]['upload'] = false;
+                $messages[$key]['uploading'] = "Error occurred while uploading $filename";
+            }
+        } else {
+            $messages[$key]['upload'] = false;
+            $messages[$key]['type'] = "Invalid file type for $filename";
+        }
+    }
+    return $messages;
+}
+
 //check post and data clean
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $FirstName = dataClean($FirstName);
-    $LastName = dataClean($LastName);
-    $DesignationId = dataClean($DesignationId);
-    $AppDate = dataClean($AppDate);
-    $UserName = dataClean($UserName);
-    
-    $message = array();
-    if (empty($FirstName)) {
-        $message['FirstName'] = "The First Name should not be blank...!";
-    }
-    if (empty($LastName)) {
-        $message['LastName'] = "The Last Name should not be blank...!";
-    }
-    if (empty($DesignationId)) {
-        $message['DesignationId'] = "The Designation should not be blank...!";
-    }
-    if (empty($AppDate)) {
-        $message['AppDate'] = "The App. Date should not be blank...!";
-    }
-    if (empty($UserName)) {
-        $message['UserName'] = "The UserName should not be blank...!";
-    }
-    if (empty($Password)) {
-        $message['Password'] = "The Password should not be blank...!";
-    }
-    if (!empty($UserName)) {
-        $db = dbConn();
-        $sql = "SELECT * FROM users WHERE UserName='$UserName'";
-        $result = $db->query($sql);
-        if ($result->num_rows > 0) {
-            $message['UserName'] = "This User Name already exist...!";
-        }
-    }
-    if (!empty($Password)) {
-        $uppercase = preg_match('@[A-Z]@', $Password);
-        $lowercase = preg_match('@[a-z]@', $Password);
-        $number = preg_match('@[0-9]@', $Password);
-        $specialChars = preg_match('@[^\w]@', $Password);
+    $item_name = dataClean($item_name);
+    $colour = dataClean($colour);
+    $category_name = dataClean($category_name);
+    $unit_price = dataClean($unit_price);
+    $item_image= dataClean($item_image);
+    $brand = dataClean($brand);
+    $qty = dataClean($qty);
+    $purchase_date = dataClean($purchase_date);
+    $Supplier_id = dataClean($Supplier_id);
 
-        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($Password) < 8) {
-            $message['Password'] = 'Password should be at least 8 characters in length and should include at least one uppercase letter, one lowercase letter, one number, and one special character.';
-        }
+    if (empty( $item_name)) {
+        $message['item_name'] = "The ItemName should not be blank...!";
     }
+    if (empty( $colour)) {
+        $message['colour'] = "The colour should not be blank...!";
+    }
+    if (empty($category_name)) {
+        $message['category_name'] = "The CategoryName should not be blank...!";
+    } 
+    if (empty($unit_price)) {
+        $message['unit_price'] = "The Unit_price Date should not be blank...!";
+    }
+    if (empty($item_image)) {
+        $message['item_image'] = "The ItemImage should not be blank...!";
+    }
+    if (empty($Brand)) {
+        $message['brand '] = "The brand should not be blank...!";
+    }
+    if (empty($qty)) {
+        $message['qty'] = "The qty should not be blank...!";
+    }
+    if (empty($purchase_date)) {
+        $message['purchase_date'] = "The purchase_date should not be blank...!";
+    }
+    if (empty($SupplierName)) {
+        $message['SupplierName'] = "The SupplierName should not be blank...!";
+    }
+
     if (empty($message)) {
-        //Use bcrypt hashing algorithem
-        $pw = password_hash($Password, PASSWORD_DEFAULT);
-        $db = dbConn();
-        $sql = "INSERT INTO users(FirstName,LastName,UserName,Password,UserType,Status) VALUES ('$FirstName','$LastName','$UserName','$pw','employee','1')";
-        $db->query($sql);
-        $UserId = $db->insert_id;
 
-        $sql = "INSERT INTO employee(AppDate,DesignationId,UserId) VALUES ('$AppDate','$DesignationId','$UserId')";
+        $db = dbConn();
+        $sql = "INSERT INTO items('item_name','colour','category_name','unit_price','item_image','brand ','qty','purchase_date','SupplierName') VALUES ('$item_name','$colour','$category_name','$unit_price','$item_image','$Brand','$qty','$purchase_date','$SupplierName')";
         $db->query($sql);
 
         header("Location:manage.php");
@@ -71,67 +113,143 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-    <a href="<?= SYS_URL ?>inventory/manage.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View Inventory</a>
+        <a href="<?= SYS_URL ?>inventory/manage.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View
+            Inventory</a>
         <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title">Add New item</h3>
             </div>
-            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                <div class="card-body">
+            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputItem_name">Item Name</label>
+                                <select name="item_id" id="item_id" class="form-control"  required>
+                                    <option value=""></option>
+                                    <?php
+                                    $db = dbConn();
+                                    $sql = "SELECT id,item_name FROM items";
+                                    $result = $db->query($sql);
+                                    if($result->num_rows>0){
+                                        while ($row = $result->fetch_assoc()) {
+                                        ?>
+                                        <option value="<?= $row['id']?>"><?= $row['item_name']?></option>
+                                        <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputColour">Colour</label>
+                                <input type="text" class="form-control" id="colour" name="colour"
+                                    placeholder="Enter Colour" value="<?= @$colour ?>">
+                                <span class="text-danger"><?= @$message['colour'] ?></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputCategory Name">Category Name</label>
+                                <select name="item_category_id" id="item_category_id" class="form-control"  required>
+                                    <option value=""></option>
+                                    <?php
+                                    $db = dbConn();
+                                    $sql = "SELECT id,category_name FROM item_category";
+                                    $result = $db->query($sql);
+                                    if($result->num_rows>0){
+                                        while ($row = $result->fetch_assoc()) {
+                                        ?>
+                                        <option value="<?= $row['id']?>"><?= $row['category_name']?></option>
+                                        <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputUnit_price">Unit Price</label>
+                                <input type="text" class="form-control" id="unit_price" name="unit_price"
+                                    placeholder="Enter unit price" value="<?= @$unit_price ?>">
+                                <span class="text-danger"><?= @$message['unit_price'] ?></span>
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="inputFirstName">First Name</label>
-                        <input type="text" class="form-control" id="FirstName" name="FirstName"
-                            placeholder="Enter First Name" value="<?= @$FirstName ?>">
-                        <span class="text-danger"><?= @$message['FirstName'] ?></span>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputBrand ">Brand </label>
+                                <input type="text" class="form-control" id="brand" name="brand "
+                                    placeholder="Enter brand " value="<?= @$brand  ?>">
+                                <span class="text-danger"><?= @$message['brand '] ?></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputQty">Quantity</label>
+                                <input type="number" class="form-control" id="qty" name="qty" placeholder="Enter qty"
+                                    value="<?= @$qty ?>">
+                                <span class="text-danger"><?= @$message['qty'] ?></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputLastName">Last Name</label>
-                        <input type="text" class="form-control" id="LastName" name="LastName"
-                            placeholder="Enter Last Name" value="<?= @$LastName ?>">
-                        <span class="text-danger"><?= @$message['LastName'] ?></span>
+                    <div class="row">
+
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputPurchase_date">purchase_date </label>
+                                <input type="date" class="form-control" id="purchase_date " name="purchase_date "
+                                    placeholder="Enter purchase_date " value="<?= @$purchase_date  ?>">
+                                <span class="text-danger"><?= @$message['purchase_date '] ?></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputSupplierName">SupplierName</label>
+                                <select name="supplier_id" id="supplier_id" class="form-control"  required>
+                                    <option value=""></option>
+                                    <?php
+                                    $db = dbConn();
+                                    $sql = "SELECT id,SupplierName FROM supplier";
+                                    $result = $db->query($sql);
+                                    if($result->num_rows>0){
+                                        while ($row = $result->fetch_assoc()) {
+                                        ?>
+                                        <option value="<?= $row['id']?>"><?= $row['SupplierName']?></option>
+                                        <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="itemImages">Select Images (Max 3):</label><br>
+                                <input type="file" id="itemImages" name="itemImages[]"><br><br>
+                                <input type="file" id="itemImages" name="itemImages[]"><br><br>
+                                <input type="file" id="itemImages" name="itemImages[]"><br><br>
+
+                                <input type="submit" value="Upload Images" name="submit">
+                                <span class="text-danger"><?= @$message['item_image'] ?></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="DesignationId">Designation</label>
-                        <?php
-                        $db = dbConn();
-                        $sql = "SELECT * FROM designations";
-                        $result = $db->query($sql);
-                        ?>
-                        <select class="form-control" id="DesignationId" name="DesignationId">
-                            <option value="">--</option>
-                            <?php while ($row = $result->fetch_assoc()) { ?>
-                            <option value="<?= $row['Id'] ?>" <?= @$DesignationId==$row['Id']?'selected':'' ?>>
-                                <?= $row['Designation'] ?></option>
-                            <?php } ?>
-                        </select>
-                        <span class="text-danger"><?= @$message['DesignationId'] ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="AppDate">Appointment Date</label>
-                        <input type="date" class="form-control" id="AppDate" name="AppDate" value="<?= @$AppDate ?>">
-                        <span class="text-danger"><?= @$message['AppDate'] ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="UserName">User Name</label>
-                        <input type="text" class="form-control" id="UserName" name="UserName" value="<?= @$UserName ?>"
-                            placeholder="Enter User Name">
-                        <span class="text-danger"><?= @$message['UserName'] ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="Password">Password</label>
-                        <input type="password" class="form-control" id="Password" name="Password"
-                            placeholder="Password">
-                        <span class="text-danger"><?= @$message['Password'] ?></span>
-                    </div>
+
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-warning">Submit</button>
+                <div class="card-footer ">
+                    <input type="hidden" name="UserId" value="<?= $UserId ?>">
+                    <button type="submit" class="btn btn-warning ">Submit</button>
                 </div>
             </form>
-
         </div>
         <!-- /.card -->
     </div>

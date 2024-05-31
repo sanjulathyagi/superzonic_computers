@@ -2,7 +2,17 @@
 session_start();
 include 'header.php';
 include '../function.php';
-?>
+// After successful login, redirect the user back to the stored URL
+// if (isset($_SESSION['REDIRECT_URL'])) {
+//     $redirect_url = $_SESSION['REDIRECT_URL'];
+//     unset($_SESSION['REDIRECT_URL']);
+//     header("Location: $redirect_url");
+// } else {
+//     // If no stored URL is found, redirect to a default page
+//     header("Location: index.php"); 
+
+// }
+// ?>
 
 <main id="main">
   <!-- ======= Contact Section ======= -->

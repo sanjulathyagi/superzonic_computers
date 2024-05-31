@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $sql = "SELECT
     `item_stock`.`id`
     , `items`.`item_name`
+    , `items`.`colour`
     , `item_category`.`category_name`
     , `item_stock`.`unit_price`
     , `items`.`item_image`
@@ -39,6 +40,7 @@ FROM
     $category_name = $row['category_name'];
     $unit_price = $row['unit_price'];
     $item_image = $row['item_image'];
+    $colour = $row['colour'];
     $brand = $row['brand'];
     $qty= $row['qty'];
     $purchase_date = $row['purchase_date'];
@@ -53,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category_name = dataClean($category_name);
     $unit_price = dataClean($unit_price);
     $item_image= dataClean($item_image);
+    $colour = dataClean($colour);
     $brand = dataClean( $brand);
     $qty = dataClean($qty);
     $purchase_date = dataClean($purchase_date);
@@ -66,6 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (empty($category_name)) {
         $message['category_name'] = "The CategoryName should not be blank...!";
+    }
+    if (empty( $colour)) {
+        $message['colour'] = "The colour should not be blank...!";
     }
     if (empty($unit_price)) {
         $message['unit_price'] = "The Unit_price Date should not be blank...!";
@@ -91,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($message)) {
               
         $db = dbConn();
-        $sql = "UPDATE inventory i SET item_name='$item_name',category_name='$category_name',unit_price='$unit_price',item_image='$item_image',brand='$brand',
+        $sql = "UPDATE inventory i SET item_name='$item_name',category_name='$category_name',unit_price='$unit_price',colour='$colour',item_image='$item_image',brand='$brand',
         qty='$qty',purchase_date='$purchase_date',SupplierName='$SupplierName' WHERE item_id='$item_id'";
         $db->query($sql);
 
@@ -123,6 +129,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="text" class="form-control" id="category_name" name="category_name"
                                     placeholder="Enter Category Name" value="<?= @$category_name ?>">
                                 <span class="text-danger"><?= @$message['category_name'] ?></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label for="inputColour">Colour</label>
+                                <input type="text" class="form-control" id="colour" name="colour"
+                                    placeholder="Enter Colour" value="<?= @$colour ?>">
+                                <span class="text-danger"><?= @$message['colour'] ?></span>
                             </div>
                         </div>
                     </div>

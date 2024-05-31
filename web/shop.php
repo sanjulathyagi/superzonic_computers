@@ -1,5 +1,6 @@
 <?php
 ob_start();
+include 'header.php';
 include '../function.php';
 ?>
 <!DOCTYPE html>
@@ -42,56 +43,7 @@ include '../function.php';
 <body>
 
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top">
-        <div class="container-fluid d-flex align-items-center justify-content-lg-between my-header-bg ">
 
-            <!-- <h1 class="logo me-auto me-lg-0"><a href="index.html">SuperZonic<span><br/>Computers</span></a></h1> -->
-            <!-- Uncomment below if you prefer to use an image logo -->
-            <a href="index.html" class="logo me-auto me-lg-0 "><img src="assets/img/logo design.jpeg" alt=""
-                    class="img-fluid" width="100%"></a>
-
-            <nav id="navbar" class="navbar order-last order-lg-0 ">
-                <ul>
-                    <li><a class="nav-link scrollto active" style="color:black !important;" href="index.php">Home</a>
-                    </li>
-                    <li><a class="nav-link scrollto" style="color:black !important;" href="shop.php">Shop</a></li>
-                    <li><a class="nav-link scrollto" style="color:black !important;" href="services.php">Services</a>
-                    </li>
-                    <li><a class="nav-link scrollto" style="color:black !important;"
-                            href="appointment.php">Appointments</a></li>
-                    <li><a class="nav-link scrollto" style="color:black !important;" href="contact.php">Contacts</a>
-                    </li>
-
-
-
-
-
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-
-            </nav><!-- .navbar -->
-
-            <?php 
-                if(isset($_SESSION['USERID'])){
-                  ?>
-            <a href="register.php" class="get-started-btn register-btn scrollto">Welcome,
-                <?= $_SESSION['FIRSTNAME'] ?></a>
-            <a href="login.php" class="get-started-btn bg-dark scrollto">Logout</a>
-            <?php
-                }else {
-                ?>
-            <a href="register.php" class="get-started-btn bg-dark register-btn scrollto">Register</a>
-            <a href="login.php" class="get-started-btn bg-dark  scrollto"
-                style="border-radius: 50px !important;">Login</a>
-            <?php
-              	}
-              	?>
-
-
-        </div>
-
-
-    </header><!-- End Header -->
 
     <main id="main">
 

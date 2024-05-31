@@ -1,3 +1,4 @@
+
 .my-header-bg{
     background-color: #fff !important;
     height: 55px !important;
@@ -17,8 +18,9 @@
     border-bottom: 3px solid #fff;
 }
 .register-btn{
-    margin-right: -370px !important;
+    margin-right: -390px !important;
     border-radius: 50px !important;
+    background: black;
 }
 
 .php-email-form{

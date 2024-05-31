@@ -61,6 +61,7 @@ $breadcrumb_item_active = "Manage";
                 $sql = "SELECT
     `item_stock`.`id`
     , `items`.`item_name`
+    ,`items`.`colour`
     , `item_category`.`category_name`
     , `item_stock`.`unit_price`
     , `items`.`item_image`
@@ -88,6 +89,7 @@ FROM
                         <tr>
                             <th>Item Id</th>
                             <th>Item Name</th>
+                            <th>Colour</th>
                             <th>Category</th>
                             <th>Unit_price</th>
                             <th>Image</th>
@@ -108,6 +110,7 @@ FROM
                         <tr>
                             <td><?= $row['id'] ?></td>
                             <td><?= $row['item_name'] ?></td>
+                            <td><?= $row['colour'] ?></td>
                             <td><?= $row['category_name'] ?></td>
                             <td><?= $row['unit_price'] ?></td>
                             <td><img src="web/assets/img/<?= $row['item_image'] ?>" height="100"></td>

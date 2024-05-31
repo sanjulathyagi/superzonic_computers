@@ -54,7 +54,7 @@ ob_start();
             <nav id="navbar" class="navbar order-last order-lg-0 ">
                 <ul>
                     <li><a class="nav-link scrollto active" style="color:black !important;" href="index.php">Home</a></li>
-                    <li><a class="nav-link scrollto"style="color:black !important;" href="shop.php">Shop</a></li>
+                    <li><a class="nav-link scrollto"style="color:black !important;" href="item.php">Shop</a></li>
                     <li><a class="nav-link scrollto" style="color:black !important;"href="services.php">Services</a></li>
                     <li><a class="nav-link scrollto" style="color:black !important;"href="appointment.php">Appointments</a></li>
                     <li><a class="nav-link scrollto" style="color:black !important;"href="contact.php">Contacts</a></li>
@@ -62,14 +62,19 @@ ob_start();
 
 
                 </ul>
+            
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
+            <!-- <a href="cart.php" style="margin-right:-250px !important;"><i class="fa fa-shopping-cart"></i></a>
+            <a href="appointment.php"  style="margin-right:-250px !important;"><i class="fas fa-laptop-house"></i></a>
+            <a href="contact.php" ><i class="fas fa-phone"></i></a> -->
+
             <?php 
                 if(isset($_SESSION['USERID'])){
                   ?>
-            <a href="register.php" class="get-started-btn register-btn scrollto">Welcome,
+            <a href="register.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;margin-right:-320px">Welcome,
                 <?= $_SESSION['FIRSTNAME'] ?></a>
-            <a href="login.php" class="get-started-btn bg-dark scrollto">Logout</a>
+            <a href="login.php" class="get-started-btn bg-dark  scrollto" style="border-radius: 50px !important;">Logout</a>
             <?php
                 }else {
                 ?>
@@ -79,79 +84,6 @@ ob_start();
               	}
               	?>
 
-
         </div>
-        <div class="container-fluid d-flex align-items-center justify-content-lg-between ">
-            <a href="index.html" class="logo me-auto me-lg-0 "><img src="" alt="" class="img-fluid" width="100%"></a>
-
-
-            <nav id="navbar" class="navbar order-last order-lg-0 ">
-                <ul class="justify-content-center">
-
-                    <li class="dropdown"><a href="#"><span>Laptops</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="#"><img src="assets/img/hp-300x300-1.png" class="img-fluid" alt=""
-                                        width="35%"></a></li>
-                            <li><a href="#"><img src="assets/img/Dell-300x300.png" class="img-fluid" alt="" width="35%">
-                                </a></li>
-                            <li><a href="#"><img src="assets/img/LENOVO-LOGO.jpg" class="img-fluid" alt=""
-                                        width="35%"></a></li></a>
-                    </li>
-                    <li><a href="#"><img src="assets/img/Asus-Logoo.png" class="img-fluid" alt="" width="35%"></a></li>
-                    <li><a href="#"><img src="assets/img/msi-as.png" class="img-fluid" alt="" width="35%"></a></li>
-                    <li><a href="#"><img src="assets/img/mac.jpg" class="img-fluid" alt="" width="35%"></a></li>
-                    <li><a href="#"><img src="assets/img/OIP.jpg" class="img-fluid" alt="" width="35%"></a></li>
-                </ul>
-                </li>
-                <li class="dropdown"><a href="#"><span>Desktop and servers</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                        <li><a href="#">Branded PC</a></li>
-                        <li><a href="#">Desktops PC</a></li>
-                        <li><a href="#">Gaming Pc</a></li>
-                        <li><a href="#">workstations</a></li>
-                        <li><a href="#">servers</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown"><a href="#"><span>Pc Components</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                        <li><a href="#">Processors</a></li>
-                        <li><a href="#">Motherboards</a></li>
-                        <li><a href="#">Memory</a></li>
-                        <li><a href="#">Graphic Cards</a></li>
-                        <li><a href="#">power supply</a></li>
-
-                    </ul>
-                </li>
-                <li class="dropdown"><a href="#"><span>Peripherals</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                        <li><a href="#">USB</a></li>
-                        <li><a href="#">Speakers</a></li>
-                        <li><a href="#">Mouse</a></li>
-                        <li><a href="#">Headphones</a></a></li>
-                        <li><a href="#">Microphones</a></a></li>
-                        <li><a href="#">Webcam</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown"><a href="#"><span>Accessories</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                        <li><a href="#">Mouse Mat</a></li>
-                        <li><a href="#">Cables</a></li>
-                        <li><a href="#">LED Stripes</a></li>
-                        <li><a href="#">Cooling Pad</a></li>
-                        <li><a href="#">Fan</a></li>
-                    </ul>
-                </li>
-                <li><a class="nav-link scrollto" href="#contact">Softwares</a></li>
-
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
-
-            <a href="cart.php" style="margin-right:-250px !important;"><i class="fa fa-shopping-cart"></i></a>
-            <a href="appointment.php"  style="margin-right:-250px !important;"><i class="fas fa-laptop-house"></i></a>
-            <a href="contact.php" ><i class="fas fa-phone"></i></a>
-
-
-
-
-        </div>
+       
     </header><!-- End Header -->
