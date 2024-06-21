@@ -1,6 +1,9 @@
 <?php
 include 'header.php';
-session_start();
+session_start(); 
+if(!isset($_SESSION['USERID'])){
+    header("Location:login.php");
+}
 // submit data through hyperlink used extract
 // remove the array and subarray record when unset
 extract($_GET);
@@ -12,7 +15,7 @@ if($_SERVER['REQUEST_METHOD']=='GET' && @$action=='del'){
 if($_SERVER['REQUEST_METHOD']=='GET' && @$action=='empty'){
     $_SESSION['cart']=array();
 }
-// check the method is get and if action parameter exists ,equal to upadte qty
+// check the method is get and if action parameter exists ,equal to update qty
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['action'] == 'update_qty') {
     $cart = $_SESSION['cart'];
     if (isset($cart[$id])) {

@@ -6,13 +6,14 @@ $link = "Order Management";
 $breadcrumb_item = "Order";
 $breadcrumb_item_active = "View Items";
 
-extract($_GET);
+extract($_GET); 
+
 
 $db = dbConn();
 $sql = "SELECT o.*,c.FirstName,c.LastName FROM `orders` o INNER JOIN customers c ON c.CustomerId=o.customer_id WHERE o.id='$order_id'";
 $result = $db->query($sql);
 $row = $result->fetch_assoc();
-?> 
+?>
 <div class="row">
     <div class="col-12">
 
@@ -47,9 +48,9 @@ $row = $result->fetch_assoc();
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
                                 <h4>Billing Details</h4>
-                                <?= $row['billing_name'] ?> 
+                                <?= $row['billing_name'] ?>
                                 <br>
-                                <?= $row['billing_address'] ?>   
+                                <?= $row['billing_address'] ?>
                             </div>
                         </div>
                     </div>
@@ -57,11 +58,11 @@ $row = $result->fetch_assoc();
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
                                 <h4>Delivery Details</h4>
-                                <?= $row['delivery_name'] ?> 
+                                <?= $row['delivery_name'] ?>
                                 <br>
-                                <?= $row['delivery_address'] ?> 
+                                <?= $row['delivery_address'] ?>
                                 <br>
-                                <?= $row['delivery_phone'] ?> 
+                                <?= $row['delivery_phone'] ?>
                             </div>
                         </div>
                     </div>
@@ -73,13 +74,15 @@ $row = $result->fetch_assoc();
                 $sql = "SELECT o.*,i.item_name FROM `order_items` o INNER JOIN items i ON i.id=o.item_id WHERE o.order_id='$order_id'";
                 $result = $db->query($sql);
                 ?>
+                <form action="../inventory/issue.php" method="post">
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th>Item</th>
                             <th>Unit Price</th>
-                            <th>Qty</th>
-                            <th>Rem.Qty</th>
+                            <th>Ordered Qty</th>
+                            <!-- <th>Balance Qty</th> -->
+                            <th>Issued Qty</th>
 
                         </tr>
                     </thead>
@@ -88,19 +91,41 @@ $row = $result->fetch_assoc();
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 ?>
-                                <tr>
-                                   
-                                    <td><?= $row['item_name'] ?></td>
-                                    <td><?= $row['unit_price'] ?></td>
-                                    <td><?= $row['qty'] ?></td>
-                                    <td>
-                                       
+                        <tr>
+
+                            <td><?= $row['item_name'] ?></td>
+                            <td><?= $row['unit_price'] ?></td>
+                            <td><?= $row['qty'] ?></td>
+                            <!-- <td><?= $row['balance_qty'] ?></td> -->
+                            <td>
+                                <input type="hidden" name="items[]" value="<?= $row['item_id'] ?>">
+                                <input type="hidden" name="order_id" value="<?= $row['order_id'] ?>">
+                                <input type="hidden" name="prices[]" value="<?= $row['unit_price'] ?>">
+
+                                <input type="text" name="issued_qty[]">
+                            </td>
+                            <td>
                                 <?php
+                                        $item_id=$row['item_id'];
+                                        $unit_price=$row['unit_price'];
+                                        $sql="SELECT (qty - COALESCE(issued_qty,0)) as remqty FROM `item_stock` WHERE item_id='$item_id' AND unit_price='$unit_price'";
+                                        $remqtyresult=$db->query($sql);
+                                        $remqtyrow = $remqtyresult->fetch_assoc();
+                                        echo $remqtyrow['remqty'];
+                                ?>
+                            </td>
+                        </tr>
+
+                        <?php
                             }
                         }
                         ?>
                     </tbody>
                 </table>
+                <button type="submit" class="btn btn-warning">Issue</button>
+                </form>
+
+                
             </div>
             <!-- /.card-body -->
         </div>
@@ -111,4 +136,3 @@ $row = $result->fetch_assoc();
 $content = ob_get_clean();
 include '../layouts.php';
 ?>
-

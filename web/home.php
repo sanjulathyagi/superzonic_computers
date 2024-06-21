@@ -237,30 +237,7 @@ include '../function.php';
     </section><!-- End Services Section -->
 
     <!-- ======= Cta Section ======= -->
-    <section id="cta" class="cta">
-        <div class="container" data-aos="zoom-in">
-
-            <div class="text-center">
-                <h3>Do you need our help?</h3>
-                <p> Hardware Repairs,Software Troubleshooting,Data Recovery,Networking and Connectivity Issues,Custom
-                    Builds and Upgrades andConsultation and Advice.</p>
-                <form method="post" action="check_availability.php">
-                    <div class="row g-3">
-                        <div class="col">
-                            <input type="date" class="form-control" placeholder="select date" name="date" width="50px">
-                        </div>
-                        <div class="col">
-                            <input type="time" class="form-control" placeholder="select time" name="start_time"
-                                width="50px">
-                        </div>
-                    </div>
-                    <button type="submit">Check Availability</button>
-                    <!-- <a class="cta-btn" type="submit" href="check_availability.php">Check Availability</a> -->
-                </form>
-            </div>
-
-        </div>
-    </section><!-- End Cta Section -->
+    
 
     <!-- ======= Portfolio Section ======= -->
     <section id="portfolio" class="portfolio">

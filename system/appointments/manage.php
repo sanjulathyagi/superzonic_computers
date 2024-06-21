@@ -9,10 +9,10 @@ $breadcrumb_item_active = "Manage";
 
 <div class="row">
     <div class="col-12">
-        <a href="add.php" class="btn btn-warning mb-2"><i class="fas fa-plus-circle"></i>New</a>
+    <a href="<?= SYS_URL ?>appointments/qr_scan.php" class="btn bg-dark"><i class="fas fa-qrcode"></i>&nbsp; QR Scan</a><br><br>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Appointment details</h3>
+                <h3 class="card-title">Appointments Details</h3>
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -30,26 +30,26 @@ $breadcrumb_item_active = "Manage";
             <div class="card-body table-responsive p-0">
                 <?php
                 $db= dbConn ();
-                $sql = "SELECT *
-                FROM appointments ";
+                $sql = "SELECT appointments.AppId,customers.FirstName,customers.LastName,customers.Email,customers.MobileNo,appointments.date,
+                appointments.start_time,appointments.end_time
+                FROM appointments 
+                INNER JOIN customers ON appointments.customer_id = customers.CustomerId";
        
                 $result=$db->query($sql);
 
                 ?>
-                <table class="table table-hover text-nowrap">
+                <table  id="appointments" class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th>App ID</th>
-                            <th>Customer Id</th>
-                            <th>Service Type</th>
-                            <th>Item Brand</th>
-                            <th>Item</th>
-                            <th>Repair Note</th>
-                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile No</th>
+                            <th>App. Date</th>
                             <th>Start_time</th>
                             <th>End_time</th>
-                            <th>Status</th>
                             <th>Actions</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,15 +60,14 @@ $breadcrumb_item_active = "Manage";
                         ?>
                         <tr>
                             <td><?= $row['AppId'] ?></td>
-                            <td><?= $row['customer_id'] ?></td>
-                            <td><?= $row['service_type'] ?></td>
-                            <td><?= $row['item_brand'] ?></td>
-                            <td><?= $row['item_name'] ?></td>
-                            <td><?= $row['repair_note'] ?></td>
+                            <td><?= $row['FirstName'] ?> <?= $row['LastName'] ?></td>
+                            <td><?= $row['Email'] ?></td>
+                            <td><?= $row['MobileNo'] ?></td>
                             <td><?= $row['date'] ?></td>
                             <td><?= $row['start_time'] ?></td>
                             <td><?= $row['end_time'] ?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td><a href="<?= SYS_URL ?>appointments/issue_jobcard.php?appointment_id=<?= $row['AppId'] ?>" class="btn btn-warning"><i class="fas fa-calendar"></i> Issue Job Card</a></td>
+
                                              
                             <td>
                                 <div class="dropdown no-arrow mb-1">
@@ -115,3 +114,20 @@ include '../layouts.php';
     }
 </script>
 
+<script>
+  $(function () {
+    // $("#appointments").DataTable({
+    //   "responsive": true, "lengthChange": false, "autoWidth": false,
+    //   "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    // }).buttons().container().appendTo('#appointments_wrapper .col-md-6:eq(0)');
+    $('#appointments').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>

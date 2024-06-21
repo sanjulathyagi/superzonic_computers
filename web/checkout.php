@@ -1,14 +1,10 @@
 <?php
 include 'header.php';
 session_start();
-include '../function.php';
-if (!isset($_SESSION['USERID'])) {
-    // Store the current URL in the session
-    $_SESSION['REDIRECT_URL'] = $_SERVER['CURRENT_URI'];
-    // Redirect to the login page
-    header("Location: login.php");
-    exit; // Terminate the script execution after redirection
+if(!isset($_SESSION['USERID'])){
+    header("Location:login.php");
 }
+include '../function.php';
 //submit form data clean 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);

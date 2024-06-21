@@ -6,7 +6,6 @@ if(!isset($_SESSION['USERID'])){
 }
 
 ?>
-
 <main id="main">
     <section class="breadcrumbs">
         <div class="container">
@@ -28,16 +27,15 @@ if(!isset($_SESSION['USERID'])){
         <section id="contact" class="contact">
             <div class="container" data-aos="fade-up">
                 <div class="section-title">
-                    <h2 class="text-warning fw-bold mb-4">Order Placed Successfully</h2>
+                    <h2 class="text-warning mb-4">Order Placed Successfully</h2>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
-                        <div class="card border border-warning rounded-3 shadow">
+                        <div class="card border border-warning ">
                             <div class="card-body">
                                 <h1 class="text-center mb-4">Congratulations!</h1>
                                 <h2 class="text-center mb-4">Your order has been successfully placed</h2>
-                                <p class="text-center mb-4">Your Order Number: <span
-                                        class="fw-bold"><?= $_SESSION['order_number'] ?></span></p>
+                                <p class="text-center mb-4">Your Order Number: <span><?= $_SESSION['order_number'] ?></span></p>
 
                             </div>
                         </div>

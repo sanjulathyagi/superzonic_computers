@@ -1,5 +1,9 @@
 <?php
 ob_start();
+session_start(); 
+if(!isset($_SESSION['USERID'])){
+    header("Location:login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,10 +68,7 @@ ob_start();
                 </ul>
             
                 <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
-            <!-- <a href="cart.php" style="margin-right:-250px !important;"><i class="fa fa-shopping-cart"></i></a>
-            <a href="appointment.php"  style="margin-right:-250px !important;"><i class="fas fa-laptop-house"></i></a>
-            <a href="contact.php" ><i class="fas fa-phone"></i></a> -->
+            </nav>
 
             <?php 
                 if(isset($_SESSION['USERID'])){
@@ -78,7 +79,7 @@ ob_start();
             <?php
                 }else {
                 ?>
-            <a href="register.php" class="get-started-btn bg-dark register-btn scrollto">Register</a>
+            <a href="register.php" class="get-started-btn bg-dark register-btn scrollto"  style=" margin-right:-320px !important;">Register</a>
             <a href="login.php" class="get-started-btn bg-dark  scrollto" style="border-radius: 50px !important;">Login</a>
             <?php
               	}
