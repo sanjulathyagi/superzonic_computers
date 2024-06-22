@@ -80,12 +80,12 @@ $breadcrumb_item_active = "Manage";
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
 
 
                                         <a href="<?= SYS_URL ?>customers/edit.php?customerid=<?= $row['CustomerId'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
+                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-info btn-sm"
                                             href="<?= SYS_URL ?>customers/delete.php?customerid=<?= $row['CustomerId'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 

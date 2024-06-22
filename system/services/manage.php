@@ -8,14 +8,14 @@ $breadcrumb_item_active = "Manage";
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i>
+        <a href="<?= SYS_URL ?>services/add.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i>
             New</a>
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+        <!-- <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input type="date" name="from_date">
             <input type="date" name="to_date">
 
-            <button type="submit">Search</button>
-        </form>
+            
+        </form> -->
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Service Details</h3>
@@ -87,12 +87,12 @@ $breadcrumb_item_active = "Manage";
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
 
 
                                         <a href="<?= SYS_URL ?>services/edit.php?id=<?= $row['id'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
+                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-info btn-sm"
                                             href="<?= SYS_URL ?>services/delete.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 

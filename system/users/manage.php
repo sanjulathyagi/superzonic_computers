@@ -71,13 +71,11 @@ $breadcrumb_item_active = "Manage";
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
 
 
-                                        <a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
-                                            href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>"
+                                        <a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-info btn-sm" href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
                             </td>
                         

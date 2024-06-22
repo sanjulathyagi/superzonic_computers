@@ -66,7 +66,7 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['date'] ?></td>
                             <td><?= $row['start_time'] ?></td>
                             <td><?= $row['end_time'] ?></td>
-                            <td><a href="<?= SYS_URL ?>appointments/issue_jobcard.php?appointment_id=<?= $row['AppId'] ?>" class="btn btn-warning"><i class="fas fa-calendar"></i> Issue Job Card</a></td>
+                            <td><a href="<?= SYS_URL ?>appointments/issue_jobcard.php?appointment_id=<?= $row['AppId'] ?>" class="btn btn-warning btn-sm"><i class="fas fa-calendar"></i> Issue Job Card</a></td>
 
                                              
                             <td>
@@ -77,12 +77,12 @@ $breadcrumb_item_active = "Manage";
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
 
 
                                         <a href="<?= SYS_URL ?>appointments/edit.php?appid=<?= $row['AppId'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
+                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-info btn-sm"
                                             href="<?= SYS_URL ?>appointments/delete.php?appid=<?= $row['AppId'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 

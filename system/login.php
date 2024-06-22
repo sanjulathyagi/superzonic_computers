@@ -24,8 +24,7 @@ include '../function.php';
     <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
 </head>
 
-<body class="hold-transition login-page" style="background: rgb(195,167,34);
-background: linear-gradient(0deg, rgba(195,167,34,1) 0%, rgba(17,15,6,1) 100%);">
+<body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
             
@@ -33,9 +32,9 @@ background: linear-gradient(0deg, rgba(195,167,34,1) 0%, rgba(17,15,6,1) 100%);"
             <!-- <h1 class="text-white">Superzonic<br><small>computers</small></h1> -->
         </div>
         <!-- <?php
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //check request method
 
-                extract($_POST);
+                extract($_POST);  //extract data 
 
                 $username = dataClean($username);
 
@@ -50,7 +49,11 @@ background: linear-gradient(0deg, rgba(195,167,34,1) 0%, rgba(17,15,6,1) 100%);"
 
                 if (empty($message)) {
                     $db = dbConn();
-                    $sql = "SELECT * FROM users u INNER JOIN customers e ON e.UserId=u.UserId WHERE u.UserName='$username'";
+                    $sql = "SELECT u.* ,d.Designation,d.Id
+                    FROM users u
+                    INNER JOIN employee e ON e.UserId=u.UserId 
+                    INNER JOIN designations d ON d.Id=e.DesignationId 
+                    WHERE u.UserName='$username'";
                     $result = $db->query($sql);
 
                     if ($result->num_rows == 1) {
@@ -60,6 +63,7 @@ background: linear-gradient(0deg, rgba(195,167,34,1) 0%, rgba(17,15,6,1) 100%);"
                            $_SESSION['USERID'] = $row['UserId'];
                             $_SESSION['FIRSTNAME'] = $row['FirstName'];
                             $_SESSION['LASTNAME'] = $row['LastName'];
+                            $_SESSION['DESIGNATION'] = $row['Designation'];
                             header("Location:dashboard.php");
                         } else {
                             $message['password'] = "Invalid User Name or Password...!";
@@ -85,8 +89,7 @@ background: linear-gradient(0deg, rgba(195,167,34,1) 0%, rgba(17,15,6,1) 100%);"
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" name="password" id="password"
-                            placeholder="Password">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>

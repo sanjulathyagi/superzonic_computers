@@ -1,20 +1,23 @@
 <?php
 ob_start();
 include_once '../init.php';
+// include '../../function.php';
 
 $link = "Inventory Management";
 $breadcrumb_item = "Inventory";
 $breadcrumb_item_active = "Add";
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $message = array();
-    if (isset($_FILES['itemImages'])) {
-        $itemImages = $_FILES['itemImages'];
-        $uploadResult = uploadFiles($itemImages);
-        foreach ($uploadResult as $key => $value) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //check the method
+    $message = array();  //create array variable
+    if (isset($_FILES['itemImages'])) {   //check there are any uploaded images at least one 
+        $itemImages = $_FILES['itemImages'];  //try to upload multiple images ,so use []
+        $uploadResult = uploadFiles($itemImages);  //call to uploadFiles function
+        foreach ($uploadResult as $key => $value) {  //show images
             if (@$value['upload']) {
                 echo $value['file'];
+                $sql = "INSERT INTO itemimages ('ItemID','ImagePath') VALUES (,'$ItemId','$ImagePath')";
+                $db->query($sql);   
             } else {
                 foreach ($value as $result) {
                     echo $result;
@@ -23,41 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-function uploadFiles($files) {
-    $messages = array();
-    foreach ($files['name'] as $key => $filename) {
-        $filetmp = $files['tmp_name'][$key];
-        $filesize = $files['size'][$key];
-        $fileerror = $files['error'][$key];
 
-        $file_ext = explode('.', $filename);
-        $file_ext = strtolower(end($file_ext));
-
-        $allowed_ext = array('pdf', 'png', 'jpg', 'gif', 'jpeg');
-
-        if (in_array($file_ext, $allowed_ext)) {
-            if ($fileerror === 0) {
-                if ($filesize <= 2097152) {
-                    $file_name = uniqid('', true) . '.' . $file_ext;
-                    $file_destination = '../uploads/' . $file_name;
-                    move_uploaded_file($filetmp, $file_destination);
-                    $messages[$key]['upload'] = true;
-                    $messages[$key]['file'] = $file_name;
-                } else {
-                    $messages[$key]['upload'] = false;
-                    $messages[$key]['size'] = "The file size is invalid for $filename";
-                }
-            } else {
-                $messages[$key]['upload'] = false;
-                $messages[$key]['uploading'] = "Error occurred while uploading $filename";
-            }
-        } else {
-            $messages[$key]['upload'] = false;
-            $messages[$key]['type'] = "Invalid file type for $filename";
-        }
-    }
-    return $messages;
-}
 
 //check post and data clean
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -126,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
                 <div class="card-body ">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group ">
                                 <label for="inputSupplierName">SupplierName</label>
                                 <select name="supplier_id" id="supplier_id" class="form-control" required>
@@ -146,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group ">
                                 <label for="inputColour">Colour</label>
                                 <input type="text" class="form-control" id="colour" name="colour"
@@ -154,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <span class="text-danger"><?= @$message['colour'] ?></span>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group ">
                                 <label for="inputCategory Name">Category Name</label>
                                 <select name="item_category_id" id="item_category_id" class="form-control" required>
@@ -174,31 +143,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group ">
-                                <label for="inputUnit_price">Unit Price</label>
-                                <input type="text" class="form-control" id="unit_price" name="unit_price"
-                                    placeholder="Enter unit price" value="<?= @$unit_price ?>">
-                                <span class="text-danger"><?= @$message['unit_price'] ?></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group ">
                                 <label for="inputBrand ">Brand </label>
-                                <input type="text" class="form-control" id="brand" name="brand "
-                                    placeholder="Enter brand " value="<?= @$brand  ?>">
-                                <span class="text-danger"><?= @$message['brand '] ?></span>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group ">
-                                <label for="inputQty">Quantity</label>
-                                <input type="number" class="form-control" id="qty" name="qty" placeholder="Enter qty"
-                                    value="<?= @$qty ?>">
-                                <span class="text-danger"><?= @$message['qty'] ?></span>
+                                <select name="id" id="id" class="form-control" required>
+                                    <option value=""></option>
+                                    <?php
+                                    $db = dbConn();
+                                    $sql = "SELECT id,brand FROM brands";
+                                    $result = $db->query($sql);
+                                    if($result->num_rows>0){
+                                        while ($row = $result->fetch_assoc()) {
+                                        ?>
+                                    <option value="<?= $row['id']?>"><?= $row['brand']?></option>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -249,19 +211,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </table>
                         <button type="button" id="addBtn" class="btn btn-dark  btn-sm">Add Item</button>
 
+                    </div><br>
 
-                        <!-- <div class="col-lg-4">
-                            <div class="form-group ">
-                                <label for="itemImages">Select Images (Max 3):</label><br>
-                                <input type="file" id="itemImages" name="itemImages[]"><br><br>
-                                <input type="file" id="itemImages" name="itemImages[]"><br><br>
-                                <input type="file" id="itemImages" name="itemImages[]"><br><br>
+                    <body>
+                        <h4>Upload Item Images</h4>
+                     
+                            <label for="itemImages">Select Images (Max 3):</label><br>
+                            <input type="file" id="itemImages1" name="itemImages[]"><br><br>
+                            <input type="file" id="itemImages2" name="itemImages[]"><br><br>
+                            <input type="file" id="itemImages3" name="itemImages[]"><br><br>
 
-                                <input type="submit" value="Upload Images" name="submit">
-                                <span class="text-danger"><?= @$message['item_image'] ?></span>
-                            </div>
-                        </div> -->
-                    </div>
+                            <input type="submit" value="Upload Images" name="submit" class="btn btn-dark btn-sm" >
+                      
+                    </body>
+
 
                 </div>
                 <!-- /.card-body -->

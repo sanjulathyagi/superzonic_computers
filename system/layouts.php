@@ -1,8 +1,9 @@
 <?php
-// session_start();
+session_start();
 // if(!isset($_session['USERID'])){
 //   header("Location:login.php");
 // }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,12 +73,13 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="<?= SYS_URL ?>assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
-                            alt="User Image">
+                        <!-- <img src="<?= SYS_URL ?>assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
+                            alt="User Image"> -->
                     </div>
-                    <!-- <div class="info">
-                        <a href="#" class="d-block"><?= $_SESSION['FIRSTNAME']." ".$_SESSION['LASTNAME'] ?></a>
-                    </div> -->
+                    <div class="info">
+                        <strong><a href="#" class="d-block"><?= $_SESSION['FIRSTNAME']." ".$_SESSION['LASTNAME'] ?></a></strong>
+                        <a href="#" class="d-block"><?= $_SESSION['DESIGNATION'] ?></a>
+                    </div>
                 </div>
 
                 <!-- Sidebar Menu -->
@@ -255,8 +257,8 @@
                 </div>
             </section>
         </div>
-        <footer class="main-footer">
-            <strong>Copyright &copy; @2024 <a href="https://adminlte.io">SuperZonic</a>.</strong>
+        <footer class="main-footer text-dark">
+            <strong>Copyright  @2024 <a href="https://adminlte.io" class="text-warning">SuperZonic</a></strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
 

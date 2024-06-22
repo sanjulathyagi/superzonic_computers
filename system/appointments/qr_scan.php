@@ -6,16 +6,16 @@ $link = "Appointments Management";
 $breadcrumb_item = "Appointments";
 $breadcrumb_item_active = "Scan QR";
 
-extract($_GET);
-if(!empty($appointmentid)){
-    $db= dbConn ();
+        extract($_GET);
+        if(!empty($appointmentid)){
+         $db= dbConn ();
                 $sql = "SELECT appointments.AppId,customers.FirstName,customers.LastName,customers.Email,customers.MobileNo,appointments.date,
                 appointments.start_time,appointments.end_time
                 FROM appointments 
                 INNER JOIN customers ON appointments.customer_id = customers.CustomerId where AppId='$appointmentid'";
        
                 $result=$db->query($sql);
-}
+            }
 ?>
 <!-- link the qr scanner library -->
 <script src="../../qr_scanner/instascan.min.js" type="text/javascript"></script>

@@ -2,6 +2,11 @@
 ob_start();
 include_once 'init.php';
 
+
+$link = "Employee Management";
+$breadcrumb_item = "Employee";
+$breadcrumb_item_active = "calender";
+
 ?>
 
 <?php

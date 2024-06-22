@@ -53,42 +53,33 @@ include '../function.php';
                     echo "<a href='login.php'>Please Login before make booking</a>";
                 }
             }
-            ?>
-            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form"
-                        class="php-email-form" novalidate>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label for="first_name">Service type</label>
-                                <input type="text" name="first_name" class="form-control border border-1 border-dark "
-                                    id="first_name" value="<?= @$first_name ?>" placeholder="First Name" required>
-                             
-                            </div>
-                            <div class="form-group col-md-4 ">
-                                <label for="last_name">Item Brand</label>
-                                <input type="text" class="form-control border border-1 border-dark" name="last_name"
-                                    id="last_name" placeholder="Last Name" required>
-                             
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="first_name">Item Name</label>
-                                <input type="text" name="first_name" class="form-control border border-1 border-dark "
-                                    id="first_name" value="<?= @$first_name ?>" placeholder="First Name" required>
-                               
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="first_name">Repair note(About Issue)</label><br>
-                                <textarea name="message" id="message" style="width:150%;height:80%"></textarea>
-                               
-                            </div><br>
-                            
-                        </div> 
-                        <div class="text-center"><button type="submit" class="btn btn-warning btn-sm">Submit</button></div> 
-                       
-                        
-                    </form>
-    </div>
-</section>
 
+            
+            ?>
+</section>
+<section class="inner-page">
+
+    <div class="container" data-aos="zoom-in">
+
+        <div class="text-center">
+
+            <form method="post" action="check_availability.php">
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" placeholder="Enter Item Name" name="date" width="30px">
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" placeholder="Enter Item Brand" name="start_time"
+                            width="30px">
+                    </div>
+                </div><br>
+                <button type="submit" class="btn btn-warning">Book Now </button>
+
+            </form>
+        </div>
+
+    </div>
+<section>
 <?php
 include 'footer.php';
 ?>

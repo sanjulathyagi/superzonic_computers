@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <span class="text-danger"><?= @$message['item_name'] ?></span>
                     </div>
                     <div class="form-group">
-                        <label for="inputItem_quantity">Item Name</label>
+                        <label for="inputItem_quantity">Item Quantity</label>
                         <input type="text" class="form-control" id="item_quantity" name="item_quantity"
                             placeholder="Enter item quantity" value="<?= @$item_quantity ?>">
                         <span class="text-danger"><?= @$message['item_quantity'] ?></span>

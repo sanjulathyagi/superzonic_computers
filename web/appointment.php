@@ -34,14 +34,14 @@ include '../function.php';
           <form method="post" action="check_availability.php">
             <div class="row g-3">
               <div class="col">
-                <input type="date" class="form-control" placeholder="select date" name="date" width="50px">
+                <input type="date" class="form-control" placeholder="select date" name="date" width="30px">
               </div>
               <div class="col">
-                <input type="time" class="form-control" placeholder="select time" name="start_time" width="50px">
+                <input type="time" class="form-control" placeholder="select time" name="start_time" width="30px">
               </div>
             </div><br>
             <button type="submit" class="btn btn-warning">Check Availability</button>
-            <!-- <a class="cta-btn" type="submit" href="check_availability.php">Check Availability</a> -->
+            
           </form>
         </div>
 
@@ -71,7 +71,7 @@ include '../function.php';
         <input type="hidden" name="date" value="<?= $_SESSION['date'] ?>" />
         <input type="hidden" name="time" value="<?= $_SESSION['time'] ?>" />
         <button type="submit" class="btn btn-warning">click here to confirm your booking</button>
-      </form>
+      </form> -->
       <?php
           }
         }

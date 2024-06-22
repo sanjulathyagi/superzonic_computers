@@ -6,22 +6,23 @@ $link = "User Management";
 $breadcrumb_item = "User";
 $breadcrumb_item_active = "Update";
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {  //data pass through URL 
 
     extract($_GET);
     $db = dbConn();
-    $sql = "SELECT * FROM users u "
-            . "INNER JOIN employee e "
-            . "ON e.UserId=u.UserId "
-            . "WHERE u.UserId='$userid'";
+    $sql = "SELECT * FROM users u
+            INNER JOIN employee e 
+            ON e.UserId=u.UserId 
+            WHERE u.UserId='$userid'";
 
     $result = $db->query($sql);
     $row = $result->fetch_assoc();
 
-    $FirstName = $row['FirstName'];
+    $FirstName = $row['FirstName'];   //assign variable from recent data
     $LastName = $row['LastName'];
     $DesignationId = $row['DesignationId'];
     $AppDate=$row['AppDate'];
+    $UserId=$row['UserId'];
    
 }
 
@@ -33,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $DesignationId = dataClean($DesignationId);
     $DepartmentId = dataClean($DepartmentId);
     $AppDate = dataClean($AppDate);
+    
    
 
     $message = array();
@@ -67,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="row">
     <div class="col-12">
 
-        <div class="card card-primary">
+        <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title">Update User</h3>
             </div>
@@ -113,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="card-footer">
                     <input type="hidden" name="UserId" value="<?= $UserId ?>">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
             </form>
 

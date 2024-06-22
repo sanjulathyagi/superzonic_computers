@@ -1,9 +1,7 @@
 <?php
 include 'header.php';
 session_start();
-if(!isset($_SESSION['USERID'])){
-    header("Location:login.php");
-}
+
 include '../function.php';
 //submit form data clean 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -52,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $order_id = $db->insert_id;
 
         $cart = $_SESSION['cart'];
+        $_SESSION['order_number']=$order_number;
 
         foreach ($cart as $key => $value) {
             $stock_id = $value['stock_id'];

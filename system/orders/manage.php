@@ -8,8 +8,8 @@ $breadcrumb_item_active = "Manage";
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> Add
-            Stock</a>
+        <!-- <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> Add
+            Stock</a> -->
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input type="date" name="from_date">
             <input type="date" name="to_date">

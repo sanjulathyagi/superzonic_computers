@@ -58,29 +58,28 @@ $breadcrumb_item_active = "Manage";
                 }
 
                 $db = dbConn();
-                $sql = "SELECT
-    `item_stock`.`id`
-    , `items`.`item_name`
-    ,`items`.`colour`
-    , `item_category`.`category_name`
-    , `item_stock`.`unit_price`
-    , `items`.`item_image`
-    , `item_stock`.`qty`
-    , `item_stock`.`purchase_date`
-    , `supplier`.`SupplierName`
-    ,`items`.`status`
-    ,`items`.`brand_id`
-    ,`brands`.`brand`
-FROM
-    `items`
-    INNER JOIN `item_stock` 
-        ON (`items`.`id` = `item_stock`.`item_id`)
-    INNER JOIN `item_category` 
-        ON (`item_category`.`id` = `items`.`item_category`)
-        INNER JOIN `brands` 
-        ON (`brands`.`id` = `items`.`brand_id`)
-    INNER JOIN `supplier` 
-        ON (`supplier`.`id` = `item_stock`.`supplier_id`)";
+                $sql = "SELECT item_stock.id
+                ,items.item_name
+                ,items.colour
+                , item_category.category_name
+                , item_stock.unit_price
+                ,items.item_image
+                , item_stock.qty
+                , item_stock.purchase_date
+                , supplier.SupplierName
+                ,items.status
+                ,items.brand_id
+                ,brands.brand
+    FROM
+    items
+    INNER JOIN item_stock
+        ON (items.id = item_stock.item_id)
+    INNER JOIN item_category 
+        ON (item_category.id = items.item_category)
+        INNER JOIN brands 
+        ON (brands.id = items.brand_id)
+    INNER JOIN supplier 
+        ON (supplier.id= item_stock.supplier_id)";
                 $result = $db->query($sql);
                 ?>
 
@@ -118,7 +117,8 @@ FROM
                             <td><?= $row['qty'] ?></td>
                             <td><?= $row['purchase_date'] ?></td>
                             <td><?= $row['SupplierName'] ?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
+                            </td>
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
@@ -127,12 +127,12 @@ FROM
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
 
 
                                         <a href="<?= SYS_URL ?>inventory/edit.php?id=<?= $row['id'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
+                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-info btn-sm"
                                             href="<?= SYS_URL ?>inventory/delete.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 

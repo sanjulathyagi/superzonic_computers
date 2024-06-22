@@ -402,7 +402,8 @@ include '../function.php';
     </section><!-- End Portfolio Section -->
 
     <!-- ======= Counts Section ======= -->
-    <section id="counts" class="counts">
+
+    <!-- <section id="counts" class="counts">
         <div class="container" data-aos="fade-up">
 
             <div class="row no-gutters">
@@ -462,7 +463,9 @@ include '../function.php';
             </div>
 
         </div>
-    </section><!-- End Counts Section -->
+    </section> -->
+
+    <!-- End Counts Section -->
 
     <!-- ======= Testimonials Section ======= -->
     <section id="testimonials" class="testimonials">
