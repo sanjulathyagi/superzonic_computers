@@ -35,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($Password)) {
         $message['Password'] = "The Password should not be blank...!";
     }
+
+    //check username exist
     if (!empty($UserName)) {
         $db = dbConn();
         $sql = "SELECT * FROM users WHERE UserName='$UserName'";
@@ -43,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message['UserName'] = "This User Name already exist...!";
         }
     }
+
+    //check password strength
     if (!empty($Password)) {
         $uppercase = preg_match('@[A-Z]@', $Password);
         $lowercase = preg_match('@[a-z]@', $Password);

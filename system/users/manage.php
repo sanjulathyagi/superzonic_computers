@@ -30,9 +30,12 @@ $breadcrumb_item_active = "Manage";
             <div class="card-body table-responsive p-0">
                 <?php
                 $db= dbConn ();
-                $sql= "SELECT * FROM users u "
-                . "INNER JOIN employee e ON e.UserId=u.UserId "
-                . "LEFT JOIN designations p ON p.ID=e.DesignationId";
+                $sql= "SELECT * 
+                FROM users u 
+                 INNER JOIN employee e 
+                    ON e.UserId=u.UserId 
+                 LEFT JOIN designations p 
+                    ON p.ID=e.DesignationId";
 
                 $result=$db->query($sql);
 
@@ -47,7 +50,7 @@ $breadcrumb_item_active = "Manage";
                             <th>Designation</th>
                             <th>Status</th>
                             <th>Actions</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
@@ -62,24 +65,28 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['LastName'] ?></td>
                             <td><?= $row['AppDate'] ?></td>
                             <td><?= $row['Designation'] ?></td>
-                            <td><?= ($row['Status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td><?= ($row['Status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
+                            </td>
                             <td>
-                            <div class="dropdown no-arrow mb-1">
+                                <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-cog"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        &nbsp;&nbsp;
 
 
-                                        <a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info btn-sm" href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>"
+                                        <a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>"
+                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-info btn-sm"
+                                            href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
                             </td>
-                        
-                        <?php
+
+                            <?php
                             }
                             }?>
                     </tbody>

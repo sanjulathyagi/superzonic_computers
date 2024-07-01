@@ -3,46 +3,46 @@ ob_start();
 include_once '../init.php';
 
 $link = "Inventory Management";
-$breadcrumb_item = "Stock Receive ";
-$breadcrumb_item_active = "Manage";
+$breadcrumb_item = "Inventory";
+$breadcrumb_item_active = "Items";
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i>
-            New</a>
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <input type="date" name="from_date">
-            <input type="date" name="to_date">
-
-            <button type="submit">Search</button>
+        <a href="<?= SYS_URL ?>inventory/add_stock.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+            Add stock</a>
+        <a href="<?= SYS_URL ?>inventory/add.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+            Item Receive Report</a>
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
+            <input type="date" class="btn-sm btn bg-secondary" name="from_date">
+            <input type="date" class="btn-sm btn bg-secondary" name="to_date">
+            <input type="text" class="btn-sm btn light border-dark" name="item_name" placeholder="Enter Item Name">
+            <input type="text" class="btn-sm btn light border-dark" name="supplier_name"
+                placeholder="Enter Supplier Name">
+            <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
         </form>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Stock Receive Details</h3>
+                <h3 class="card-title">Item Details</h3>
 
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
-            <!-- /.card-header -->
+
             <div class="card-body table-responsive p-0">
                 <?php
                 $where = null;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     extract($_POST);
                     if (!empty($from_date) && !empty($to_date)) {
-                        $where .= " stock_receives.date BETWEEN '$from_date' AND '$to_date' AND";
+                        $where .= " it.purchase_date BETWEEN '$from_date' AND '$to_date' AND";
                     }
                     
+                    if(!empty($item_name)){
+                        $where.=" i.item_name='$item_name' AND";
+                    }
                     
+                    if(!empty($Supplier_name)){
+                        $where.=" s.SupplierName='$SupplierName' AND";
+                    }
                     
                     if(!empty($where)){
                         $where= substr($where, 0,-3);
@@ -50,37 +50,59 @@ $breadcrumb_item_active = "Manage";
                     }
                 }
 
-                $db= dbConn ();
-                $sql = "SELECT sr.*, i.item_name 
-                FROM stock_receives sr
-                INNER JOIN items i ON i.Id = sr.item_id";
+                $db = dbConn();
+                $sql = "SELECT it.id
+                ,i.item_name
+                ,i.colour
+                ,ic.category_name
+                ,it.unit_price
+                ,it.qty
+                ,it.purchase_date
+                ,i.status
+                ,s.SupplierName
+               
+            
+    FROM
+    items i
+    INNER JOIN item_stock it
+        ON (i.id = it.item_id)
+    INNER JOIN item_category ic
+        ON (ic.id = i.item_category)
+    INNER JOIN supplier s
+        ON (s.id = it.supplier_id) $where;";
                 $result = $db->query($sql);
                 ?>
 
                 <table class="table table-hover text-nowrap" id="myTable">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Item </th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Date</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Colour</th>
+                            <th>Unit_price</th>
+                            <th>Qty</th>
+                            <th>Purchase Date</th>
+                            <th>Supplier</th>
                             <th>Status</th>
                             <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $status = 1;
+                        $status=1;
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 ?>
                         <tr>
-                            <td><?= $row['id'] ?></td>
                             <td><?= $row['item_name'] ?></td>
-                            <td><?= $row['quantity'] ?></td>
-                            <td><?= $row['price'] ?></td>
-                            <td><?= $row['date'] ?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td><?= $row['category_name'] ?></td>
+                            <td><?= $row['colour'] ?></td>
+                            <td><?= $row['unit_price'] ?></td>
+                            <td><?= $row['qty'] ?></td>
+                            <td><?= $row['purchase_date'] ?></td>
+                            <td><?= $row['SupplierName']?></td>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
+                            </td>
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
@@ -90,13 +112,16 @@ $breadcrumb_item_active = "Manage";
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        &nbsp;&nbsp;
 
 
-                                        <a href="<?= SYS_URL ?>services/edit.php?id=<?= $row['id'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
-                                            href="<?= SYS_URL ?>services/delete.php?id=<?= $row['id'] ?>"
+                                        
+                                        <a class="btn btn-danger btn-sm"
+                                            href="<?= SYS_URL ?>inventory/delete.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
+                                        <a class="btn btn-info btn-sm"
+                                            href="<?= SYS_URL ?>inventory/view.php?id=<?= $row['id'] ?>">
+                                           <i class="fas fa-eye"></i> View</a>&nbsp;&nbsp;
 
                                     </div>
                                 </div>
@@ -120,9 +145,3 @@ $breadcrumb_item_active = "Manage";
 $content = ob_get_clean();
 include '../layouts.php';
 ?>
-
-<script>
-    function confirmDelete() {
-        return confirm("Are you sure you want to delete this record?");
-    }
-</script>

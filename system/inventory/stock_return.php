@@ -8,29 +8,20 @@ $breadcrumb_item_active = "Manage";
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i>
-            New</a>
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <input type="date" name="from_date">
-            <input type="date" name="to_date">
+        <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+            Add New Return</a>
+        <a href="<?= SYS_URL ?>inventory/add.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+            Item Return Report</a>
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
+            <input type="date" name="from_date" class="btn-sm btn bg-secondary">
+            <input type="date" name="to_date" class="btn-sm btn bg-secondary">
 
-            <button type="submit">Search</button>
+            <button type="submit"  class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
         </form>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Stock Return Details</h3>
 
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
@@ -51,19 +42,16 @@ $breadcrumb_item_active = "Manage";
                 }
 
                 $db= dbConn ();
-                $sql = "SELECT sr.*, i.item_name, o.order_id 
+                $sql = "SELECT sr.*, i.item_name
                 FROM stock_returns sr
-                INNER JOIN items i ON i.Id = sr.item_id
-                INNER JOIN orders o ON o.order_id = sr.order_id";
+                INNER JOIN items i
+                    ON i.Id = sr.item_id";
                 $result = $db->query($sql);
-                ?>
+               ?> 
 
                 <table class="table table-hover text-nowrap" id="myTable">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Order Id</th>
-                            <th>Item Id</th>
                             <th>Item Name</th>
                             <th>Quantity</th>
                             <th>Reason</th>
@@ -78,9 +66,6 @@ $breadcrumb_item_active = "Manage";
                             while ($row = $result->fetch_assoc()) {
                                 ?>
                         <tr>
-                            <td><?= $row['id'] ?></td>
-                            <td><?= $row['order_id'] ?></td>
-                            <td><?= $row['item_id'] ?></td>
                             <td><?= $row['item_name'] ?></td>
                             <td><?= $row['quantity'] ?></td>
                             <td><?= $row['reason'] ?></td>

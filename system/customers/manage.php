@@ -9,30 +9,42 @@ $breadcrumb_item_active = "Manage";
 
 <div class="row">
     <div class="col-12">
-        <a href="add.php" class="btn btn-warning mb-2"><i class="fas fa-plus-circle"></i>New</a>
+        <a href="<?= SYS_URL ?>customers/add.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+            Add New Customer</a>
+        <a href="<?= SYS_URL ?>customers/add_report.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+            Customer Details Report</a>
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
+        <input type="text" class="btn-sm btn light border-dark" name="Name" placeholder="Enter Customer Name">
+
+            <button type="submit" class="btn-sm btn bg-dark">Search</button>
+        </form>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Customer details</h3>
 
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
+
                 <?php
+                $where = null;
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    extract($_POST);
+                    if(!empty($FirstName) && !empty($LastName)){
+                        $where.=" c.FirstName='$FirstName' AND  c.LastName='$LastName' ";
+                    }
+                    
+                    
+                    if(!empty($where)){
+                        $where= substr($where, 0,-3);
+                        $where=" WHERE $where";
+                    }
+                }
                 $db= dbConn ();
                 $sql = "SELECT c.*, d.Name 
                 FROM customers c
-                INNER JOIN districts d ON d.Id = c.DistrictId";
+                INNER JOIN districts d ON d.Id = c.DistrictId $where;";
         
                
 
@@ -70,8 +82,9 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['TelNo'] ?></td>
                             <td><?= $row['MobileNo'] ?></td>
                             <td><?= $row['Name'] ?></td>
-                            <td><?= $row['RegNo'] ?></td> 
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>                    
+                            <td><?= $row['RegNo'] ?></td>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
+                            </td>
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
@@ -80,13 +93,15 @@ $breadcrumb_item_active = "Manage";
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        &nbsp;&nbsp;
 
-
-                                        <a href="<?= SYS_URL ?>customers/edit.php?customerid=<?= $row['CustomerId'] ?>"
+                                        <a href="<?= SYS_URL ?>customers/view.php?CustomerId=<?= $row['CustomerId'] ?>"
+                                            class="btn btn-info btn-sm"><i class="fas fa-eye"></i> view</a>
+                                        <a href="<?= SYS_URL ?>customers/edit.php?CustomerId=<?= $row['CustomerId'] ?>"
                                             class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info btn-sm"
-                                            href="<?= SYS_URL ?>customers/delete.php?customerid=<?= $row['CustomerId'] ?>"
+                                        <a class="btn btn-danger btn-sm"
+                                            href="<?= SYS_URL ?>customers/delete.php?CustomerId=<?= $row['CustomerId'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 
                                     </div>
@@ -116,4 +131,3 @@ include '../layouts.php';
         return confirm("Are you sure you want to delete this record?");
     }
 </script>
-

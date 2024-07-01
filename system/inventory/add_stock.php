@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //check the method
         foreach ($uploadResult as $key => $value) {  //show images
             if (@$value['upload']) {
                 echo $value['file'];
-                $sql = "INSERT INTO itemimages ('ItemID','ImagePath') VALUES (,'$ItemId','$ImagePath')";
+                $sql = "INSERT INTO itemimages ('ItemID','ImagePath') VALUES (,'$item_id','$ImagePath')";
                 $db->query($sql);   
             } else {
                 foreach ($value as $result) {
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //check the method
 //check post and data clean
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $item_name = dataClean($item_name);
+    $item_id = dataClean($item_id);
     $colour = dataClean($colour);
     $category_name = dataClean($category_name);
     $unit_price = dataClean($unit_price);
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>inventory/manage.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View
-            Inventory</a>
+        <a href="<?= SYS_URL ?>inventory/manage.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i> View
+            stock</a>
         <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title">Add New item</h3>
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
                 <div class="card-body ">
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group ">
                                 <label for="inputSupplierName">SupplierName</label>
                                 <select name="supplier_id" id="supplier_id" class="form-control" required>
@@ -107,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                    <option value="<?= $row['id']?>"><?= $row['SupplierName']?></option>
+                                    <option value="<?= $row['id']?>" <?= @$supplier_id==$row['id']? 'selected':''?>>
+                                        <?= $row['SupplierName']?></option>
                                     <?php
                                         }
                                     }
@@ -115,15 +116,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group ">
-                                <label for="inputColour">Colour</label>
-                                <input type="text" class="form-control" id="colour" name="colour"
-                                    placeholder="Enter Colour" value="<?= @$colour ?>">
-                                <span class="text-danger"><?= @$message['colour'] ?></span>
+                                <label for="inputPurchaseDate">Purchase Date</label>
+                                <input type="date" class="form-control" id="purchase_date" name="purchase_date"
+                                    placeholder="Enter purchase_date" value="<?= @$purchase_date ?>">
+                                <span class="text-danger"><?= @$message['purchase_date'] ?></span>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group ">
                                 <label for="inputCategory Name">Category Name</label>
                                 <select name="item_category_id" id="item_category_id" class="form-control" required>
@@ -143,7 +144,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group ">
+                                <label for="inputColour">Colour</label>
+                                <input type="text" class="form-control" id="colour" name="colour"
+                                    placeholder="Enter Colour">
+                                <span class="text-danger"><?= @$message['colour'] ?></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
                             <div class="form-group ">
                                 <label for="inputBrand ">Brand </label>
                                 <select name="id" id="id" class="form-control" required>
@@ -164,79 +176,80 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <table class="table table-stripped" id="items">
-                            <thead>
-                                <tr>
-                                    <th>Item Name</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="items-row">
-                                    <td>
-                                        <select name="item_id[]" id="item_id" class="form-control"
-                                            onchange="validateData(this)" required>
-                                            <option value=""></option>
-                                            <?php
+
+                </div>
+                <div class="row">
+                    <table class="table table-stripped" id="items">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="items-row">
+                                <td>
+                                    <select name="item_id[]" id="item_id" class="form-control" required>
+                                        <option value=""></option>
+                                        <?php
                                     $db = dbConn();
                                     $sql = "SELECT id,item_name FROM items";
                                     $result = $db->query($sql);
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                            <option value="<?= $row['id']?>"><?= $row['item_name']?></option>
-                                            <?php
+                                        <option value="<?= $row['id']?>"><?= $row['item_name']?></option>
+                                        <?php
                                         }
                                     }
                                     ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="qty" name="qty[]" required>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" id="qty" name="qty[]" required>
 
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" id="unit_price" name="unit_price[]"
-                                            required>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="removeBtn btn btn-danger"><i
-                                                class="fas fa-trash-alt"></i></button>
-                                    </td>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="unit_price" name="unit_price[]"
+                                        required>
+                                </td>
+                                <td>
+                                    <button type="button" class="removeBtn btn btn-danger"><i
+                                            class="fas fa-trash-alt"></i></button>
+                                </td>
 
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button type="button" id="addBtn" class="btn btn-dark  btn-sm">Add Item</button>
-
-                    </div><br>
-
-                    <body>
-                        <h4>Upload Item Images</h4>
-                     
-                            <label for="itemImages">Select Images (Max 3):</label><br>
-                            <input type="file" id="itemImages1" name="itemImages[]"><br><br>
-                            <input type="file" id="itemImages2" name="itemImages[]"><br><br>
-                            <input type="file" id="itemImages3" name="itemImages[]"><br><br>
-
-                            <input type="submit" value="Upload Images" name="submit" class="btn btn-dark btn-sm" >
-                      
-                    </body>
-
+                            </tr>
+                        </tbody>
+                    </table>
 
                 </div>
-                <!-- /.card-body -->
+                <button type="button" id="addBtn" class="btn btn-dark  btn-sm">Add Item</button>
 
-                <div class="card-footer ">
-                    <input type="hidden" name="UserId" value="<?= $UserId ?>">
-                    <button type="submit" class="btn btn-warning ">Submit</button>
-                </div>
-            </form>
+                <body>
+                    <h4>Upload Item Images</h4>
+
+                    <label for="itemImages">Select Images (Max 3):</label><br>
+                    <input type="file" id="itemImages1" name="itemImages[]"><br><br>
+                    <input type="file" id="itemImages2" name="itemImages[]"><br><br>
+                    <input type="file" id="itemImages3" name="itemImages[]"><br><br>
+
+                    
+
+                </body>
+
+
         </div>
-        <!-- /.card -->
+        <!-- /.card-body -->
+
+        <div class="card-footer ">
+            <input type="hidden" name="UserId" value="<?= $UserId ?>">
+            <button type="submit" class="btn btn-warning btn-sm ">Submit</button>
+        </div>
+        </form>
     </div>
+    <!-- /.card -->
+</div>
 </div>
 
 

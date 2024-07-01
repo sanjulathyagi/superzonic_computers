@@ -9,26 +9,45 @@ $breadcrumb_item_active = "Manage";
 
 <div class="row">
     <div class="col-12">
-        <a  href="<?= SYS_URL ?>suppliers/add.php" class="btn btn-warning mb-2"><i class="fas fa-plus-circle"></i>New</a>
+    <a href="<?= SYS_URL ?>suppliers/add.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+            Add New Supplier</a>
+        <a href="<?= SYS_URL ?>suppliers/add_report.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+            Supplier Details Report</a>
+            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
+            <input type="text" class="btn-sm btn light border-dark" name="supplier_name"
+                placeholder="Enter Supplier Name">
+            <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
+        </form>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Supplier details</h3>
 
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
                 <?php
+                $where = null;
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    extract($_POST);
+                    if (!empty($from_date) && !empty($to_date)) {
+                        $where .= " it.purchase_date BETWEEN '$from_date' AND '$to_date' AND";
+                    }
+                    
+                    if(!empty($item_name)){
+                        $where.=" i.item_name='$item_name' AND";
+                    }
+                    
+                    if(!empty($Supplier_name)){
+                        $where.=" s.SupplierName='$SupplierName' AND";
+                    }
+                    
+                    if(!empty($where)){
+                        $where= substr($where, 0,-3);
+                        $where=" WHERE $where";
+                    }
+                }
+
                 $db= dbConn ();
                 $sql = "SELECT s.*
                 FROM supplier s";

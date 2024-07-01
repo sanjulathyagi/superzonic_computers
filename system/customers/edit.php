@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $AddressLine3 = $row['AddressLine3'];
     $TelNo = $row['TelNo'];
     $MobileNo = $row['MobileNo'];
-    $Name = $row['Name'];
+    $DistrictId = $row['DistrictId'];
 }
 
 
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $AddressLine3 = dataClean($AddressLine3);
     $TelNo = dataClean($TelNo);
     $MobileNo = dataClean($MobileNo);
-    $Name = dataClean($Name);
+    $Id = dataClean($Id);
 
    
 
@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($MobileNo)) {
         $message['MobileNo'] = "The MobileNo should not be blank...!";
     }
-    if (empty($Name)) {
-        $message['Name'] = "The district Name should not be blank...!";
+    if (empty($Id)) {
+        $message['Id'] = "The district Name should not be blank...!";
     }
   
    
@@ -78,9 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $db = dbConn();
         $sql = "UPDATE customers c SET FirstName='$FirstName',LastName='$LastName',Email='$Email',AddressLine1='$AddressLine1',AddressLine='$AddressLine2',AddressLine3='$AddressLine3',
         MobileNo='$MobileNo',TelNo='$TelNo',DistrictId='$DistrictId' WHERE CustomerId='$CustomerId'";
-        $db->query($sql);
-
-        $sql = "UPDATE districts d SET name='$Name' WHERE d.Id= c.DistrictId'";
         $db->query($sql);
 
         header("Location:manage.php");
@@ -166,12 +163,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="form-group ">
+                            <!-- <div class="form-group ">
                                 <label for="inputName">District</label>
                                 <input type="text" class="form-control" id="Name" name="Name"
                                     placeholder="Enter district Name" value="<?= @$Name ?>">
                                 <span class="text-danger"><?= @$message['Name'] ?></span>
-                            </div>
+                            </div> -->
+                            <div class="form-group">
+                            <label for="inputName">District</label>
+                        <?php
+                        $db = dbConn();
+                        $sql = "SELECT * FROM districts";
+                        $result = $db->query($sql);
+                        ?>
+                        <select class="form-control" id="Name" name="Name">
+                            <option value="">--</option>
+                            <?php while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?= $row['Id'] ?>" <?= @$Name == $row['Id'] ? 'selected' : '' ?>>
+                                <?= $row['Name'] ?></option>
+                            <?php } ?>
+                        </select>
+                        <span class="text-danger"><?= @$message['Name'] ?></span>
+                    </div>
                         </div>
                     </div>
 
@@ -179,8 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <!-- /.card-body -->
 
                 <div class="card-footer ">
-                    <input type="hidden" name="UserId" value="<?= $UserId ?>">
-                    <button type="submit" class="btn btn-warning ">Submit</button>
+                    <input type="hidden" name="CustomerId" value="<?= $CustomerId ?>">
+                    <button type="submit" class="btn btn-warning btn-sm ">Submit</button>
                 </div>
             </form>
 

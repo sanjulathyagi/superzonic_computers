@@ -42,8 +42,6 @@ $breadcrumb_item_active = "Manage";
                         $where .= " orders.order_date BETWEEN '$from_date' AND '$to_date' AND";
                     }
                     
-                    
-                    
                     if(!empty($where)){
                         $where= substr($where, 0,-3);
                         $where=" WHERE $where";
