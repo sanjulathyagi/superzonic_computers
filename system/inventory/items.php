@@ -48,7 +48,7 @@ $breadcrumb_item_active = "Manage";
                 INNER JOIN brands b
                     ON (b.id=i.brand_id)
                 INNER JOIN models m
-                    ON (m.id = i.model_id)";
+                    ON (m.id = i.model_id) $where;";
                 $result = $db->query($sql);
                 ?>
 

@@ -129,10 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <span class="text-danger"><?= @$message['Password'] ?></span>
                     </div>
                 </div>
-                <!-- /.card-body -->
+                <!-- /.card-body --> 
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-warning">Submit</button>
+                    <button type="submit" class="btn btn-warning btn-sm">Submit </button>
                 </div>
             </form>
 

@@ -117,7 +117,7 @@ $breadcrumb_item_active = "Items";
 
                                         
                                         <a class="btn btn-danger btn-sm"
-                                            href="<?= SYS_URL ?>inventory/delete.php?id=<?= $row['id'] ?>"
+                                            href="<?= SYS_URL ?>inventory/delete.stock_receive.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
                                         <a class="btn btn-info btn-sm"
                                             href="<?= SYS_URL ?>inventory/view.php?id=<?= $row['id'] ?>">

@@ -45,7 +45,7 @@ $breadcrumb_item_active = "Manage";
                 $sql = "SELECT sr.*, i.item_name
                 FROM stock_returns sr
                 INNER JOIN items i
-                    ON i.Id = sr.item_id";
+                    ON i.Id = sr.item_id $where;";
                 $result = $db->query($sql);
                ?> 
 
@@ -82,12 +82,12 @@ $breadcrumb_item_active = "Manage";
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
 
 
-                                        <a href="<?= SYS_URL ?>services/edit.php?id=<?= $row['id'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
-                                            href="<?= SYS_URL ?>stock_returns/delete.php?id=<?= $row['id'] ?>"
+                                        <a class="btn btn-danger btn-sm"
+                                            href="<?= SYS_URL ?>inventory/delete_stock_return.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
-
+                                        <a class="btn btn-info btn-sm"
+                                            href="<?= SYS_URL ?>inventory/view.php?id=<?= $row['id'] ?>">
+                                           <i class="fas fa-eye"></i> View</a>&nbsp;&nbsp;
                                     </div>
                                 </div>
                             </td>

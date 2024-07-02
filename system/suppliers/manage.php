@@ -31,14 +31,10 @@ $breadcrumb_item_active = "Manage";
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     extract($_POST);
                     if (!empty($from_date) && !empty($to_date)) {
-                        $where .= " it.purchase_date BETWEEN '$from_date' AND '$to_date' AND";
+                        $where .= " s.RegDate BETWEEN '$from_date' AND '$to_date' AND";
                     }
                     
-                    if(!empty($item_name)){
-                        $where.=" i.item_name='$item_name' AND";
-                    }
-                    
-                    if(!empty($Supplier_name)){
+                    if(!empty($SupplierName)){
                         $where.=" s.SupplierName='$SupplierName' AND";
                     }
                     
@@ -50,7 +46,8 @@ $breadcrumb_item_active = "Manage";
 
                 $db= dbConn ();
                 $sql = "SELECT s.*
-                FROM supplier s";
+                FROM supplier s
+                $where;";
     
                 $result=$db->query($sql);
 
@@ -96,12 +93,12 @@ $breadcrumb_item_active = "Manage";
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
 
 
                                         <a href="<?= SYS_URL ?>suppliers/edit.php?id=<?= $row['id'] ?>"
-                                            class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info"
+                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                        <a class="btn btn-danger btn-sm"
                                             href="<?= SYS_URL ?>suppliers/delete.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 

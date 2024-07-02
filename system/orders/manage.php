@@ -49,7 +49,10 @@ $breadcrumb_item_active = "Manage";
                 }
 
                 $db = dbConn();
-                $sql = "SELECT o.*,c.FirstName,c.LastName FROM orders o INNER JOIN customers c ON c.CustomerId=o.customer_id";
+                $sql = "SELECT o.*,c.FirstName,c.LastName 
+                FROM orders o 
+                INNER JOIN customers c 
+                    ON c.CustomerId=o.customer_id $where;";
 
                 $result = $db->query($sql);
                 ?>
