@@ -183,7 +183,7 @@ include '../mail.php';
                               $sql= "SELECT * FROM districts";
                               $result=$db->query($sql);
                               ?>
-                                <label for="telno">District</label>
+                                <label for="district">District</label>
                                 <select name="district" id="district"
                                     class="form-select form-select-lg mb-3 border border-1 border-dark"
                                     aria-label="Large select example">

@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 // if(!isset($_session['USERID'])){
 //   header("Location:login.php");
 // }
@@ -28,6 +28,9 @@ session_start();
     <link rel="stylesheet" href="<?= SYS_URL ?>assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- JQVMap -->
     <link rel="stylesheet" href="<?= SYS_URL ?>assets/plugins/jqvmap/jqvmap.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?= SYS_URL ?>assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="<?= SYS_URL ?>assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= SYS_URL ?>assets/dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
@@ -36,6 +39,8 @@ session_start();
     <link rel="stylesheet" href="<?= SYS_URL ?>assets/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="<?= SYS_URL ?>assets/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  
 
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -77,22 +82,49 @@ session_start();
                             alt="User Image"> -->
                     </div>
                     <div class="info">
-                        <strong><a href="#" class="d-block"><?= $_SESSION['FIRSTNAME']." ".$_SESSION['LASTNAME'] ?></a></strong>
+                        <strong><a href="#"
+                                class="d-block"><?= $_SESSION['FIRSTNAME']." ".$_SESSION['LASTNAME'] ?></a></strong>
                         <a href="#" class="d-block"><?= $_SESSION['DESIGNATION'] ?></a>
                     </div>
                 </div>
+                <?php
+                $userid=$_SESSION['USERID'];
+                $db=dbConn();
+                $sql="SELECT * FROM user_modules um
+                INNER JOIN modules m ON m.Id=Um.ModuleId
+                WHERE um.UserId='$userid' AND m.Status='1'
+                ORDER BY Idx ASC";
+                $result=$db->query($sql);
+                
+                ?>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
+                        <?php
+                        if($result->num_rows>0){
+                            while($row=$result->fetch_assoc()){
+
+                        ?>
                         <li class="nav-item">
+                            <a href="<?= SYS_URL ?><?= $row['path'] ?>/<?= $row['File'] ?>.php" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    <?= $row['Name'] ?>
+                                </p>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a class="nav-link " href="<?= SYS_URL ?>dashboard.php">
                                 <i class="fas fa-chart-bar" aria-hidden="true"></i>
                                 <span class="hide-menu">Dashboard</span></span>
                             </a>
-                        </li>
-                        <li class="nav-item">
+                        </li> -->
+                        <?php }
+                        }
+                        ?>
+                        <!-- <li class="nav-item">
                             <a class="nav-link " href="<?= SYS_URL ?>users/manage.php">
                                 <i class="fas fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">User management</span></span>
@@ -224,7 +256,7 @@ session_start();
 
                             </ul>
                         </li>
-
+ -->
 
 
 
@@ -258,7 +290,7 @@ session_start();
             </section>
         </div>
         <footer class="main-footer text-dark">
-            <strong>Copyright  @2024 <a href="https://adminlte.io" class="text-warning">SuperZonic</a></strong>
+            <strong>Copyright @2024 <a href="https://adminlte.io" class="text-warning">SuperZonic</a></strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
 
@@ -304,6 +336,8 @@ session_start();
     <script src="<?= SYS_URL ?>assets/plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="<?= SYS_URL ?>assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- Select2 -->
+    <script src="<?= SYS_URL ?>assets/plugins/select2/js/select2.full.min.js"></script>
     <!-- AdminLTE App -->
     <script src="<?= SYS_URL ?>assets/dist/js/adminlte.js"></script>
     <script src="<?= SYS_URL ?>assets/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -323,7 +357,19 @@ session_start();
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="<?= SYS_URL ?>assets/dist/js/pages/dashboard.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="<?= SYS_URL ?>assets/js/sweetalert.min.js"></script>
+    <script>
+        $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+    </script>
 
 </body>
 

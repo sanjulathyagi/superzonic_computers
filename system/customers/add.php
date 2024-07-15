@@ -86,8 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="Gender">Gender</label>
-                                <input type="Gender" class="form-control" id="Gender" name="Gender"
-                                    placeholder="Gender">
+                                <select class="form-control" id="Gender" name="Gender">
+                                    <option value="">
+                                        Select Gender
+                                    </option>
+                                
+                                    <option value="<?= $row['Id'] ?>" <?= @$Gender==$row['Id']?'selected':'' ?>>
+                                        <?= $row['Gender'] ?></option>
+                                    
+                                </select>
                                 <span class="text-danger"><?= @$message['Gender'] ?></span>
                             </div>
                         </div>
@@ -139,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                        <div class="form-group ">
+                            <div class="form-group ">
                                 <label for="inputDistrict ">District </label>
                                 <select name="Name" id="Name" class="form-control" required>
                                     <option value=""></option>
@@ -150,7 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                    <option value="<?= $row['id']?>"><?= @$Name==$row['id']?'selected':'' ?><?= $row['Name']?></option>
+                                    <option value="<?= $row['Id']?>">
+                                        <?= @$Name==$row['Id']?'selected':'' ?><?= $row['Name']?></option>
                                     <?php
                                         }
                                     }
@@ -160,10 +168,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="inputMobileNo">Mobile No</label>
-                                <input type="text" class="form-control" id="MobileNo" name="MobileNo"
-                                    placeholder="Enter MobileNo" value="<?= @$MobileNo ?>">
-                                <span class="text-danger"><?= @$message['MobileNo'] ?></span>
+                                <label for="UserName">User Name</label>
+                                <input type="text" class="form-control" id="UserName" name="UserName"
+                                    value="<?= @$UserName ?>" placeholder="Enter User Name">
+                                <span class="text-danger"><?= @$message['UserName'] ?></span>
                             </div>
                         </div>
                     </div>

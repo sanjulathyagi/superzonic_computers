@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $order_date = date('Y-m-d');
         $order_number = date('Y') . date('m') . date('d') . $customerid;
         
-        $sql = "INSERT INTO `orders`(`order_date`,`customer_id`,`delivery_name`,`delivery_address`,`delivery_phone`,`billing_name`,`billing_address`,`billing_phone`,order_number) VALUES ('$order_date','$customerid','$delivery_name','$delivery_address','$delivery_phone','$billing_name','$billing_address','$billing_phone','$order_number')";
+        $sql = "INSERT INTO 'orders'('order_date','customer_id','delivery_name','delivery_address','delivery_phone','billing_name','billing_address','billing_phone','order_number') VALUES ('$order_date','$customerid','$delivery_name','$delivery_address','$delivery_phone','$billing_name','$billing_address','$billing_phone','$order_number')";
         $db->query($sql);
         // last insert order id of last record
         $order_id = $db->insert_id;

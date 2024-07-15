@@ -8,29 +8,20 @@ $breadcrumb_item_active = "Manage";
 ?>
 <div class="row">
     <div class="col-12">
-        <!-- <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> Add
-            Stock</a> -->
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <input type="date" name="from_date">
-            <input type="date" name="to_date">
+    <a href="<?= SYS_URL ?>orders/add.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+            Add New order</a>
+        <a href="<?= SYS_URL ?>orders/add_report.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+            Order Details Report</a>
+            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
+            <input type="date" class="btn-sm btn bg-secondary" name="from_date">
+            <input type="date" class="btn-sm btn bg-secondary" name="to_date">
+        <input type="text" class="btn-sm btn light border-dark" name="Name" placeholder="Enter Customer Name">
 
-            <button type="submit">Search</button>
+        <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
         </form>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Order Details</h3>
-
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
@@ -101,8 +92,8 @@ $breadcrumb_item_active = "Manage";
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;
 
 
-                                        <a href="<?= SYS_URL ?>orders/view.php?order_id=<?= $row['id'] ?>"
-                                            class="btn btn-warning btn-sm" style="width: 90px;"><i class="fas fa-eye"></i>&nbsp;view order</a>
+                                        <a href="<?= SYS_URL ?>orders/view1.php?order_id=<?= $row['id'] ?>"
+                                            class="btn btn-info btn-sm" style="width: 90px;"><i class="fas fa-eye"></i>view</a>
 
                                     </div>
                                 </div>

@@ -26,7 +26,7 @@ if ($result->num_rows>0){
 <?php
 $db = dbConn();
 $sql = "SELECT DATE_FORMAT(o.order_date, '%M') as month, SUM(i.unit_price * i.qty) as amt 
-        FROM `order_items` i 
+        FROM order_items i 
         INNER JOIN orders o ON o.id = i.order_id 
         GROUP BY month 
         ORDER BY MONTH(o.order_date)";

@@ -6,6 +6,15 @@ $link = "Inventory Management";
 $breadcrumb_item = "Items ";
 $breadcrumb_item_active = "Manage";
 ?>
+<style>
+    .active_status{
+        background-color:green;
+        size:100%;
+        color:green;
+
+    }
+    
+</style>
 <div class="row">
     <div class="col-12">
         <a href="<?= SYS_URL ?>inventory/add.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
@@ -55,8 +64,9 @@ $breadcrumb_item_active = "Manage";
                 <table class="table table-hover text-nowrap" id="myTable">
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>Serial Number</th>
                             <th>Item </th>
+                            <th>Item Image</th>
                             <th>Colour</th>
                             <th>Category</th>
                             <th>Brand</th>
@@ -71,13 +81,25 @@ $breadcrumb_item_active = "Manage";
                             while ($row = $result->fetch_assoc()) {
                                 ?>
                         <tr>
-                            <td><?= $row['id'] ?></td>
+                            <td><?= $row['serial_number'] ?></td>
                             <td><?= $row['item_name'] ?></td>
+                            <td><img src="../../uploads/<?=  $row['item_image'] ?>" alt="item_image"
+                            style="width: 50px;"></td>
+
                             <td><?= $row['colour'] ?></td>
                             <td><?= $row['category_name'] ?></td>
                             <td><?= $row['brand']?></td>
                             <td><?= $row['model_name']?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td>
+                                <form action="status.php" method="post">
+                                    <select name="status" id="status" class="form-control">
+                                       
+                                        <option value="1" class="active_status" <?= $row['status']==1 ?>>Active</option>
+                                        <option value="0" class="deactive_status" <?= $row['status']==0 ?>>Deactive</option>
+                                    </select>
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                </form>
+                            </td>
                             <td>
                                 <div class="dropdown no-arrow mb-1">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
