@@ -33,12 +33,12 @@ function dataClean($data = null) {
 function uploadFiles($files) {   //get uploaded images
     $messages = array();
     foreach ($files['name'] as $key => $filename) {   //one by one iterate  uploaded files
-        $filetmp = $files['tmp_name'][$key];
-        $filesize = $files['size'][$key];
-        $fileerror = $files['error'][$key];  //if result is 0 mean ,file not damaged
+     echo   $filetmp = $files['tmp_name'][$key];
+     echo   $filesize = $files['size'][$key];
+      echo  $fileerror = $files['error'][$key];  //if result is 0 mean ,file not damaged
 
         $file_ext = explode('.', $filename);
-        $file_ext = strtolower(end($file_ext));
+        $file_ext = strtolower(end($file_ext)); //get last element of the array
 
         $allowed_ext = array('pdf', 'png', 'jpg', 'gif', 'jpeg');
 
@@ -56,7 +56,7 @@ function uploadFiles($files) {   //get uploaded images
                 }
             } else {
                 $messages[$key]['upload'] = false;
-                $messages[$key]['uploading'] = "Error occurred while uploading $filename";
+                $messages[$key]['uploading'] = "Error occurred while uploading $filename";  //having a error in file
             }
         } else {
             $messages[$key]['upload'] = false;

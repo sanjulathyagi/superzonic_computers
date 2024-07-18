@@ -95,6 +95,8 @@
                 WHERE um.UserId='$userid' AND m.Status='1'
                 ORDER BY Idx ASC";
                 $result=$db->query($sql);
+
+                $current_url = $_SERVER['REQUEST_SCHEMA'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
                 
                 ?>
 
@@ -106,10 +108,14 @@
                         if($result->num_rows>0){
                             while($row=$result->fetch_assoc()){
 
+                                $menu_url = SYS_URL . $row['Path']. '/' . $row['File']. '.php';
+
+                                $active_class = ($current_url == $menu_url) ? 'active' : '';
+
                         ?>
-                        <li class="nav-item">
-                            <a href="<?= SYS_URL ?><?= $row['path'] ?>/<?= $row['File'] ?>.php" class="nav-link">
-                                <i class="nav-icon far fa-calendar-alt"></i>
+                        <li class="nav-item ">
+                            <a href="<?= $menu_url ?>" class="nav-link <?= $active_class ?>">
+                                <i class="nav-icon <?= $row['Icon'] ?>"></i>
                                 <p>
                                     <?= $row['Name'] ?>
                                 </p>
@@ -121,7 +127,8 @@
                                 <span class="hide-menu">Dashboard</span></span>
                             </a>
                         </li> -->
-                        <?php }
+                        <?php 
+                        }
                         }
                         ?>
                         <!-- <li class="nav-item">
@@ -361,7 +368,7 @@
 
     <script src="<?= SYS_URL ?>assets/js/sweetalert.min.js"></script>
     <script>
-        $(function () {
+        $(function) () {
     //Initialize Select2 Elements
     $('.select2').select2()
 
@@ -369,6 +376,7 @@
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     })
+}
     </script>
 
 </body>

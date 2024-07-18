@@ -6,15 +6,7 @@ $link = "Inventory Management";
 $breadcrumb_item = "Items ";
 $breadcrumb_item_active = "Manage";
 ?>
-<style>
-    .active_status{
-        background-color:green;
-        size:100%;
-        color:green;
 
-    }
-    
-</style>
 <div class="row">
     <div class="col-12">
         <a href="<?= SYS_URL ?>inventory/add.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
@@ -84,7 +76,7 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['serial_number'] ?></td>
                             <td><?= $row['item_name'] ?></td>
                             <td><img src="../../uploads/<?=  $row['item_image'] ?>" alt="item_image"
-                            style="width: 50px;"></td>
+                            style="width: 100px;"></td>
 
                             <td><?= $row['colour'] ?></td>
                             <td><?= $row['category_name'] ?></td>
@@ -92,10 +84,9 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['model_name']?></td>
                             <td>
                                 <form action="status.php" method="post">
-                                    <select name="status" id="status" class="form-control">
-                                       
-                                        <option value="1" class="active_status" <?= $row['status']==1 ?>>Active</option>
-                                        <option value="0" class="deactive_status" <?= $row['status']==0 ?>>Deactive</option>
+                                    <select name="status" id="status" class="form-control-sm" onchange="this.form.submit()">
+                                        <option value="1" style="background-color:green;color:white" <?= ($row['status']==1)?'selected': '' ?>>Active</option>
+                                        <option value="0"  style="background-color:red;color:white" <?= ($row['status']==0) ? 'selected' : '' ?>>Deactive</option>
                                     </select>
                                     <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                 </form>

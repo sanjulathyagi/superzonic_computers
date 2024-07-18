@@ -1,12 +1,15 @@
 <?php
 ob_start();
+
+session_start();
+
 include_once '../init.php';
+include_once '../../function.php';
 
 $link = "Inventory Management";
 $breadcrumb_item = "Items";
 $breadcrumb_item_active = "Add";
 
-session_start();
 
 
 //check post and data clean
@@ -18,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $item_category= dataclean($item_category);
     $brand_id = dataClean($brand_id);
     $model_id = dataClean($model_id);
+    $item_image ='';
     
   
 
@@ -26,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty( $item_name)) {
         $message['item_name'] = "The ItemName should not be blank...!";
     }
+    
     if (empty( $colour)) {
         $message['colour'] = "The colour should not be blank...!";
     }
@@ -44,11 +49,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($message)) {
       
         $db = dbConn();
-        $serial_number = $item_category. $brand_id. $model_id. date('Y').date('m').date('d').$id;
+       
         
-        $sql = "INSERT INTO items(serial_number,item_name,colour,model_id,brand_id,item_category) VALUES ('$serial_number','$item_name','$colour','$brand_id','$model_id','$item_category')";
+        $sql = "INSERT INTO items(item_name,colour,model_id,brand_id,item_category,item_image) VALUES ('$item_name','$colour','$brand_id','$model_id','$item_category','$item_image')";
         $db->query($sql);
         $id = $db->insert_id;
+        $serial_number = $item_category. $brand_id. $model_id. date('Y').date('m').date('d').$id;
+
+        $sql = "UPDATE items SET serial_number = '$serial_number'
+        WHERE id = '$id'";
+        $db->query($sql);
+
+
+        if(isset($_FILES['itemImages'])) {  //check any uploaded images 
+            $itemImages = $_FILES['itemImages'];   //assign these images
+            $uploadResult = uploadFiles($itemImages); //call to function
+            foreach($uploadResult as $key => $value){
+                if (@$value['upload']) {
+                    echo $value['file'];
+                    $sql ="INSERT INTO itemImages('itemId','ItemPath') VALUES('$itemId','$itemPath') WHERE id = '$itemID'";
+                } else{
+                    foreach ($value as $result) {
+                        echo $result;
+                    }
+                }
+            }
+        }
         
         
         $_SESSION['serial_number']=$serial_number;
@@ -92,7 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
                                     <option value="<?= $row['item_name']?>">
-                                        <?= @$item_name==$row['item_name']?'selected':'' ?><?= $row['item_name']?></option>
+                                        <?= @$item_name==$row['item_name']?'selected':'' ?><?= $row['item_name']?>
+                                    </option>
                                     <?php
                                         }
                                     }
@@ -171,15 +198,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
         </div>
+        <label for="itemImages">Select Images(Max 3)</label><br>
+        <input type="file" id="itemImages1" name="itemImages[]"><br><br>
+        <input type="file" id="itemImages2" name="itemImages[]"><br><br>
+        <input type="file" id="itemImages3" name="itemImages[]"><br><br>
 
 
-        <div>
-            <h4>Upload Item Images</h4>
-            <label for="itemImages">Select Images (Max 3):</label><br>
-            <input type="file" id="itemImages1" name="itemImages[]" class="btn btn-light btn-sm "><br><br>
-            <input type="file" id="itemImages2" name="itemImages[]" class="btn btn-light btn-sm"><br><br>
-            <input type="file" id="itemImages3" name="itemImages[]" class="btn btn-light btn-sm"><br><br>
-        </div>
 
     </div>
     <!-- /.card-body -->
