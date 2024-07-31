@@ -1,8 +1,10 @@
 <?php
-// session_start();
-// if(!isset($_session['USERID'])){
-//   header("Location:login.php");
-// }
+ob_start();
+
+if(!isset($_SESSION['USERID'])){
+  header("Location:login.php");
+ 
+}
 
 ?>
 <!DOCTYPE html>
@@ -40,7 +42,7 @@
     <!-- summernote -->
     <link rel="stylesheet" href="<?= SYS_URL ?>assets/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  
+
 
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -87,6 +89,8 @@
                         <a href="#" class="d-block"><?= $_SESSION['DESIGNATION'] ?></a>
                     </div>
                 </div>
+
+
                 <?php
                 $userid=$_SESSION['USERID'];
                 $db=dbConn();
@@ -95,8 +99,10 @@
                 WHERE um.UserId='$userid' AND m.Status='1'
                 ORDER BY Idx ASC";
                 $result=$db->query($sql);
-
-                $current_url = $_SERVER['REQUEST_SCHEMA'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+                $schema = isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
+                $current_url = $schema.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+                
+                $url_without_file = preg_replace('/\/[^\/]*$/','', $current_url);
                 
                 ?>
 
@@ -109,164 +115,64 @@
                             while($row=$result->fetch_assoc()){
 
                                 $menu_url = SYS_URL . $row['Path']. '/' . $row['File']. '.php';
+                                $menu_url_without_file = preg_replace('/\/[^\/]*$/','', $menu_url);
 
-                                $active_class = ($current_url == $menu_url) ? 'active' : '';
+                                $active_class = ($url_without_file == $menu_url_without_file) ? 'active' : '';
+                                $menu_open = ($url_without_file == $menu_url_without_file) ? 'menu-open' : '';
 
-                        ?>
-                        <li class="nav-item ">
-                            <a href="<?= $menu_url ?>" class="nav-link <?= $active_class ?>">
+                                $module_id = $row['ModuleId'];
+                                $sql = "SELECT * FROM sub_modules WHERE module_id='$module_id'";
+                                $result_sub_module = $db->query($sql);
+                                if($result_sub_module->num_rows >0){
+                                    ?>
+                        <li class="nav-item <?= $menu_open ?>">
+                            <a href="#" class="nav-link <?= $active_class ?>">
                                 <i class="nav-icon <?= $row['Icon'] ?>"></i>
                                 <p>
                                     <?= $row['Name'] ?>
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <ul class="nav nav-treeview" style="display: <?= $$display ?>;">
+                                <?php
+                                $active_class_sub = '';
+                                $url_without_file_sub = preg_replace('/\.[^\/.]+$/','', $current_url);
+                                while($row_sub_module = $result_sub_module->fetch_assoc()){
+                                    $menu_url_sub = SYS_URL . $row_sub_module['Path'] . '/' . $row_sub_module['File'] . '.php';
+                                    $menu_url_without_file_sub = preg_replace('/\.[^\/.]+$/','', $menu_url_sub);
+
+                                    $active_class_sub = ($url_without_file_sub == $menu_url_without_file_sub ) ? 'active': '';
+                                    ?>
+                                <li class="nav-item ">
+                                    <a href="<?= $menu_url_sub ?>" class="nav-link <?= $active_class_sub ?>">
+                                        <i class="nav-icon  <?= $row_sub_module['Icon'] ?>"></i>
+                                        <p><?= $row_sub_module['Name'] ?>
+                                        </p>
+                                    </a>
+                                </li>
+                                <?php
+                                }
+                                ?>
+                            </ul>
+
                         </li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link " href="<?= SYS_URL ?>dashboard.php">
-                                <i class="fas fa-chart-bar" aria-hidden="true"></i>
-                                <span class="hide-menu">Dashboard</span></span>
-                            </a>
-                        </li> -->
-                        <?php 
-                        }
-                        }
+                        <?php
+                                }else {
+                                    ?>
+                                    <li class="nav-item ">
+                                        <a href="<?= $menu_url ?>" class="nav-link <?= $active_class?>">
+                                        <i class="nav-icon <?= $row['Icon'] ?>"></i>
+                                        <p><?= $row['Name'] ?>
+                                        </p>
+                                    </a>
+                                 </li>
+                        <?php
+                                }
+                            }
+
+                                }
+
                         ?>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link " href="<?= SYS_URL ?>users/manage.php">
-                                <i class="fas fa-user" aria-hidden="true"></i>
-                                <span class="hide-menu">User management</span></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#item-menu" data-toggle="collapse" aria-expanded="true"
-                                class="dropdown-toggle">
-                                <i class="fas fa-laptop"></i>&nbsp;&nbsp;Inventory management</a>
-                            <ul class="collapse list-unstyled" id="item-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link " href="<?= SYS_URL ?>inventory/items.php">
-                                        <i class="ml-4 fas fa-keyboard"></i>
-                                        <span class="hide-menu">&nbsp;Items</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " href="<?= SYS_URL ?>inventory/stock_receive.php">
-                                        <i class="ml-4 fas fa-cubes"></i><span class="hide-menu">&nbsp;Stock
-                                            Receive</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " href="<?= SYS_URL ?>inventory/stock_return.php">
-                                        <i class="ml-4 fas fa-undo"></i><span class="hide-menu">&nbsp;Stock
-                                            Return</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#item-menu" data-toggle="collapse" aria-expanded="true"
-                                class="dropdown-toggle">
-                                <i class="fas fa-cart-arrow-down"></i>&nbsp;&nbsp;Order Management</a>
-                            <ul class="collapse list-unstyled" id="item-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= SYS_URL ?>orders/manage.php">
-                                        <i class="ml-4 fas fa-headset"></i>
-                                        <span class="hide-menu">&nbsp;Orders</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " href="<?= SYS_URL ?>orders/quotation.php">
-                                        <i class="ml-4 fas fa-paste"></i><span class="hide-menu">&nbsp;Quotations</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#item-menu" data-toggle="collapse" aria-expanded="true"
-                                class="dropdown-toggle">
-                                <i class="fas fa-users"></i>&nbsp;&nbsp;Supplier Management</a>
-                            <ul class="collapse list-unstyled" id="item-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= SYS_URL ?>suppliers/manage.php">
-                                        <i class="ml-4 fas fa-user-plus"></i>
-                                        <span class="hide-menu">&nbsp;Suppliers</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= SYS_URL ?>suppliers/invoice.php">
-                                        <i class="ml-4 fas fa-file-invoice"></i>
-                                        <span class="hide-menu">&nbsp;Invoices</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="<?= SYS_URL ?>customers/manage.php">
-                                <i class="fas fa-user-friends" aria-hidden="true"></i>
-                                <span class="hide-menu">Customer Management</span></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="<?= SYS_URL ?>appointments/manage.php">
-                                <i class="fas fa-tools" aria-hidden="true"></i>
-                                <span class="hide-menu">Appointment Management</span></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="<?= SYS_URL ?>brands/manage.php">
-                                <i class="fab fa-bandcamp" aria-hidden="true"></i>
-                                <span class="hide-menu">Item Brands</span></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="<?= SYS_URL ?>faq/manage.php">
-                                <i class="fas fa-server" aria-hidden="true"></i>
-                                <span class="hide-menu">FAQ</span></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="<?= SYS_URL ?>services/manage.php">
-                                <i class="fas fa-truck" aria-hidden="true"></i>
-                                <span class="hide-menu">Services</span></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#item-menu" data-toggle="collapse" aria-expanded="true"
-                                class="dropdown-toggle">
-                                <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings</a>
-                            <ul class="collapse list-unstyled" id="item-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= SYS_URL ?>settings/social.php">
-                                        <i class="ml-4 fas fa-users"></i>
-                                        <span class="hide-menu">&nbsp;Social</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= SYS_URL ?>settings/contact.php">
-                                        <i class="ml-4 fas fa-phone"></i>
-                                        <span class="hide-menu">&nbsp;Contact</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= SYS_URL ?>settings/open_time.php">
-                                        <i class="ml-4 fas fa-clock"></i>
-                                        <span class="hide-menu">&nbsp;Open Time</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= SYS_URL ?>settings/shipping.php">
-                                        <i class="ml-4 fas fa-shipping-fast"></i>
-                                        <span class="hide-menu">&nbsp;Shipping</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
- -->
-
-
-
 
                     </ul>
                 </nav>
@@ -368,15 +274,15 @@
 
     <script src="<?= SYS_URL ?>assets/js/sweetalert.min.js"></script>
     <script>
-        $(function) () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
+        $(function)() {
+            //Initialize Select2 Elements
+            $('.select2').select2()
 
-    //Initialize Select2 Elements
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
-    })
-}
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+        }
     </script>
 
 </body>

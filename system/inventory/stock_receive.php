@@ -1,23 +1,24 @@
 <?php
 ob_start();
+session_start();
 include_once '../init.php';
 
 $link = "Inventory Management";
 $breadcrumb_item = "Inventory";
-$breadcrumb_item_active = "Items";
+$breadcrumb_item_active = "Manage";
+$alert=false;
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>inventory/add_stock.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+        <a href="<?= SYS_URL ?>inventory/add_stock.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
             Add stock</a>
-        <a href="<?= SYS_URL ?>inventory/add.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+        <a href="<?= SYS_URL ?>inventory/add.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
             Item Receive Report</a>
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
             <input type="date" class="btn-sm btn bg-secondary" name="from_date">
             <input type="date" class="btn-sm btn bg-secondary" name="to_date">
-            <input type="text" class="btn-sm btn light border-dark" name="item_name" placeholder="Enter Item Name">
-            <input type="text" class="btn-sm btn light border-dark" name="supplier_name"
-                placeholder="Enter Supplier Name">
+            <input type="text" class="btn-sm btn light border-dark" name="item_name" placeholder="Enter Item Name" name="Name" placeholder="Enter District Name">
+
             <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
         </form>
         <div class="card">
@@ -27,7 +28,7 @@ $breadcrumb_item_active = "Items";
                
             </div>
 
-            <div class="card-body table-responsive p-0">
+            <div class="p-0 card-body table-responsive">
                 <?php
                 $where = null;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -38,10 +39,6 @@ $breadcrumb_item_active = "Items";
                     
                     if(!empty($item_name)){
                         $where.=" i.item_name='$item_name' AND";
-                    }
-                    
-                    if(!empty($Supplier_name)){
-                        $where.=" s.SupplierName='$SupplierName' AND";
                     }
                     
                     if(!empty($where)){
@@ -69,7 +66,7 @@ $breadcrumb_item_active = "Items";
     INNER JOIN item_category ic
         ON (ic.id = i.item_category)
     INNER JOIN supplier s
-        ON (s.id = it.supplier_id) $where;";
+        ON (s.id = it.supplier_id) $where";
                 $result = $db->query($sql);
                 ?>
 
@@ -85,6 +82,7 @@ $breadcrumb_item_active = "Items";
                             <th>Supplier</th>
                             <th>Status</th>
                             <th>Actions</th>
+                            <th>Change status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,15 +99,15 @@ $breadcrumb_item_active = "Items";
                             <td><?= $row['qty'] ?></td>
                             <td><?= $row['purchase_date'] ?></td>
                             <td><?= $row['SupplierName']?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Approve</button>' :'<button class="btn btn-info btn-sm" style="width: 80px;">Pending</button>'; ?>
                             </td>
                             <td>
-                                <div class="dropdown no-arrow mb-1">
+                                <div class="mb-1 dropdown no-arrow">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-cog"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
+                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
                                         &nbsp;&nbsp;
@@ -120,17 +118,51 @@ $breadcrumb_item_active = "Items";
                                             href="<?= SYS_URL ?>inventory/delete.stock_receive.php?id=<?= $row['id'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
                                         <a class="btn btn-info btn-sm"
-                                            href="<?= SYS_URL ?>inventory/view.php?id=<?= $row['id'] ?>">
+                                            href="<?= SYS_URL ?>inventory/stock_view.php?id=<?= $row['id'] ?>">
                                            <i class="fas fa-eye"></i> View</a>&nbsp;&nbsp;
 
                                     </div>
                                 </div>
                             </td>
+                            <td>
+                                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                                    <select name="status" id="status" class="form-control-sm"
+                                        onchange="this.form.submit()">
+                                        <option value="1" <?= ($row['status']==1)?'selected': '' ?>>Approve</option>
+                                        <option value="0" <?= ($row['status']==0) ? 'selected' : '' ?>>Pending</option>
+                                        
+                                    </select>
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                </form>
+                                <?php
+                                
+                                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                                    extract($_POST);
+                                    $id= $_POST['id'];
+                                    $status = $_POST['status'];
+                                
+                                    if (!empty($id) && isset($status)) {
+                                        $db =dbConn();
+                                        $sql = "UPDATE item_stock SET status='$status' WHERE id='$id'";
+                                        $result1 = $db->query($sql);
+                                         if($result1){
+                                            $alert=true;
+                                         } else{
+                                            $alert =false;
+                                         }  
+                                        }
+                                    }
+                                }
+                                
+                                ?>
+
+
+                            </td>
                         </tr>
 
                         <?php
                             }
-                        }
+                        
                         ?>
                     </tbody>
                 </table>
@@ -141,6 +173,22 @@ $breadcrumb_item_active = "Items";
         <!-- /.card -->
     </div>
 </div>
+<?php
+if($alert){
+?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "status has been updated  ",
+        showConfirmButton: false,
+        timer: 1500
+    });
+</script>
+<?php
+}
+?>
 <?php
 $content = ob_get_clean();
 include '../layouts.php';

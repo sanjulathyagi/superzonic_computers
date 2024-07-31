@@ -1,11 +1,32 @@
 <?php 
 include 'header.php';
 include '../function.php';
-session_start(); 
 
-
-   
+$total=0;
+$noitems=0;
+if(isset($_SESSION['cart'])) {
+    $cart=$_SESSION['cart'];
+    foreach($cart as $key=>$value) {
+        $total+= $value['qty'] *$value['unit_price'];
+        $noitems+= $value['qty'];
+    }
+}
+ "<a href='cart.php'".$total . "[" . $noitems . "]" . "</a>";
+ $_SESSION['noitems']= $noitems;  
 ?>
+<style>
+    .cart_count{
+        background-color:red;
+        color:white;
+        border-radius:50%;
+        width:20px;
+        top:12px;
+        right:20px;
+        font-size:12px;
+        padding: 5px 10px;
+        
+    }
+</style>
 <main id="main">
     <!-- ======= Breadcrumbs ======= -->
     <section class="breadcrumbs">
@@ -13,8 +34,8 @@ session_start();
             <div class="d-flex justify-content-between align-items-center">
                 <div class="container">
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="cart.php" style="margin-left:1150px !important;text-align:right;"><i
-                                class="fa fa-shopping-cart"></i></a>
+                        <a href="cart.php" style="margin-left:1150px !important;text-align:right;">
+                            <span class="cart_count"><?=$noitems ?></span><i class="fa fa-shopping-cart"></i></a>
                         <a href="appointment.php" style="text-align:right;"><i class="fas fa-laptop-house"></i></a>
                         <a href="contact.php"><i class="fas fa-phone"></i></a>
 
@@ -25,20 +46,23 @@ session_start();
             </div>
 
         </div>
-    </section><br><!-- End Breadcrumbs -->
+    </section><br>
+    <!-- End Breadcrumbs -->
     <!-- item_stock.qty - item_stock.issued_qty as availableqty -->
     <?php   
                  $db = dbConn();
-                $sql = "SELECT item_stock.id, items.item_name, items.item_image, item_stock.qty,
-                item_stock.qty, item_stock.unit_price, item_category.category_name,models.model_name
-                FROM item_stock
-                INNER JOIN items 
-                ON (items.id = item_stock.item_id)
-                INNER JOIN item_category 
-                ON (item_category.id = items.item_category)
-                INNER JOIN models 
-                ON (models.id = items.model_id)
-                GROUP BY items.id, item_stock.unit_price";
+                $sql = "SELECT s.id, i.item_name, i.item_image, s.qty,
+                s.qty, s.unit_price, c.category_name,m.model_name
+                FROM item_stock s
+                INNER JOIN items i
+                ON (i.id = s.item_id)
+                INNER JOIN item_category c
+                ON (c.id = i.item_category)
+                INNER JOIN models m
+                ON (m.id = i.model_id)
+                -- INNER JOIN itemimages it
+                -- ON (it.itemID = i.id)
+                GROUP BY i.id, s.unit_price";
                 $result1 = $db->query($sql);
                 ?>
     <div class="container">
@@ -49,6 +73,7 @@ session_start();
                         <h3 class="card-title">Categories</h3>
                         <ul class="list-group">
                             <?php
+                            
                                 $db = dbConn();
                                 $sql = "SELECT * FROM item_category";
                                 $result = $db->query($sql);
@@ -89,7 +114,7 @@ session_start();
                         <div class="item-grid">
                             <div class="item-image card-img-top">
                                 <a href="">
-                                    <img src="assets/img/<?= $row['item_image'] ?>" alt="<?= $row['item_name'] ?>"
+                                <img src="../uploads/<?=  $row['item_image'] ?>" alt="<?= $row['item_name'] ?>"
                                         class="image" style="width: 200px; height: 200px;">
                                 </a>
                             </div>
@@ -101,15 +126,26 @@ session_start();
                                             class="price-value"><?= number_format($row['unit_price'], 2) ?></b></span>
                                 </div>
                             </div>
-                            <!-- store stock id inside hidden field -->
-                            <form method="post" action="shopping_cart.php" style="width: 210px;">
-                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                <button type="submit" name="operate" value="add_cart" class="btn btn-warning"
-                                    style="width: 100px; height: 40px;font-size:15px !important;">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </button>
+                            <div class="display: flex; gap:10px;">
+                                <form method="post" action="shopping_cart.php">
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                    <button type="submit" name="operate" value="add_cart" class="btn btn-warning"
+                                        style="width: 50px; height: 40px;font-size:15px !important;">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </button>
 
-                            </form>
+                                </form><br>
+                                <form method="post" action="view.php">
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                    <button type="submit" name="operate" value="view_cart" class="btn btn-dark"
+                                        style="width: 50px; height: 40px;font-size:15px !important;">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+
+                                </form>
+                            </div>
+                            <!-- store stock id inside hidden field -->
+
                             <br>
 
                         </div>
@@ -123,7 +159,8 @@ session_start();
 
 
     </div>
-
+               
+                
     <?php
 include 'footer.php';
 ?>

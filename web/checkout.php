@@ -1,6 +1,6 @@
 <?php
 include 'header.php';
-session_start();
+// session_start();
 
 include '../function.php';
 //submit form data clean 
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $item_id = $value['item_id'];
             $unit_price = $value['unit_price'];
             $qty = $value['qty'];
-            $sql = "INSERT INTO `order_items`(`order_id`,`item_id`,`stock_id`,`unit_price`,`qty`) VALUES ('$order_id','$item_id','$stock_id','$unit_price','$qty')";
+            $sql = "INSERT INTO order_items(order_id,item_id,stock_id,unit_price,qty) VALUES ('$order_id','$item_id','$stock_id','$unit_price','$qty')";
             $db->query($sql);
         }
         header("Location:order_success.php");
@@ -93,48 +93,126 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </section><br><!-- End Breadcrumbs -->
 
     <div class="container">
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Delivery Details</h3>
-                    <div class="form-group">
-                        <label for="delivery_name">Name:</label>
-                        <input type="text" class="form-control" id="delivery_name" name="delivery_name" required>
+        <div class="row">
+            <div class="col-lg-9">
+                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h3>Delivery Details</h3>
+                            <div class="form-group">
+                                <label for="delivery_name">Name:</label>
+                                <input type="text" class="form-control" id="delivery_name" name="delivery_name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="delivery_address">AddressLine1:</label>
+                                <input type="text" class="form-control" id="delivery_address1" name="delivery_address1"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="delivery_address">AddressLine2:</label>
+                                <input type="text" class="form-control" id="delivery_address2" name="delivery_address2"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="delivery_address">City:</label>
+                                <input type="text" class="form-control" id="delivery_address3" name="delivery_address3"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="delivery_email">Email:</label>
+                                <input type="text" class="form-control" id="delivery_email" name="delivery_email"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="delivery_phone">Phone:</label>
+                                <input type="text" class="form-control" id="delivery_phone" name="delivery_phone"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <h3>Billing Details</h3>
+                            <div class="form-group">
+                                <label for="billing_name">Name:</label>
+                                <input type="text" class="form-control" id="billing_name" name="billing_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_address">AddressLine1:</label>
+                                <input type="text" class="form-control" id="billing_address1" name="billing_address1"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_address">AddressLine2:</label>
+                                <input type="text" class="form-control" id="billing_address2" name="billing_address2"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_address">City:</label>
+                                <input type="text" class="form-control" id="billing_address3" name="billing_address3"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_email">Email:</label>
+                                <input type="text" class="form-control" id="billing_email" name="billing_email">
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_phone">Phone:</label>
+                                <input type="text" class="form-control" id="billing_phone" name="billing_phone"
+                                    required>
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="form-group">
-                        <label for="delivery_address">Address:</label>
-                        <textarea class="form-control" id="delivery_address" name="delivery_address" rows="3"
-                            required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="delivery_phone">Phone:</label>
-                        <input type="text" class="form-control" id="delivery_phone" name="delivery_phone" required>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <h3>Billing Details</h3>
-                    <div class="form-group">
-                        <label for="billing_name">Name:</label>
-                        <input type="text" class="form-control" id="billing_name" name="billing_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="billing_address">Address:</label>
-                        <textarea class="form-control" id="billing_address" name="billing_address" rows="3"
-                            required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="billing_phone">Phone:</label>
-                        <input type="text" class="form-control" id="billing_phone" name="billing_phone" required>
-                    </div>
-                </div>
+                        <input type="checkbox" id="same_as_delivery" name="same_as_delivery" class="form-check-input">
+                        <label for="same_as_delivery" class="form-check-label">Same as Delivery Details</label>
+                    </div><br>
+                    <button type="submit" class="btn btn-warning">Checkout</button>
             </div>
-            <div class="form-group">
-                <input type="checkbox" id="same_as_delivery" name="same_as_delivery" class="form-check-input">
-                <label for="same_as_delivery" class="form-check-label">Same as Delivery Details</label>
-            </div><br>
-            <button type="submit" class="btn btn-warning">Checkout</button>
-        </form>
+            <div class="col-lg-3" style="border: 1px solid">
+                <div class="row ">
+                    <br>
+                    <h3>Payment Summary</h3>
+                    <p>Accepted method</p>
+                    <img src="assets/download.jpeg" alt="" width="50%">
+
+                    <div class="form-group">
+                        <input type="checkbox" id="same_as_delivery" name="same_as_delivery" class="form-check-input">
+                        <label for="same_as_delivery" class="form-check-label">I have read and agree to the
+                            website</label>
+                            
+                    </div><br><br>
+                    <label for="payemnt slip">Upload Payment Slip</label>
+                    <input type="file" required>
+                    
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+    </form>
+
+
     </div><br>
+
+
+
+
 
 
     <script>
@@ -143,13 +221,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (this.checked) {
                 document.getElementById('billing_name').value = document.getElementById('delivery_name')
                     .value;
-                document.getElementById('billing_address').value = document.getElementById(
-                    'delivery_address').value;
+                document.getElementById('billing_address1').value = document.getElementById(
+                    'delivery_address1').value;
+                document.getElementById('billing_address2').value = document.getElementById(
+                    'delivery_address2').value;
+                document.getElementById('billing_address3').value = document.getElementById(
+                    'delivery_address3').value;
+                document.getElementById('billing_email').value = document.getElementById(
+                    'delivery_email').value;
                 document.getElementById('billing_phone').value = document.getElementById('delivery_phone')
                     .value;
             } else {
                 document.getElementById('billing_name').value = '';
-                document.getElementById('billing_address').value = '';
+                document.getElementById('billing_address1').value = '';
+                document.getElementById('billing_address2').value = '';
+                document.getElementById('billing_address3').value = '';
+                document.getElementById('billing_email').value = '';
                 document.getElementById('billing_phone').value = '';
             }
         });

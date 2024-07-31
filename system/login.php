@@ -1,8 +1,7 @@
 <?php
-ob_start();
+
 session_start();
 include '../function.php'; 
-
 ?>
 
 <!DOCTYPE html>

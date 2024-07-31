@@ -1,6 +1,5 @@
 <?php
-
-//Create Database Conection-------------------
+//create Database Connection------------
 function dbConn() {
     $server = "localhost";
     $username = "root";
@@ -16,8 +15,9 @@ function dbConn() {
     }
 }
 
-//End Database Conection-----------------------
-//Data Clean------------------------------------------
+//end database connection-----------
+//data clean---------------
+
 function dataClean($data = null) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -26,16 +26,16 @@ function dataClean($data = null) {
     return $data;
 }
 
-//End Data Clean
-
-
+//end data clean
 
 function uploadFiles($files) {   //get uploaded images
     $messages = array();
+  
+    if (!empty($files['name'])){
     foreach ($files['name'] as $key => $filename) {   //one by one iterate  uploaded files
-     echo   $filetmp = $files['tmp_name'][$key];
-     echo   $filesize = $files['size'][$key];
-      echo  $fileerror = $files['error'][$key];  //if result is 0 mean ,file not damaged
+    $filetmp = $files['tmp_name'][$key];
+     $filesize = $files['size'][$key];
+      $fileerror = $files['error'][$key];  //if result is 0 mean ,file not damaged
 
         $file_ext = explode('.', $filename);
         $file_ext = strtolower(end($file_ext)); //get last element of the array
@@ -44,7 +44,7 @@ function uploadFiles($files) {   //get uploaded images
 
         if (in_array($file_ext, $allowed_ext)) {  //check the uploaded extensions exist in array
             if ($fileerror === 0) {
-                if ($filesize <= 2097152) {
+                if ($filesize <= 4097152) {
                     $file_name = uniqid('', true) . '.' . $file_ext;  //create seperate file id
                     $file_destination = '../../uploads/' . $file_name;
                     move_uploaded_file($filetmp, $file_destination);  //file pass to server location
@@ -63,7 +63,25 @@ function uploadFiles($files) {   //get uploaded images
             $messages[$key]['type'] = "Invalid file type for $filename";
         }
     }
+}
     return $messages;
+}
+
+
+function checkRole($role=null){
+    session_start();
+    $user_id=$_SESSION['USERID'];  //login user id
+    $db = dbConn();
+    $sql ="SELECT * FROM users u WHERE u.UserId= '$user_id' AND u.user_role='$role' ";
+    $result = $db->query($sql);
+
+    if($result->num_rows <=0) {
+        header("Location:../unauthorized.php");
+        return false;
+    } else {
+        return true;
+    }
+
 }
 ?>
 

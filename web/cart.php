@@ -1,6 +1,7 @@
 <?php
 include 'header.php';
-session_start(); 
+
+extract($_POST); 
 if(!isset($_SESSION['USERID'])){
     header("Location:login.php");
 }
@@ -18,15 +19,48 @@ if($_SERVER['REQUEST_METHOD']=='GET' && @$action=='empty'){
 // check the method is get and if action parameter exists ,equal to update qty
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['action'] == 'update_qty') {
     $cart = $_SESSION['cart'];
+    // $cart = $_GET['id'];
+    // $qty = $_GET['qty'];
+    
+
+//   $db = dbConn();
+//   $sql = "SELECT (issued_qty-qty) FROM item_stocks
+//   where item=id";
+//   $result = $db->query($sql);
+//   $row = $result->fetch_assoc();
+//   $available_qty=$row['available_qty'];
+//   if($available_qty<= $qty){
+//     $qty=$available_qty;
+//   }
+  
+                                
     if (isset($cart[$id])) {
         $cart[$id]['qty'] = $qty;
         $_SESSION['cart'] = $cart;
     }
 }
+// if ($_SERVER['REQUEST_METHOD']== 'GET' && @$action == 'update_qty'){
+//     $current_qty = $_SESSION['cart'][$id]['qty'];
+//     if(!empty($qty)) {
+//         $current_qty= $qty;
+//     }
+//     $_SESSION['cart']['$id']['qty'] = $current_qty;
+// }
 
 ?>
-
-
+<style>
+    .cart_count{
+        background-color:red;
+        color:white;
+        border-radius:50%;
+        width:20px;
+        top:12px;
+        right:20px;
+        font-size:12px;
+        padding: 5px 10px;
+        
+    }
+</style>
 
 <main id="main">
     <section class="breadcrumbs">
@@ -36,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
                 <div class="container">
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="shopping_cart.php" style="margin-left:1150px !important;text-align:right;"><i
-                                class="fa fa-shopping-cart"></i></a>
+                    <a href="cart.php" style="margin-left:1150px !important;text-align:right;">
+                    <span class="cart_count"><?= $_SESSION['noitems'] ?></span><i class="fa fa-shopping-cart"></i></a>
                         <a href="appointment.php" style="text-align:right;"><i class="fas fa-laptop-house"></i></a>
                         <a href="contact.php"><i class="fas fa-phone"></i></a>
 
@@ -83,10 +117,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
                                     <form method="get" action="cart.php">
                                         <input type="hidden" name="id" value="<?= $key ?>">
                                         <input type="hidden" name="action" value="update_qty">
-                                        <input type="number" value="<?= $value['qty'] ?>" name="qty" min="0"
+                                        <input type="number" value="<?= $value['qty'] ?>" name="qty" min="1"
                                             onchange="form.submit()">
 
                                     </form>
+                                   
                                 </td>
                                 <td><?php $amount=$value['unit_price']*$value['qty']; $total+=$amount; echo number_format($amount,2) ; ?>
                                 </td>
@@ -122,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
         </div>
     </div>
 
-<?php
+
+    <?php
 include 'footer.php';
 ?>

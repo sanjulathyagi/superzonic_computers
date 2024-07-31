@@ -1,10 +1,14 @@
 <?php
 ob_start();
+
 include_once 'init.php';
+
 
 $link = "Dashboard";
 $breadcrumb_item = "Home";
 $breadcrumb_item_active = "Dashboard";
+
+checkRole("B");
 
 $db = dbConn();
 $sql ="SELECT leave_date FROM employee_leaves GROUP BY leave_date";
@@ -105,6 +109,172 @@ $amounts_json = json_encode($amounts);
     </div>
     <!-- ./col -->
 </div>
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3 id="highestSalesItem"></h3>
+                <p>Highest Sales Item</p>
+                <?php
+    
+    $db = dbConn();
+
+    extract($_POST);
+
+$sql = "SELECT i.item_name, SUM(oi.Qty) AS TOTALQTY,oi.unit_price, SUM(oi.unit_price*oi.Qty) AS TOTALAMOUNT  FROM order_items oi 
+INNER JOIN items i ON i.id=oi.item_id 
+GROUP BY i.id ORDER BY item_name ASC LIMIT 1 ";
+    $result = $db->query($sql);
+
+    ?>
+
+            <?php
+            while ($row = $result->fetch_assoc()) {
+            ?>
+                
+                 <b>Item Name: </b><?= $row['item_name'] ?><br>
+                <b>Total Qty: </b> <?= $row['TOTALQTY'] ?>
+                
+            <?php
+            }
+            ?>
+
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3 id="lowestSalesItem"></h3>
+                <p>Lowest Sales Item</p>
+                <?php
+    
+    $db = dbConn();
+
+    extract($_POST);
+
+$sql = "SELECT i.item_name, SUM(oi.Qty) AS TOTALQTY,oi.unit_price, SUM(oi.unit_price*oi.Qty) AS TOTALAMOUNT  FROM order_items oi 
+INNER JOIN items i ON i.id=oi.item_id 
+GROUP BY i.id ORDER BY item_name DESC LIMIT 1 ";
+    $result = $db->query($sql);
+
+    ?>
+
+            <?php
+            while ($row = $result->fetch_assoc()) {
+            ?>
+                
+                 <b>Item Name: </b><?= $row['item_name'] ?><br>
+                <b>Total Qty: </b> <?= $row['TOTALQTY'] ?>
+                
+            <?php
+            }
+            ?>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3 id="NumberOfUsers"></h3>
+                <p>Total sales</p>
+                <?php
+    
+    $db = dbConn();
+
+    extract($_POST);
+
+$sql = "SELECT YEAR(o.order_date)AS orderyear,SUM(oi.unit_price*oi.qty) as TOTALAMOUNT FROM orders o 
+                INNER JOIN order_items oi ON oi.order_id=o.id 
+                WHERE o.order_date BETWEEN '1990-04-07' AND '2024-07-04'
+                GROUP BY orderyear;";
+    $result = $db->query($sql);
+
+    ?>
+
+<?php
+            $total=0;
+            while ($row = $result->fetch_assoc()) {
+                $total+=$row['TOTALAMOUNT'];
+
+            ?>
+                <tr>
+                    <td>Year : <?= $row['orderyear'] ?></td>
+                    <td>Total : <?=number_format($row['TOTALAMOUNT'],2) ?></td><br>
+
+                </tr>
+
+            <?php
+
+            }
+            ?>
+            <tr>
+            <td>Total : </td>
+            <td><?= number_format($total,2) ?></td>
+            </tr>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3 id="NumberOfAppointments"></h3>
+                <p>Total Sales </p>
+                <?php
+    
+    $db = dbConn();
+
+    extract($_POST);
+
+$sql = "SELECT YEAR(o.order_date)AS orderyear,MONTHNAME(o.order_date)AS Month, SUM(oi.unit_price*oi.qty) as TOTALAMOUNT FROM orders o 
+                INNER JOIN order_items oi ON oi.order_id=o.id 
+                WHERE o.order_date
+                GROUP BY Month";
+    $result = $db->query($sql);
+
+    ?>
+
+            <?php
+            while ($row = $result->fetch_assoc()) {
+            ?>
+                
+                 <b>Year: </b><?= $row['orderyear'] ?><br>
+                <b>Month: </b> <?= $row['Month'] ?>
+                <b>Total: </b> <?= $row['TOTALAMOUNT'] ?><br>
+                
+                
+            <?php
+            }
+            ?>
+            </div>
+            <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+</div>
+
 <!-- /.row -->
 <!-- Main row -->
 <div class="row">
@@ -158,9 +328,9 @@ $amounts_json = json_encode($amounts);
                 <div class="direct-chat-messages">
                     <!-- Message. Default to the left -->
                     <div class="direct-chat-msg">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-left">Alexander Pierce</span>
-                            <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+                        <div class="clearfix direct-chat-infos">
+                            <span class="float-left direct-chat-name">Alexander Pierce</span>
+                            <span class="float-right direct-chat-timestamp">23 Jan 2:00 pm</span>
                         </div>
                         <!-- /.direct-chat-infos -->
                         <img class="direct-chat-img" src="assets/dist/img/user1-128x128.jpg" alt="message user image">
@@ -174,9 +344,9 @@ $amounts_json = json_encode($amounts);
 
                     <!-- Message to the right -->
                     <div class="direct-chat-msg right">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-right">Sarah Bullock</span>
-                            <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
+                        <div class="clearfix direct-chat-infos">
+                            <span class="float-right direct-chat-name">Sarah Bullock</span>
+                            <span class="float-left direct-chat-timestamp">23 Jan 2:05 pm</span>
                         </div>
                         <!-- /.direct-chat-infos -->
                         <img class="direct-chat-img" src="assets/dist/img/user3-128x128.jpg" alt="message user image">
@@ -190,9 +360,9 @@ $amounts_json = json_encode($amounts);
 
                     <!-- Message. Default to the left -->
                     <div class="direct-chat-msg">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-left">Alexander Pierce</span>
-                            <span class="direct-chat-timestamp float-right">23 Jan 5:37 pm</span>
+                        <div class="clearfix direct-chat-infos">
+                            <span class="float-left direct-chat-name">Alexander Pierce</span>
+                            <span class="float-right direct-chat-timestamp">23 Jan 5:37 pm</span>
                         </div>
                         <!-- /.direct-chat-infos -->
                         <img class="direct-chat-img" src="assets/dist/img/user1-128x128.jpg" alt="message user image">
@@ -206,9 +376,9 @@ $amounts_json = json_encode($amounts);
 
                     <!-- Message to the right -->
                     <div class="direct-chat-msg right">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-right">Sarah Bullock</span>
-                            <span class="direct-chat-timestamp float-left">23 Jan 6:10 pm</span>
+                        <div class="clearfix direct-chat-infos">
+                            <span class="float-right direct-chat-name">Sarah Bullock</span>
+                            <span class="float-left direct-chat-timestamp">23 Jan 6:10 pm</span>
                         </div>
                         <!-- /.direct-chat-infos -->
                         <img class="direct-chat-img" src="assets/dist/img/user3-128x128.jpg" alt="message user image">
@@ -234,7 +404,7 @@ $amounts_json = json_encode($amounts);
                                 <div class="contacts-list-info">
                                     <span class="contacts-list-name">
                                         Count Dracula
-                                        <small class="contacts-list-date float-right">2/28/2015</small>
+                                        <small class="float-right contacts-list-date">2/28/2015</small>
                                     </span>
                                     <span class="contacts-list-msg">How have you been? I was...</span>
                                 </div>
@@ -250,7 +420,7 @@ $amounts_json = json_encode($amounts);
                                 <div class="contacts-list-info">
                                     <span class="contacts-list-name">
                                         Sarah Doe
-                                        <small class="contacts-list-date float-right">2/23/2015</small>
+                                        <small class="float-right contacts-list-date">2/23/2015</small>
                                     </span>
                                     <span class="contacts-list-msg">I will be waiting for...</span>
                                 </div>
@@ -266,7 +436,7 @@ $amounts_json = json_encode($amounts);
                                 <div class="contacts-list-info">
                                     <span class="contacts-list-name">
                                         Nadia Jolie
-                                        <small class="contacts-list-date float-right">2/20/2015</small>
+                                        <small class="float-right contacts-list-date">2/20/2015</small>
                                     </span>
                                     <span class="contacts-list-msg">I'll call you back at...</span>
                                 </div>
@@ -282,7 +452,7 @@ $amounts_json = json_encode($amounts);
                                 <div class="contacts-list-info">
                                     <span class="contacts-list-name">
                                         Nora S. Vans
-                                        <small class="contacts-list-date float-right">2/10/2015</small>
+                                        <small class="float-right contacts-list-date">2/10/2015</small>
                                     </span>
                                     <span class="contacts-list-msg">Where is your new...</span>
                                 </div>
@@ -298,7 +468,7 @@ $amounts_json = json_encode($amounts);
                                 <div class="contacts-list-info">
                                     <span class="contacts-list-name">
                                         John K.
-                                        <small class="contacts-list-date float-right">1/27/2015</small>
+                                        <small class="float-right contacts-list-date">1/27/2015</small>
                                     </span>
                                     <span class="contacts-list-msg">Can I take a look at...</span>
                                 </div>
@@ -314,7 +484,7 @@ $amounts_json = json_encode($amounts);
                                 <div class="contacts-list-info">
                                     <span class="contacts-list-name">
                                         Kenneth M.
-                                        <small class="contacts-list-date float-right">1/4/2015</small>
+                                        <small class="float-right contacts-list-date">1/4/2015</small>
                                     </span>
                                     <span class="contacts-list-msg">Never mind I found...</span>
                                 </div>
@@ -346,7 +516,7 @@ $amounts_json = json_encode($amounts);
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i>
+                    <i class="mr-1 ion ion-clipboard"></i>
                     To Do List
                 </h3>
 
@@ -370,7 +540,7 @@ $amounts_json = json_encode($amounts);
                             <i class="fas fa-ellipsis-v"></i>
                         </span>
                         <!-- checkbox -->
-                        <div class="icheck-primary d-inline ml-2">
+                        <div class="ml-2 icheck-primary d-inline">
                             <input type="checkbox" value="" name="todo1" id="todoCheck1">
                             <label for="todoCheck1"></label>
                         </div>
@@ -389,7 +559,7 @@ $amounts_json = json_encode($amounts);
                             <i class="fas fa-ellipsis-v"></i>
                             <i class="fas fa-ellipsis-v"></i>
                         </span>
-                        <div class="icheck-primary d-inline ml-2">
+                        <div class="ml-2 icheck-primary d-inline">
                             <input type="checkbox" value="" name="todo2" id="todoCheck2" checked>
                             <label for="todoCheck2"></label>
                         </div>
@@ -405,7 +575,7 @@ $amounts_json = json_encode($amounts);
                             <i class="fas fa-ellipsis-v"></i>
                             <i class="fas fa-ellipsis-v"></i>
                         </span>
-                        <div class="icheck-primary d-inline ml-2">
+                        <div class="ml-2 icheck-primary d-inline">
                             <input type="checkbox" value="" name="todo3" id="todoCheck3">
                             <label for="todoCheck3"></label>
                         </div>
@@ -421,7 +591,7 @@ $amounts_json = json_encode($amounts);
                             <i class="fas fa-ellipsis-v"></i>
                             <i class="fas fa-ellipsis-v"></i>
                         </span>
-                        <div class="icheck-primary d-inline ml-2">
+                        <div class="ml-2 icheck-primary d-inline">
                             <input type="checkbox" value="" name="todo4" id="todoCheck4">
                             <label for="todoCheck4"></label>
                         </div>
@@ -437,7 +607,7 @@ $amounts_json = json_encode($amounts);
                             <i class="fas fa-ellipsis-v"></i>
                             <i class="fas fa-ellipsis-v"></i>
                         </span>
-                        <div class="icheck-primary d-inline ml-2">
+                        <div class="ml-2 icheck-primary d-inline">
                             <input type="checkbox" value="" name="todo5" id="todoCheck5">
                             <label for="todoCheck5"></label>
                         </div>
@@ -453,7 +623,7 @@ $amounts_json = json_encode($amounts);
                             <i class="fas fa-ellipsis-v"></i>
                             <i class="fas fa-ellipsis-v"></i>
                         </span>
-                        <div class="icheck-primary d-inline ml-2">
+                        <div class="ml-2 icheck-primary d-inline">
                             <input type="checkbox" value="" name="todo6" id="todoCheck6">
                             <label for="todoCheck6"></label>
                         </div>
@@ -467,8 +637,8 @@ $amounts_json = json_encode($amounts);
                 </ul>
             </div>
             <!-- /.card-body -->
-            <div class="card-footer clearfix">
-                <button type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</button>
+            <div class="clearfix card-footer">
+                <button type="button" class="float-right btn btn-primary"><i class="fas fa-plus"></i> Add item</button>
             </div>
         </div>
         <!-- /.card -->
@@ -478,10 +648,11 @@ $amounts_json = json_encode($amounts);
     <section class="col-lg-5 connectedSortable">
 
         <!-- Map card -->
+
         <div class="card bg-gradient-primary">
-            <div class="card-header border-0">
+            <div class="border-0 card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-map-marker-alt mr-1"></i>
+                    <i class="mr-1 fas fa-map-marker-alt"></i>
                     Visitors
                 </h3>
                 <!-- card tools -->
@@ -499,19 +670,19 @@ $amounts_json = json_encode($amounts);
                 <div id="world-map" style="height: 250px; width: 100%;"></div>
             </div>
             <!-- /.card-body-->
-            <div class="card-footer bg-transparent">
+            <div class="bg-transparent card-footer">
                 <div class="row">
-                    <div class="col-4 text-center">
+                    <div class="text-center col-4">
                         <div id="sparkline-1"></div>
                         <div class="text-white">Visitors</div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-4 text-center">
+                    <div class="text-center col-4">
                         <div id="sparkline-2"></div>
                         <div class="text-white">Online</div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-4 text-center">
+                    <div class="text-center col-4">
                         <div id="sparkline-3"></div>
                         <div class="text-white">Sales</div>
                     </div>
@@ -524,9 +695,9 @@ $amounts_json = json_encode($amounts);
 
         <!-- solid sales graph -->
         <div class="card bg-gradient-info">
-            <div class="card-header border-0">
+            <div class="border-0 card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-th mr-1"></i>
+                    <i class="mr-1 fas fa-th"></i>
                     Sales Graph
                 </h3>
 
@@ -544,23 +715,23 @@ $amounts_json = json_encode($amounts);
                     style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
             <!-- /.card-body -->
-            <div class="card-footer bg-transparent">
+            <div class="bg-transparent card-footer">
                 <div class="row">
-                    <div class="col-4 text-center">
+                    <div class="text-center col-4">
                         <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60"
                             data-fgColor="#39CCCC">
 
                         <div class="text-white">Mail-Orders</div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-4 text-center">
+                    <div class="text-center col-4">
                         <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60"
                             data-fgColor="#39CCCC">
 
                         <div class="text-white">Online</div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-4 text-center">
+                    <div class="text-center col-4">
                         <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60"
                             data-fgColor="#39CCCC">
 
@@ -576,7 +747,7 @@ $amounts_json = json_encode($amounts);
 
         <!-- Calendar -->
         <div class="card bg-gradient-success">
-            <div class="card-header border-0">
+            <div class="border-0 card-header">
 
                 <h3 class="card-title">
                     <i class="far fa-calendar-alt"></i>
@@ -607,7 +778,7 @@ $amounts_json = json_encode($amounts);
                 <!-- /. tools -->
             </div>
             <!-- /.card-header -->
-            <div class="card-body pt-0">
+            <div class="pt-0 card-body">
                 <!--The calendar -->
                 <div id="calendar" style="width: 100%"></div>
             </div>

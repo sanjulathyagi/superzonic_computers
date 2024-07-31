@@ -49,6 +49,7 @@ include '../function.php';
                 $_SESSION['time']=$start_time;
                 if(isset($_SESSION['USERID'])){
                     echo "Book Now";
+                    
                 }else{
                     echo "<a href='login.php'>Please Login before make booking</a>";
                 }

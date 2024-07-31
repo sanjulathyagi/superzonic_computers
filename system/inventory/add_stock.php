@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 include_once '../init.php';
 // include '../../function.php';
 
@@ -264,6 +265,9 @@ include '../layouts.php';
             var newRow = tableBody.find('.items-row').first().clone(true); //get copy of row
 
             newRow.find('input').val(''); //blank the copy row data
+            newRow.find('.select2-container').remove();
+            newRow.find('select').removeClass('select2-hidden-accessible').removeAttr('data-select2-id tabindex aria-hidden');
+            newRow.find('select').select2();
 
             tableBody.append(newRow); //add new row copy of previous copied row without data
         }
@@ -273,16 +277,6 @@ include '../layouts.php';
             row.remove();
         }
 
-        function validateDate(selectElement) {
-            const selectedValue = $(selectedElement).val(); //get selected value
-            if (selectedItems.includes(selectedValue)) { //check select item in the array
-                alert('Item already added');
-                $(selectedElement).val(''); //reset the select value to empty
-            } else {
-                selectedItems.push(selectedValue); //add selected value to array
-            }
-
-        }
 
         $('#addBtn').click(addItems); //click the addBtn button ,execute the addItems function 
         $('#items').on('click', '.removeBtn',
@@ -293,6 +287,6 @@ include '../layouts.php';
             function () { //validate items
                 validateData(this);
             });
-
+$('.select2').select2();
     });
 </script>

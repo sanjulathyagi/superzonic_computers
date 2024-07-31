@@ -1,9 +1,9 @@
 <?php
 ob_start();
 session_start(); 
-if(!isset($_SESSION['USERID'])){
-    header("Location:login.php");
-}
+// if(!isset($_SESSION['USERID'])){
+//     header("Location:login.php");
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +55,7 @@ if(!isset($_SESSION['USERID'])){
             <a href="index.html" class="logo me-auto me-lg-0 "><img src="assets/img/logo design.jpeg" alt=""
                     class="img-fluid" width="100%" ></a>
 
-            <nav id="navbar" class="navbar order-last order-lg-0 ">
+            <nav id="navbar" class="order-last navbar order-lg-0 ">
                 <ul>
                     <li><a class="nav-link scrollto active" style="color:black !important;" href="index.php">Home</a></li>
                     <li><a class="nav-link scrollto"style="color:black !important;" href="item.php">Shop</a></li>
@@ -75,12 +75,12 @@ if(!isset($_SESSION['USERID'])){
                   ?>
             <a href="register.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;margin-right:-320px">Welcome,
                 <?= $_SESSION['FIRSTNAME'] ?></a>
-            <a href="login.php" class="get-started-btn bg-dark  scrollto" style="border-radius: 50px !important;">Logout</a>
+            <a href="login.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Logout</a>
             <?php
                 }else {
                 ?>
             <a href="register.php" class="get-started-btn bg-dark register-btn scrollto"  style=" margin-right:-320px !important;">Register</a>
-            <a href="login.php" class="get-started-btn bg-dark  scrollto" style="border-radius: 50px !important;">Login</a>
+            <a href="login.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Login</a>
             <?php
               	}
               	?>

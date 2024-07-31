@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 include_once '../init.php';
 
 $link = "Order Management";
@@ -23,18 +24,14 @@ $order_status = $row['order_status'];
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                        <input type="text" name="table_search" class="float-right form-control" placeholder="Search">
 
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
             <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
+            <div class="p-0 card-body table-responsive">
 
             <div class="row">
                     <div class="col">
@@ -80,7 +77,7 @@ $order_status = $row['order_status'];
     o.unit_price,
     o.qty,
     i.item_name,
-    
+   
     (COALESCE(stock_totals.total_qty, 0) - COALESCE(stock_totals.total_issued_qty, 0)) AS balance_qty
 FROM 
     order_items o 
@@ -132,7 +129,7 @@ GROUP BY
                                             if($order_status == '1'){
                                                 ?>
                                                 <?= $row['issued_qty']; ?>
-                                                <a href="return_item.php?item_id= $row['item_id'] ?>$order_id=<? =$row['order_id'] ?>">Return Item</a>
+                                                <a href="return_item.php?item_id=<?= $row['item_id'] ?>&order_id=<?= $row['order_id'] ?>">Return Item</a>
                                                 <?php }else{
                                                     ?>
                                             

@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 include_once '../init.php';
 include "../../phpqrcode/qrlib.php";  //qr scanner file path
 

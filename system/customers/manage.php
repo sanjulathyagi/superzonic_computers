@@ -1,23 +1,40 @@
 <?php
 ob_start();
+session_start();
 include_once '../init.php';
 
 $link = "Customer Management";
 $breadcrumb_item = "Customer";
 $breadcrumb_item_active = "Manage";
+$limit=10;
 ?>
 
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>customers/add.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+        <a href="<?= SYS_URL ?>customers/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
             Add New Customer</a>
-        <a href="<?= SYS_URL ?>customers/add_report.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+        <a href="<?= SYS_URL ?>customers/customer_details_report.php" class="mb-2 btn bg-dark btn-sm"><i
+                class="fas fa-th-list"></i>
             Customer Details Report</a>
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
-        <input type="text" class="btn-sm btn light border-dark" name="Name" placeholder="Enter Customer Name">
 
-            <button type="submit" class="btn-sm btn bg-dark">Search</button>
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
+            <!-- select top items -->
+            <label for="">&nbsp;&nbsp; Select Top</label>
+            <select name="limit" id="limit" style="width:50px !important;">
+                <option value="">--</option>
+                <?php
+                        for ($i=1; $i<=20; $i++){
+                        ?>
+                <option value="<?= $i ?>" <?=$limit==$i?'selected':'' ?>><?= $i ?></option>
+                <?php
+                        }
+                        ?>
+            </select>
+            <input type="text" class="btn-sm btn light border-dark">
+
+            <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
         </form>
+
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Customer details</h3>
@@ -25,14 +42,15 @@ $breadcrumb_item_active = "Manage";
 
             </div>
             <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
+            <div class="p-0 card-body table-responsive">
 
                 <?php
+                
                 $where = null;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     extract($_POST);
-                    if(!empty($FirstName) && !empty($LastName)){
-                        $where.=" c.FirstName='$FirstName' AND  c.LastName='$LastName' ";
+                    if(!empty($Name) && !empty($Name)){
+                        $where.=" Name='$Name' AND";
                     }
                     
                     
@@ -44,13 +62,14 @@ $breadcrumb_item_active = "Manage";
                 $db= dbConn ();
                 $sql = "SELECT c.*, d.Name 
                 FROM customers c
-                INNER JOIN districts d ON d.Id = c.DistrictId $where;";
+                INNER JOIN districts d ON d.Id = c.DistrictId $where ORDER BY Email ASC LIMIT $limit";
         
-               
 
                 $result=$db->query($sql);
 
                 ?>
+                
+                
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
@@ -86,12 +105,12 @@ $breadcrumb_item_active = "Manage";
                             <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
                             </td>
                             <td>
-                                <div class="dropdown no-arrow mb-1">
+                                <div class="mb-1 dropdown no-arrow">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-cog"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
+                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
                                         &nbsp;&nbsp;

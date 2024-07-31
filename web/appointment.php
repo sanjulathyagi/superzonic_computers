@@ -1,9 +1,9 @@
 <?php 
 include 'header.php';
-session_start(); 
-if(!isset($_SESSION['USERID'])){
-    header("Location:login.php");
-}
+// session_start(); 
+// if(!isset($_SESSION['USERID'])){
+//     header("Location:login.php");
+// }
 include '../function.php';
 ?>
 <main id="main">

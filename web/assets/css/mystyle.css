@@ -23,13 +23,15 @@
     background: black;
 }
 
+
+
 .php-email-form{
     width: 100%;
     border-top: 3px solid #b99a45;
     border-bottom: 3px solid #b99a45;
     padding: 30px;
     background: #fff;
-    box-shadow: 0 0 24px 0 #b99a45;
+    
 }
 
 .flex-center{

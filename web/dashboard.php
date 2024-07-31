@@ -1,31 +1,28 @@
 <?php 
 include 'header.php';
+include '../function.php';
 session_start(); 
 if(!isset($_SESSION['USERID'])){
     header("Location:login.php");
 }
-include '../function.php';
 ?>
-<main id="main">
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+  <div class="container">
 
-  <!-- ======= Breadcrumbs ======= -->
-  <section class="breadcrumbs">
-    <div class="container">
-
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>Dashboard</h2>
-        <ol>
-          <li><a href="index.html">customer</a></li>
-          <li>dashboard</li>
-        </ol>
-      </div>
-
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>Dashboard</h2>
+      <ol>
+        <li><a href="index.html">Customer</a></li>
+        <li>dashboard</li>
+      </ol>
     </div>
-  </section><!-- End Breadcrumbs -->
 
-  <section class="inner-page">
-    <div class="container">
-      <?php
+  </div>
+</section>
+<section class="inner-page">
+  <div class="container">
+    <?php
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //store data to appointment table
           extract($_POST); //get form data
           $userid=$_SESSION['USERID'];
@@ -44,24 +41,27 @@ include '../function.php';
             echo $_SESSION['date'];
             echo $_SESSION['time'];
             ?>
-             <!-- pass data through hidden field -->
-      <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-        <input type="hidden" name="date" value="<?= $_SESSION['date'] ?>" />
-        <input type="hidden" name="time" value="<?= $_SESSION['time'] ?>" />
-        <button type="submit" class="btn btn-warning">click here to confirm your booking</button>
-      </form>
-      <?php
+    <!-- pass data through hidden field -->
+    <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+      <input type="hidden" name="date" value="<?= $_SESSION['date'] ?>" />
+      <input type="hidden" name="time" value="<?= $_SESSION['time'] ?>" />
+      <button type="submit" class="btn btn-warning">click here to confirm your booking</button>
+    </form>
+    <?php
           }
         }
          
          
          ?>
+  </div>
 
-    </div>
-  </section>
+</section><!-- End Breadcrumbs -->
+
+
 
 </main>
-
 <?php
-include 'footer.php';
-?>
+  include 'footer.php';
+  ?>
+
+</html>
