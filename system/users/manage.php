@@ -11,7 +11,13 @@ $alert=false;
 
 <div class="row">
     <div class="col-12">
-        <a href="add.php" class="mb-2 btn btn-warning"><i class="fas fa-plus-circle"></i>New</a>
+        <?php
+        $previlage= checkprivilege('1');
+        ?>
+        <a href="<?=SYS_URL ?>users/add.php" class="mb-2 btn btn-warning btn-sm"><i
+                class="fas fa-plus-circle"></i>New User</a>
+        <a href="<?=SYS_URL ?>users/add_designation.php" class="mb-2 btn btn-warning btn-sm"><i
+                class="fas fa-plus-circle"></i>New Designation</a>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">User details</h3>
@@ -52,8 +58,9 @@ $alert=false;
                             <th>Designation</th>
                             <th>Status</th>
                             <th>Actions</th>
+                            <th></th>
                             <th>Change status</th>
-                            
+
 
                         </tr>
                     </thead>
@@ -71,24 +78,21 @@ $alert=false;
                             <td><?= $row['Designation'] ?></td>
                             <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
                             </td>
-                            <td>
-                                <div class="mb-1 dropdown no-arrow">
-                                    <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
-                                        aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                        &nbsp;&nbsp;
+                            <td><a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>"
+                                    class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a></td>
 
+                            <td> <?php
+                                    if(($row['UserType']!='admin')&&($row['UserType']!='owner')){
+                                    
+                                    ?>
+                                    <a class="btn btn-danger btn-sm"
+                                    href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>"
+                                    onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a></td>
+                                    <?php
+                                    }
+                                    ?>
+                                
 
-                                        <a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>"
-                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info btn-sm"
-                                            href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>"
-                                            onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
-                            </td>
                             <td>
                                 <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                                     <select name="status" id="status" class="form-control-sm"

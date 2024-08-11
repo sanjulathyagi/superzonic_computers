@@ -12,8 +12,8 @@ extract($_GET);
 $qr_path = '../../qr/';  //qr save image saved path
 
 
-
-if (!file_exists($qr_path))
+//qr generataion
+if (!file_exists($qr_path)) //if not exist the qr folder ,make folder
     mkdir($qr_path);
 
 $errorCorrectionLevel = 'L';  //error correction level =low for quick scan

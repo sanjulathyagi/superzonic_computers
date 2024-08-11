@@ -1,12 +1,18 @@
 <?php 
+
+include '../config.php';
 include 'header.php';
 include '../function.php';
-session_start(); 
-if(!isset($_SESSION['USERID'])){
-    header("Location:login.php");
-}
+
+
+// if(!isset($_SESSION['USERID'])){
+//     header("Location:login.php");
+// }
+// checkRole('F');
+
 ?>
-<!-- ======= Breadcrumbs ======= -->
+
+
 <section class="breadcrumbs">
   <div class="container">
 
@@ -17,51 +23,66 @@ if(!isset($_SESSION['USERID'])){
         <li>dashboard</li>
       </ol>
     </div>
-
   </div>
 </section>
 <section class="inner-page">
   <div class="container">
-    <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //store data to appointment table
-          extract($_POST); //get form data
-          $userid=$_SESSION['USERID'];
-          $db=dbConn();
-          $sql="INSERT INTO appointments(customer_id,date,start_time,end_time) VALUES ('$userid','$date','$time','00.00.00')";
-          $db->query($sql);
+    <section id="services" class="services">
+      <div class="container" data-aos="fade-up">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+              <div class="icon-box">
+                <img src="<?= WEB_URL ?>assets/img/shopping-cart-home-appliances-electronics-vector-illus-illustration-114490947.webp" alt="laptop" class="first-img"
+                  style="height:200px !important;width:200px !important;">
+                
+                <h5><a href="<?= WEB_URL ?>checkout.php">Cart and Checkout</a></h5>
+                
+              </div>
+            </div>
 
-          unset($_SESSION['action']);  //clear data
-          unset($_SESSION['date']);
-          unset($_SESSION['time']);
+            <div class="mt-4 col-lg-3 col-md-4 d-flex align-items-stretch mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box">
+                <img src="<?= WEB_URL ?>assets/img/SS1.png" alt="laptop" class="first-img"
+                  style="height:200px !important;width:200px !important;">
+                
+                <h5><a href="<?= WEB_URL ?>check_availability.php">Appointment Bookings</a></h5>
+                
+              </div>
+            </div>
 
-          echo"<div class='alert bg-success'> your booking has been confirmed...!</div>";
-        }
-         if(isset($_SESSION['action'])){  //check the booking is done or not
-          if($_SESSION['action']== 'booking'){
-            echo $_SESSION['date'];
-            echo $_SESSION['time'];
-            ?>
-    <!-- pass data through hidden field -->
-    <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-      <input type="hidden" name="date" value="<?= $_SESSION['date'] ?>" />
-      <input type="hidden" name="time" value="<?= $_SESSION['time'] ?>" />
-      <button type="submit" class="btn btn-warning">click here to confirm your booking</button>
-    </form>
-    <?php
-          }
-        }
-         
-         
-         ?>
+
+            <div class="mt-4 col-lg-3 col-md-6 d-flex align-items-stretch mt-lg-0" data-aos="zoom-in"
+              data-aos-delay="300">
+              <div class="icon-box">
+                <img src="<?= WEB_URL ?>assets/img/OIP.jpeg" alt="laptop" class="first-img"
+                  style="height:200px !important;width:200px !important;">
+                
+                <h5><a href="<?= WEB_URL ?>account.php">My account History</a></h5>
+                
+              </div>
+            </div>
+
+            <div class="mt-4 col-lg-3 col-md-6 d-flex align-items-stretch mt-lg-0" data-aos="zoom-in"
+              data-aos-delay="300">
+              <div class="icon-box">
+                
+                <img src="<?= WEB_URL ?>assets/img/ecommerce-marketing-900.jpg" alt="laptop" class="first-img"
+                  style="height:200px !important;width:200px !important;">
+                <h5><a href="<?= WEB_URL ?>payments.php">Payment Details</a></h5>
+                
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+    </section>
   </div>
-
-</section><!-- End Breadcrumbs -->
-
+</section>
 
 
-</main>
 <?php
   include 'footer.php';
   ?>
-
-</html>

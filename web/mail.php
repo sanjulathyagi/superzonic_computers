@@ -4,9 +4,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Load PHPMailer classes
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
 
 // Create a new PHPMailer instance
 function sendEmail($recipient = null, $recipient_name = null, $subject = null, $message = null) {
@@ -46,6 +46,51 @@ function sendEmail($recipient = null, $recipient_name = null, $subject = null, $
         // Send the email
         $mail->send();
 
+        echo 'Email has been sent successfully';
+    } catch (Exception $e) {
+        echo "Mailer Error: {$mail->ErrorInfo}";
+    }
+}
+
+
+function sendEmailWithAttachment($recipient = null, $recipient_name = null, $subject = null, $message = null, $attachment_path = null) {
+    $mail = new PHPMailer(true);
+
+    try {
+        // Set mailer to use SMTP
+        $mail->isSMTP();
+        $mail->SMTPDebug = 0; // Set to 2 for detailed debugging
+
+        // SMTP configuration (example for Gmail)
+        $mail->Host = 'smtp.gmail.com';
+
+        // Enable TLS encryption
+        $mail->SMTPSecure = 'tls';
+
+        // Set the SMTP port (465 for SSL, 587 for TLS)
+        $mail->Port = 587;
+
+        // Set your Gmail credentials
+        $mail->SMTPAuth = true;
+        $mail->Username = 'sanjulathyagi@gmail.com'; // Your Gmail address
+        $mail->Password = 'lndzobmidvjeakch'; // Your Gmail password
+        // Set the 'from' address and recipient
+        $mail->setFrom('your@gmail.com', 'Your Name');
+        $mail->addAddress($recipient, $recipient_name);
+
+        // Set email subject and body
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+        $mail->isHTML(true);
+
+        // Attach PDF file if path provided
+        if ($attachment_path !== null) {
+            $mail->addAttachment($attachment_path);
+        }
+
+        // Send the email
+        $mail->send();
+        
         echo 'Email has been sent successfully';
     } catch (Exception $e) {
         echo "Mailer Error: {$mail->ErrorInfo}";

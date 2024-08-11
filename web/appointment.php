@@ -1,11 +1,11 @@
 <?php 
+
+include '../config.php';
 include 'header.php';
-// session_start(); 
-// if(!isset($_SESSION['USERID'])){
-//     header("Location:login.php");
-// }
 include '../function.php';
 ?>
+
+
 <main id="main">
 
   <!-- ======= Breadcrumbs ======= -->
@@ -29,57 +29,89 @@ include '../function.php';
 
         <div class="text-center">
           <h3>Do you need our help?</h3>
-          <p> Hardware Repairs,  Software Troubleshooting,Data Recovery,  Networking and Connectivity Issues,  <br>Custom
+          <p> Hardware Repairs, Software Troubleshooting,Data Recovery, Networking and Connectivity Issues, <br>Custom
             Builds and Upgrades and Consultation and Advice.</p>
-          <form method="post" action="check_availability.php">
-            <div class="row g-3">
-              <div class="col">
+          <form method="post" action="<?= WEB_URL ?>check_availability.php">
+            <div class="row justify-content-center ">
+              <div class="col-lg-4">
                 <input type="date" class="form-control" placeholder="select date" name="date" width="30px">
               </div>
-              <div class="col">
+              <div class="col-lg-4">
                 <input type="time" class="form-control" placeholder="select time" name="start_time" width="30px">
               </div>
+            </div>
+            <div class="row justify-content-center ">
+              <div class="col-lg-4">
+                <?php
+                $db= dbConn ();
+                $sql= "SELECT * FROM items";
+                $result=$db->query($sql);
+                ?>
+                <label for="item_name">Item Name</label>
+                <select name="item_name" id="item_name" class="border form-select border-1 border-dark">
+                  <option value="">--</option>
+                  <?php
+                while ($row= $result->fetch_assoc()){
+                                  
+                ?>
+                  <option value="<?= $row['id'] ?>"><?= $row['item_name'] ?></option>
+                  <?php
+                }
+                ?>
+                </select>
+              </div>
+              <div class="col-lg-4">
+                <?php
+                $db= dbConn ();
+                $sql= "SELECT * FROM brands";
+                $result=$db->query($sql);
+                ?>
+                <label for="item_name">Item Brand</label>
+                <select name="brand" id="brand" class="border form-select border-1 border-dark">
+                  <option value="">--</option>
+                  <?php
+                while ($row= $result->fetch_assoc()){
+                                  
+                ?>
+                  <option value="<?= $row['id'] ?>"><?= $row['brand'] ?></option>
+                  <?php
+                }
+                ?>
+                </select>
+              </div>
+              <div class="col-lg-4">
+                <?php
+                $db= dbConn ();
+                $sql= "SELECT * FROM services";
+                $result=$db->query($sql);
+                ?>
+                <label for="item_name">Service Type</label>
+                <select name="service_name" id="service_name" class="border form-select border-1 border-dark">
+                  <option value="">--</option>
+                  <?php
+                while ($row= $result->fetch_assoc()){
+                                  
+                ?>
+                  <option value="<?= $row['id'] ?>"><?= $row['service_name'] ?></option>
+                  <?php
+                }
+                ?>
+                </select>
+              </div>
             </div><br>
+
             <button type="submit" class="btn btn-warning">Check Availability</button>
-            
+
           </form>
-        </div>
+
+        </div><br>
+
+
+       
 
       </div>
     </section><!-- End Cta Section -->
-    <!-- <div class="container">
-      <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //store data to appointment table
-          extract($_POST); //get form data
-          $userid=$_SESSION['USERID'];
-          $db=dbConn();
-          $sql="INSERT INTO appointments(customer_id,date,start_time,end_time) VALUES ('$userid','$date','$time','00.00.00')";
-          $db->query($sql);
 
-          unset($_SESSION['action']);  //clear data
-          unset($_SESSION['date']);
-          unset($_SESSION['time']);
-
-          echo"<div class='alert bg-success'> your booking has been confirmed...!</div>";
-        }
-         if(isset($_SESSION['action'])){  //check the booking is done or not
-          if($_SESSION['action']== 'booking'){
-            echo $_SESSION['date'];
-            echo $_SESSION['time'];
-            ?>
-      <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post"> //pass data through hidden field
-        <input type="hidden" name="date" value="<?= $_SESSION['date'] ?>" />
-        <input type="hidden" name="time" value="<?= $_SESSION['time'] ?>" />
-        <button type="submit" class="btn btn-warning">click here to confirm your booking</button>
-      </form> -->
-      <?php
-          }
-        }
-         
-         
-         ?>
-
-    </div> -->
   </section>
 
 </main>

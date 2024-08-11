@@ -1,6 +1,8 @@
 <?php
 ob_start();
-
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 if(!isset($_SESSION['USERID'])){
   header("Location:login.php");
  
@@ -108,8 +110,14 @@ if(!isset($_SESSION['USERID'])){
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    <ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu"
                         data-accordion="false">
+                        <li class="nav-item">
+                            <a href="<?= SYS_URL ?>dashboard.php" class="nav-link">
+                                <i class=" nav-icon fas fa-chart-line"></i>&nbsp;&nbsp;&nbsp;Dashboard
+
+                            </a>
+                        </li>
                         <?php
                         if($result->num_rows>0){
                             while($row=$result->fetch_assoc()){
@@ -125,7 +133,7 @@ if(!isset($_SESSION['USERID'])){
                                 $result_sub_module = $db->query($sql);
                                 if($result_sub_module->num_rows >0){
                                     ?>
-                        <li class="nav-item <?= $menu_open ?>">
+                        <li class=" nav-item <?= $menu_open ?>">
                             <a href="#" class="nav-link <?= $active_class ?>">
                                 <i class="nav-icon <?= $row['Icon'] ?>"></i>
                                 <p>
@@ -159,13 +167,13 @@ if(!isset($_SESSION['USERID'])){
                         <?php
                                 }else {
                                     ?>
-                                    <li class="nav-item ">
-                                        <a href="<?= $menu_url ?>" class="nav-link <?= $active_class?>">
-                                        <i class="nav-icon <?= $row['Icon'] ?>"></i>
-                                        <p><?= $row['Name'] ?>
-                                        </p>
-                                    </a>
-                                 </li>
+                        <li class="nav-item ">
+                            <a href="<?= $menu_url ?>" class="nav-link <?= $active_class?>">
+                                <i class="nav-icon <?= $row['Icon'] ?>"></i>
+                                <p><?= $row['Name'] ?>
+                                </p>
+                            </a>
+                        </li>
                         <?php
                                 }
                             }

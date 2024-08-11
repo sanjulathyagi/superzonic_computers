@@ -1,4 +1,7 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 //create Database Connection------------
 function dbConn() {
     $server = "localhost";
@@ -67,9 +70,9 @@ function uploadFiles($files) {   //get uploaded images
     return $messages;
 }
 
-
+//user privilege manage
 function checkRole($role=null){
-    session_start();
+    
     $user_id=$_SESSION['USERID'];  //login user id
     $db = dbConn();
     $sql ="SELECT * FROM users u WHERE u.UserId= '$user_id' AND u.user_role='$role' ";
@@ -82,6 +85,41 @@ function checkRole($role=null){
         return true;
     }
 
+}
+
+function checkprivilege($module_id=null) {
+    $user_id = $_SESSION['USERID'];  //login user id
+    $db = dbConn();
+    $sql = "SELECT * FROM user_modules um WHERE um.UserId='$user_id' AND um.ModuleId='$module_id' ";
+    $result = $db->query($sql);
+    $row=$result->fetch_assoc();
+    if ($result->num_rows <= 0) {
+        return false;
+    } else {
+        return $row;
+    }
+}
+
+function validateMobileNumber($mobile_no) {
+    // Remove leading and trailing whitespace
+    $mobile_no = trim($mobile_no);
+
+    // Check if the number starts with +947 followed by 9 digits
+    if (substr($mobile_no, 0, 3) !== '+94' && strlen($mobile_no) !== 12 && ctype_digit(substr($mobile_no, 3))) {
+        return "Invalid mobile number";
+    }else{
+        return true;
+    }
+}
+
+function validateTelePhoneNumber($telno) {
+    // Remove leading and trailing whitespace
+    $telno = trim($telno);
+
+    
+    if (strlen($telno) !== 10) {
+        return "Invalid telno number.";
+    } 
 }
 ?>
 

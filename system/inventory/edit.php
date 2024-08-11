@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { //to get previous data from item file
 
     
     $item_name = $row['item_name'];
-    $colour = $row['colour'];
     $item_category =$row['item_category'];
     $brand_id = $row['brand_id'];
     $model_id = $row['model_id'];
@@ -32,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { //to get previous data from item file
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
     $id= dataclean($id);
-    $colour = dataClean($colour);
     $item_category= dataclean($item_category);
     $brand_id = dataClean($brand_id);
     $model_id = dataClean($model_id);
@@ -44,9 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty( $item_id)) {
         $message['item_id'] = "The ItemName should not be blank...!";
     }
-    if (empty( $colour)) {
-        $message['colour'] = "The colour should not be blank...!";
-    }
+    
     if (empty($brand_id)) {
         $message['brand_id'] = "The brand should not be blank...!";
     }
@@ -63,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($message)) {
       
         $db = dbConn();
-        $sql = "UPDATE  items i SET item_name='$item_name',colour='$colour',brand_id='$brand_id',model_id='$model_id',item_category='$item_category'
+        $sql = "UPDATE  items i SET item_name='$item_name',brand_id='$brand_id',model_id='$model_id',item_category='$item_category'
         where i.id =$id";
         $db->query($sql);
         
@@ -75,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>inventory/items.php" class="btn bg-warning mb-2"><i class="fas fa-plus-circle"></i> View
+        <a href="<?= SYS_URL ?>inventory/items.php" class="mb-2 btn bg-warning"><i class="fas fa-plus-circle"></i> View
             Items</a>
         <div class="card card-dark">
             <div class="card-header">
@@ -102,14 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <span class="text-danger"><?= @$message['id'] ?></span>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="form-group ">
-                                <label for="inputColour">Colour</label>
-                                <input type="text" class="form-control" id="colour" name="colour"
-                                    placeholder="Enter Colour" value="<?= @$colour ?>">
-                                <span class="text-danger"><?= @$message['colour'] ?></span>
-                            </div>
-                        </div>
+                        
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="inputCategoryName">Category Name</label>
@@ -186,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- /.card-body -->
 
     <div class="card-footer ">
-         <input type="text" name="id" value="<?= $id?>">
+         <input type="hidden" name="id" value="<?= $id?>">
         <button type="submit" class="btn btn-warning ">Submit</button>
     </div>
     </form>

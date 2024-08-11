@@ -7,14 +7,34 @@ $link = "Customer Management";
 $breadcrumb_item = "Customer";
 $breadcrumb_item_active = "Manage";
 $limit=10;
+$alert=false;
 ?>
-
+<?php
+                                
+                                
+                                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                                    extract($_POST);
+                                    
+                                
+                                    if (!empty($CustomerId) && isset($status)) {
+                                        $db =dbConn();
+                                        $sql = "UPDATE customers SET status='$status' WHERE CustomerId='$CustomerId'";
+                                        $result1 = $db->query($sql);
+                                         if($result1){
+                                            $alert=true;
+                                         } else{
+                                            $alert =false;
+                                         }  
+                                        }
+                                    }
+                                
+                                
+                                ?>
 <div class="row">
     <div class="col-12">
         <a href="<?= SYS_URL ?>customers/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
             Add New Customer</a>
-        <a href="<?= SYS_URL ?>customers/customer_details_report.php" class="mb-2 btn bg-dark btn-sm"><i
-                class="fas fa-th-list"></i>
+        <a href="<?= SYS_URL ?>reports/customer_list.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
             Customer Details Report</a>
 
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
@@ -30,7 +50,8 @@ $limit=10;
                         }
                         ?>
             </select>
-            <input type="text" class="btn-sm btn light border-dark">
+            
+            <input type="text" class="btn-sm btn light border-dark" name="FirstName"  placeholder="Enter Customer Name" name="Name">
 
             <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
         </form>
@@ -49,8 +70,8 @@ $limit=10;
                 $where = null;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     extract($_POST);
-                    if(!empty($Name) && !empty($Name)){
-                        $where.=" Name='$Name' AND";
+                    if(!empty($FirstName)){
+                        $where.=" FirstName='$FirstName' AND";
                     }
                     
                     
@@ -68,12 +89,11 @@ $limit=10;
                 $result=$db->query($sql);
 
                 ?>
-                
-                
+
+
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Address</th>
@@ -83,6 +103,7 @@ $limit=10;
                             <th>Reg.no</th>
                             <th>Status</th>
                             <th>Actions</th>
+                            <th>Change status</th>
 
                             <th></th>
                         </tr>
@@ -94,7 +115,7 @@ $limit=10;
                             while ($row=$result->fetch_assoc()) {
                         ?>
                         <tr>
-                            <td><?= $row['CustomerId'] ?></td>
+
                             <td><?= $row['FirstName'] ?> <?= $row['LastName'] ?></td>
                             <td><?= $row['Email'] ?></td>
                             <td><?= $row['AddressLine1'] ?>,<?= $row['AddressLine2'] ?>,<?= $row['AddressLine3'] ?></td>
@@ -126,20 +147,50 @@ $limit=10;
                                     </div>
                                 </div>
                             </td>
+                            <td>
+                                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                                    <select name="status" id="status" class="form-control-sm"
+                                        onchange="this.form.submit()">
+                                        <option value="1" <?= ($row['status']==1)?'selected': '' ?>>Active</option>
+                                        <option value="0" <?= ($row['status']==0) ? 'selected' : '' ?>>Deactive</option>
+                                    </select>
+                                    <input type="hidden" name="CustomerId" value="<?= $row['CustomerId'] ?>">
+                                </form>
 
+                            
+
+                            </td>
                         </tr>
 
                         <?php
                             }
-                            }?>
+                        }
+                        ?>
                     </tbody>
                 </table>
+
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </div>
 </div>
+<?php
+if($alert){
+?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        position: "top-middle",
+        icon: "success",
+        title: "status has been updated  ",
+        showConfirmButton: false,
+        timer: 1500
+    });
+</script>
+<?php
+}
+?>
 <?php
 $content= ob_get_clean();
 include '../layouts.php';

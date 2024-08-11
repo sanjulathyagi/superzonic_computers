@@ -9,65 +9,29 @@ $breadcrumb_item = "Inventory";
 $breadcrumb_item_active = "Add";
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {  //check the method
-    $message = array();  //create array variable
-    if (isset($_FILES['itemImages'])) {   //check there are any uploaded images at least one 
-        $itemImages = $_FILES['itemImages'];  //try to upload multiple images ,so use []
-        $uploadResult = uploadFiles($itemImages);  //call to uploadFiles function
-        foreach ($uploadResult as $key => $value) {  //show images
-            if (@$value['upload']) {
-                echo $value['file'];
-                $sql = "INSERT INTO itemimages ('ItemID','ImagePath') VALUES (,'$item_id','$ImagePath')";
-                $db->query($sql);   
-            } else {
-                foreach ($value as $result) {
-                    echo $result;
-                }
-            }
-        }
-    }
-}
-
 
 //check post and data clean
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $item_id = dataClean($item_id);
-    $colour = dataClean($colour);
-    $category_name = dataClean($category_name);
-    $unit_price = dataClean($unit_price);
-    $item_image= dataClean($item_image);
-    $brand = dataClean($brand);
-    $qty = dataClean($qty);
+    $category_id = dataClean($category_id);
+    $brand_id = dataClean($brand_id);
     $purchase_date = dataClean($purchase_date);
-    $Supplier_id = dataClean($Supplier_id);
+    $supplier_id = dataClean($supplier_id);
 
-    if (empty( $item_name)) {
-        $message['item_name'] = "The ItemName should not be blank...!";
-    }
-    if (empty( $colour)) {
-        $message['colour'] = "The colour should not be blank...!";
-    }
-    if (empty($category_name)) {
-        $message['category_name'] = "The CategoryName should not be blank...!";
+   
+    if (empty($category_id)) {
+        $message['category_id'] = "The CategoryName should not be blank...!";
     } 
-    if (empty($unit_price)) {
-        $message['unit_price'] = "The Unit_price Date should not be blank...!";
+   
+    if (empty($brand_id)) {
+        $message['brand_id '] = "The brand should not be blank...!";
     }
-    if (empty($item_image)) {
-        $message['item_image'] = "The ItemImage should not be blank...!";
-    }
-    if (empty($Brand)) {
-        $message['brand '] = "The brand should not be blank...!";
-    }
-    if (empty($qty)) {
-        $message['qty'] = "The qty should not be blank...!";
-    }
+  
     if (empty($purchase_date)) {
         $message['purchase_date'] = "The purchase_date should not be blank...!";
     }
-    if (empty($SupplierName)) {
-        $message['SupplierName'] = "The SupplierName should not be blank...!";
+    if (empty($supplier_id)) {
+        $message['supplier_id'] = "The SupplierName should not be blank...!";
     }
 
     if (empty($message)) {
@@ -76,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($item_id as $key => $value){  //pass array values
             $q=$qty[$key];
             $price =$unit_price[$key];
-            $sql = "INSERT INTO 'item_stock' ('item_id','qty','unit_price','purchase_date','supplier_id') VALUES ('$value','$q','$price','$purchase_date','$supplier_id')";
+            $buying_price =$buying_price[$key];
+            $sql = "INSERT INTO item_stock (item_id,qty,buying_price,unit_price,category_id,brand_id,purchase_date,supplier_id) VALUES ('$value','$q','$buying_price','$price','$category_id','$brand_id','$purchase_date','$supplier_id')";
             $db->query($sql);
 
         }
@@ -87,8 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>inventory/manage.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i> View
+        <a href="<?= SYS_URL ?>inventory/stock_receive.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i> View
             stock</a>
+            
         <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title">Add New item</h3>
@@ -121,14 +87,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="form-group ">
                                 <label for="inputPurchaseDate">Purchase Date</label>
                                 <input type="date" class="form-control" id="purchase_date" name="purchase_date"
-                                    placeholder="Enter purchase_date" value="<?= @$purchase_date ?>">
+                                    placeholder="Enter purchase_date"max="<?=date('Y-m-d') ?>" value="<?= @$purchase_date ?>">
                                 <span class="text-danger"><?= @$message['purchase_date'] ?></span>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group ">
                                 <label for="inputCategory Name">Category Name</label>
-                                <select name="item_category_id" id="item_category_id" class="form-control" required>
+                                <select name="category_id" id="category_id" class="form-control" required>
                                     <option value=""></option>
                                     <?php
                                     $db = dbConn();
@@ -137,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                    <option value="<?= $row['id']?>"><?= $row['category_name']?></option>
+                                    <option value="<?= $row['id']?>"<?= @$category_id==$row['id']? 'selected':''?>
+                                        ><?= $row['category_name']?></option>
                                     <?php
                                         }
                                     }
@@ -147,19 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group ">
-                                <label for="inputColour">Colour</label>
-                                <input type="text" class="form-control" id="colour" name="colour"
-                                    placeholder="Enter Colour">
-                                <span class="text-danger"><?= @$message['colour'] ?></span>
-                            </div>
-                        </div>
+                        
 
                         <div class="col-lg-6">
                             <div class="form-group ">
                                 <label for="inputBrand ">Brand </label>
-                                <select name="id" id="id" class="form-control" required>
+                                <select name="brand_id" id="brand_id" class="form-control" required>
                                     <option value=""></option>
                                     <?php
                                     $db = dbConn();
@@ -168,7 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                    <option value="<?= $row['id']?>"><?= $row['brand']?></option>
+                                    <option value="<?= $row['id']?>"<?= @$brand_id==$row['id']? 'selected':''?>
+                                        ><?= $row['brand']?></option>
                                     <?php
                                         }
                                     }
@@ -185,7 +146,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <th>Item Name</th>
                                 <th>Quantity</th>
-                                <th>Unit Price</th>
+                                <th>Buying Price</th>
+                                <th>Selling Price</th>
+                             
                             </tr>
                         </thead>
                         <tbody>
@@ -208,13 +171,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" id="qty" name="qty[]" required>
+                                    <input type="number" class="form-control" id="qty" name="qty[]" min="1" required>
 
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="buying_price" name="buying_price[]"
+                                        required>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" id="unit_price" name="unit_price[]"
                                         required>
                                 </td>
+                               
                                 <td>
                                     <button type="button" class="removeBtn btn btn-danger"><i
                                             class="fas fa-trash-alt"></i></button>
@@ -227,17 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <button type="button" id="addBtn" class="btn btn-dark  btn-sm">Add Item</button>
 
-                <body>
-                    <h4>Upload Item Images</h4>
-
-                    <label for="itemImages">Select Images (Max 3):</label><br>
-                    <input type="file" id="itemImages1" name="itemImages[]"><br><br>
-                    <input type="file" id="itemImages2" name="itemImages[]"><br><br>
-                    <input type="file" id="itemImages3" name="itemImages[]"><br><br>
-
-                    
-
-                </body>
+                
 
 
         </div>

@@ -1,7 +1,7 @@
 
 <?php
+include '../config.php';
 
-session_start();
 include '../function.php';
 
 extract($_POST);
@@ -10,8 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'add_cart') {
 
     $db = dbConn();
     //pass selected one item record 
-    $sql = "SELECT * FROM item_stock INNER JOIN items 
-        ON (items.id = item_stock.item_id) WHERE item_stock.id='$id'";
+      $sql = "SELECT * FROM item_stock INNER JOIN items 
+        ON (items.id = item_stock.item_id)
+        INNER JOIN itemimages im ON im.ItemID = items.id WHERE item_stock.id='$id'";
 
     $result = $db->query($sql);
     //array inside a associative array pass qty
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'add_cart') {
 
     //cart session array pass values to outside array $arr[$id]='1',...
     $_SESSION['cart'][$id] = array('stock_id' => $row['id'], 'item_id' => $row['item_id'],
-    'item_image' => $row['item_image'], 
+    'ImagePath' => $row['ImagePath'], 
     'item_name' => $row['item_name'],
      'unit_price' => $row['unit_price'],
       'qty' => $current_qty);

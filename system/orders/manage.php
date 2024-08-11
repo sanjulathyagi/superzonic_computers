@@ -6,11 +6,27 @@ include_once '../init.php';
 $link = "Order Management";
 $breadcrumb_item = "Order";
 $breadcrumb_item_active = "Manage";
+$alert=false;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    extract($_POST);
+    
+
+    if (!empty($id) && isset($order_status)) {
+        $db =dbConn();
+        $sql = "UPDATE orders SET order_status='$order_status' WHERE id='$id'";
+        $result1 = $db->query($sql);
+         if($result1){
+            $alert=true;
+         } else{
+            $alert =false;
+         }  
+        }
+    }
 ?>
 <div class="row">
     <div class="col-12">
-    <a href="<?= SYS_URL ?>orders/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
-            Add New order</a>
+    <!-- <a href="<?= SYS_URL ?>orders/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
+            Add New order</a> -->
         <a href="<?= SYS_URL ?>orders/order_details_report.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
             Order Details Report</a>
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
@@ -61,6 +77,7 @@ $breadcrumb_item_active = "Manage";
                             <th>Order Number</th>
                             <th>Status</th>
                             <th>Actions</th>
+                            <th>Change status</th>
 
                             <th></th>
                             <th></th>
@@ -80,22 +97,21 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['order_number'] ?></td>
                             <td><?= ($row['order_status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Paid</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">pending</button>'; ?></td>
                             
+                            <td><a href="<?= SYS_URL ?>orders/view1.php?order_id=<?= $row['id'] ?>"
+                                            class="btn btn-info btn-sm" style="width: 90px;"><i class="fas fa-eye"></i> view</a>
+                               
+                            </td>
                             <td>
-                                <div class="mb-1 dropdown no-arrow" >
-                                    <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in" style="min-width: 7rem !important";
-                                        aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;
+                                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                                    <select name="status" id="order_status" class="form-control-sm"
+                                        onchange="this.form.submit()">
+                                        <option value="1" <?= ($row['order_status']==1)?'selected': '' ?>>Paid</option>
+                                        <option value="0" <?= ($row['order_status']==0) ? 'selected' : '' ?>>Pending</option>
+                                    </select>
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                </form>
+                                
 
-
-                                        <a href="<?= SYS_URL ?>orders/view1.php?order_id=<?= $row['id'] ?>"
-                                            class="btn btn-info btn-sm" style="width: 90px;"><i class="fas fa-eye"></i>view</a>
-
-                                    </div>
-                                </div>
                             </td>
                         </tr>
 

@@ -1,10 +1,32 @@
 <?php
-ob_start();
-session_start(); 
-// if(!isset($_SESSION['USERID'])){
-//     header("Location:login.php");
-// }
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+$total=0;
+$noitems=0;
+if(isset($_SESSION['cart'])) {
+    $cart=$_SESSION['cart'];
+    foreach($cart as $key=>$value) {
+        $total+= $value['qty'] *$value['unit_price'];
+        $noitems+= $value['qty'];
+    }
+}
+ "<a href='cart.php'".$total . "[" . $noitems . "]" . "</a>";
+ $_SESSION['noitems']= $noitems;   
 ?>
+<style>
+    .cart_count{
+        background-color:red;
+        color:white;
+        border-radius:50%;
+        width:20px;
+        top:12px;
+        right:20px;
+        font-size:12px;
+        padding: 5px 10px;
+        
+    }
+</style>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,8 +39,8 @@ session_start();
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/img/logo design.jpeg" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link
@@ -26,17 +48,17 @@ session_start();
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/mystyle.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/css/style.css" rel="stylesheet">
+    <link href="<?= WEB_URL ?>assets/css/mystyle.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" rel="stylesheet">
 
@@ -52,16 +74,19 @@ session_start();
 
             <!-- <h1 class="logo me-auto me-lg-0"><a href="index.html">SuperZonic<span><br/>Computers</span></a></h1> -->
             <!-- Uncomment below if you prefer to use an image logo -->
-            <a href="index.html" class="logo me-auto me-lg-0 "><img src="assets/img/logo design.jpeg" alt=""
+            <a href="<?= WEB_URL ?>index.html" class="logo me-auto me-lg-0 "><img src="<?= WEB_URL ?>assets/img/logo design.jpeg" alt=""
                     class="img-fluid" width="100%" ></a>
 
             <nav id="navbar" class="order-last navbar order-lg-0 ">
                 <ul>
-                    <li><a class="nav-link scrollto active" style="color:black !important;" href="index.php">Home</a></li>
-                    <li><a class="nav-link scrollto"style="color:black !important;" href="item.php">Shop</a></li>
-                    <li><a class="nav-link scrollto" style="color:black !important;"href="services.php">Services</a></li>
-                    <li><a class="nav-link scrollto" style="color:black !important;"href="appointment.php">Appointments</a></li>
-                    <li><a class="nav-link scrollto" style="color:black !important;"href="contact.php">Contacts</a></li>
+                    <li><a class="nav-link scrollto active" style="color:black !important;" href="<?= WEB_URL ?>index.php">Home</a></li>
+                    <li><a class="nav-link scrollto"style="color:black !important;" href="<?= WEB_URL ?>item.php">Shop</a></li>
+                    <li><a class="nav-link scrollto" style="color:black !important;"href="<?= WEB_URL ?>services.php">Services</a></li>
+                    <li><a class="nav-link scrollto" style="color:black !important;"href="<?= WEB_URL ?>appointment.php">Appointments</a></li>
+                    <li><a class="nav-link scrollto" style="color:black !important;"href="<?= WEB_URL ?>contact.php">Contacts</a></li>
+                    <li><a href="<?= WEB_URL ?>account.php "style="color:black !important;"><i class="fas fa-user-alt"></i></a></li>
+                    <li><a href="<?= WEB_URL ?>chat/index.php "style="color:black !important;"><i class="fas fa-comment-alt"></i></a></li>
+                    <li><a href="<?= WEB_URL ?>cart.php "style="color:black !important;"><span class="cart_count"><?=$noitems ?></span><i class="fa fa-shopping-cart"></i></a></li>
 
 
 
@@ -73,14 +98,14 @@ session_start();
             <?php 
                 if(isset($_SESSION['USERID'])){
                   ?>
-            <a href="register.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;margin-right:-320px">Welcome,
+            <a href="<?= WEB_URL ?>register.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;margin-right:-240px">Welcome,
                 <?= $_SESSION['FIRSTNAME'] ?></a>
-            <a href="login.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Logout</a>
+            <a href="<?= WEB_URL ?>logout.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Logout</a>
             <?php
                 }else {
                 ?>
-            <a href="register.php" class="get-started-btn bg-dark register-btn scrollto"  style=" margin-right:-320px !important;">Register</a>
-            <a href="login.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Login</a>
+            <a href="<?= WEB_URL ?>register.php" class="get-started-btn bg-dark register-btn scrollto"  style=" margin-right:-280px !important;">Register</a>
+            <a href="<?= WEB_URL ?>login.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Login</a>
             <?php
               	}
               	?>

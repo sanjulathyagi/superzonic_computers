@@ -9,9 +9,9 @@ $breadcrumb_item_active = "Manage";
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>order/add_stock.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i>
+        <a href="<?= SYS_URL ?>order/add_stock.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
             Add New Return</a>
-        <a href="<?= SYS_URL ?>inventory/add.php" class="btn bg-dark btn-sm mb-2"><i class="fas fa-th-list"></i>
+        <a href="<?= SYS_URL ?>inventory/add.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
             Item Return Report</a>
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
             <input type="date" name="from_date" class="btn-sm btn bg-secondary">
@@ -25,13 +25,13 @@ $breadcrumb_item_active = "Manage";
 
             </div>
             <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
+            <div class="p-0 card-body table-responsive">
                 <?php
                 $where = null;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     extract($_POST);
                     if (!empty($from_date) && !empty($to_date)) {
-                        $where .= " stock_returns.date BETWEEN '$from_date' AND '$to_date' AND";
+                        $where .= "return_date BETWEEN '$from_date' AND '$to_date' AND";
                     }
                     
                     
@@ -43,10 +43,10 @@ $breadcrumb_item_active = "Manage";
                 }
 
                 $db= dbConn ();
-                $sql = "SELECT sr.*, i.item_name
-                FROM stock_returns sr
+                $sql = "SELECT ri.*, i.item_name
+                FROM order_return_items ri
                 INNER JOIN items i
-                    ON i.Id = sr.item_id $where;";
+                    ON i.Id = ri.item_id $where";
                 $result = $db->query($sql);
                ?> 
 
@@ -54,9 +54,10 @@ $breadcrumb_item_active = "Manage";
                     <thead>
                         <tr>
                             <th>Item Name</th>
+                            <th>Unit Price</th>
                             <th>Quantity</th>
-                            <th>Reason</th>
-                            <th>Date</th>
+                            <th>Return type</th>
+                            <th>Return Date</th>
                             <th>Status</th>
                             <th>Actions</th>
                     </thead>
@@ -68,17 +69,18 @@ $breadcrumb_item_active = "Manage";
                                 ?>
                         <tr>
                             <td><?= $row['item_name'] ?></td>
-                            <td><?= $row['quantity'] ?></td>
-                            <td><?= $row['reason'] ?></td>
-                            <td><?= $row['date'] ?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>
+                            <td><?= $row['unit_price'] ?></td>
+                            <td><?= $row['qty'] ?></td>
+                            <td><?= $row['return_type'] ?></td>
+                            <td><?= $row['return_date'] ?></td>
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Approved</button>' :'' ; ?></td>
                             <td>
-                                <div class="dropdown no-arrow mb-1">
+                                <div class="mb-1 dropdown no-arrow">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-cog"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
+                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
 

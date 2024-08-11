@@ -50,13 +50,14 @@ $alert=false;
                 $db = dbConn();
                 $sql = "SELECT it.id
                 ,i.item_name
-                ,i.colour
                 ,ic.category_name
+                ,it.buying_price
                 ,it.unit_price
                 ,it.qty
                 ,it.purchase_date
                 ,i.status
                 ,s.SupplierName
+                ,b.brand
                
             
     FROM
@@ -65,6 +66,8 @@ $alert=false;
         ON (i.id = it.item_id)
     INNER JOIN item_category ic
         ON (ic.id = i.item_category)
+    INNER JOIN brands b
+        ON (b.id = it.brand_id)
     INNER JOIN supplier s
         ON (s.id = it.supplier_id) $where";
                 $result = $db->query($sql);
@@ -75,8 +78,9 @@ $alert=false;
                         <tr>
                             <th>Item Name</th>
                             <th>Category</th>
-                            <th>Colour</th>
-                            <th>Unit_price</th>
+                            <th>Brand</th>
+                            <th>Buying price</th>
+                            <th>Selling Price</th>
                             <th>Qty</th>
                             <th>Purchase Date</th>
                             <th>Supplier</th>
@@ -94,12 +98,13 @@ $alert=false;
                         <tr>
                             <td><?= $row['item_name'] ?></td>
                             <td><?= $row['category_name'] ?></td>
-                            <td><?= $row['colour'] ?></td>
+                            <td><?= $row['brand'] ?></td>
+                            <td><?= $row['buying_price'] ?></td>
                             <td><?= $row['unit_price'] ?></td>
                             <td><?= $row['qty'] ?></td>
                             <td><?= $row['purchase_date'] ?></td>
                             <td><?= $row['SupplierName']?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Approve</button>' :'<button class="btn btn-info btn-sm" style="width: 80px;">Pending</button>'; ?>
+                            <!-- <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Approved</button>' :'<button class="btn btn-info btn-sm" style="width: 80px;">Pending</button>'; ?> -->
                             </td>
                             <td>
                                 <div class="mb-1 dropdown no-arrow">
@@ -138,8 +143,7 @@ $alert=false;
                                 
                                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     extract($_POST);
-                                    $id= $_POST['id'];
-                                    $status = $_POST['status'];
+                                    
                                 
                                     if (!empty($id) && isset($status)) {
                                         $db =dbConn();
@@ -179,7 +183,7 @@ if($alert){
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     Swal.fire({
-        position: "top-end",
+        position: "top-middle",
         icon: "success",
         title: "status has been updated  ",
         showConfirmButton: false,

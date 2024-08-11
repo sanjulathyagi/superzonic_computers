@@ -7,24 +7,24 @@ include '../function.php';
 <section id="hero" class="d-flex align-items-center justify-content-center">
     <div class="container" data-aos="fade-up">
         <div class="container-fluid align-items-center justify-content-lg-between ">
-            <a href="index.html" class="logo me-auto me-lg-0 "><img src="" alt="" class="img-fluid" width="100%"></a>
+            
 
             <nav id="navbar" class="order-last navbar order-lg-0 ">
                 <ul class="justify-content-center">
 
                     <li class="dropdown"><a href="#"><span>Laptops</span> <i class="bi bi-chevron-down"></i></a>
                         <ul>
-                            <li><a href="#"><img src="assets/img/hp-300x300-1.png" class="img-fluid" alt=""
+                            <li><a href="#"><img src="<?= WEB_URL ?>assets/img/hp-300x300-1.png" class="img-fluid" alt=""
                                         width="35%"></a></li>
-                            <li><a href="#"><img src="assets/img/Dell-300x300.png" class="img-fluid" alt="" width="35%">
+                            <li><a href="#"><img src="<?= WEB_URL ?>assets/img/Dell-300x300.png" class="img-fluid" alt="" width="35%">
                                 </a></li>
-                            <li><a href="#"><img src="assets/img/LENOVO-LOGO.jpg" class="img-fluid" alt=""
+                            <li><a href="#"><img src="<?= WEB_URL ?>assets/img/LENOVO-LOGO.jpg" class="img-fluid" alt=""
                                         width="35%"></a></li></a>
                     </li>
-                    <li><a href="#"><img src="assets/img/Asus-Logoo.png" class="img-fluid" alt="" width="35%"></a></li>
-                    <li><a href="#"><img src="assets/img/msi-as.png" class="img-fluid" alt="" width="35%"></a></li>
-                    <li><a href="#"><img src="assets/img/mac.jpg" class="img-fluid" alt="" width="35%"></a></li>
-                    <li><a href="#"><img src="assets/img/OIP.jpg" class="img-fluid" alt="" width="35%"></a></li>
+                    <li><a href="#"><img src="<?= WEB_URL ?>assets/img/Asus-Logoo.png" class="img-fluid" alt="" width="35%"></a></li>
+                    <li><a href="#"><img src="<?= WEB_URL ?>assets/img/msi-as.png" class="img-fluid" alt="" width="35%"></a></li>
+                    <li><a href="#"><img src="<?= WEB_URL ?>assets/img/mac.jpg" class="img-fluid" alt="" width="35%"></a></li>
+                    <li><a href="#"><img src="<?= WEB_URL ?>assets/img/OIP.jpg" class="img-fluid" alt="" width="35%"></a></li>
                 </ul>
                 </li>
                 <li class="dropdown"><a href="#"><span>Desktop and servers</span> <i class="bi bi-chevron-down"></i></a>
@@ -75,7 +75,7 @@ include '../function.php';
             <div class="col-lg-3">
                 <div class="container bg-white" width="800px" height="800px">
                     <div class="hero__text">
-                        <a href=""><img src="assets/img/image11.jpg" alt="" width="800px" height="500px"></a>
+                        <a href=""><img src="<?= WEB_URL ?>assets/img/new-banner-600x412.jpg" alt="" width="600px" height="400px"></a>
                     </div>
                 </div>
             </div>
@@ -85,12 +85,12 @@ include '../function.php';
                         <div class="col">
                             <h1 class="text-dark" style="text-align:right;">
                                 Powerful Digital<br> Solutions With <br>SuperZonic<br></h1><br>
-                            <h3 style="text-align:right;"><a href="shop.php" class="btn btn-dark">SHOP NOW</a></h3><br>
+                            <h3 style="text-align:right;"><a href="<?= WEB_URL ?>item.php" class="btn btn-dark">SHOP NOW</a></h3><br>
                             <h2 class="text-dark" style="text-align:right;">
                                 <strong>Experience hassle-free repairs!</strong></h2>
                             <h4 style="text-align:right;">Transform your tech <br> troubles into <br> smooth
                                 solutions<br> with us!<br></h4>
-                            <h4 style="text-align:right;"><a href="appointment.php" class="btn btn-dark">BOOK NOW</a>
+                            <h4 style="text-align:right;"><a href="<?= WEB_URL ?>appointment.php" class="btn btn-dark">BOOK NOW</a>
                             </h4>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ include '../function.php';
 
             <div class="row">
                 <div class="order-1 col-lg-6 order-lg-2" data-aos="fade-left" data-aos-delay="100">
-                    <img src="assets/img/logo design.jpeg" class="img-fluid" alt="" style="width:80%">
+                    <img src="<?= WEB_URL ?>assets/img/logo design.jpeg" class="img-fluid" alt="" style="width:80%">
                 </div>
                 <div class="order-2 pt-4 col-lg-6 pt-lg-0 order-lg-1 content" data-aos="fade-right"
                     data-aos-delay="100">
@@ -169,7 +169,36 @@ include '../function.php';
     </section><!-- End Clients Section -->
 
 
-    <!-- ======= Cta Section ======= -->
+        <!-- ======= Cta Section ======= -->
+        <section id="cta" class="cta">
+      <div class="container" data-aos="zoom-in">
+        <div class="row">
+            <div class="col-lg-4">
+                <img src="<?= WEB_URL ?>assets/quiz.png" alt="" width="80%">
+            </div>
+            <div class="col-lg-8">
+            <div class="text-center">
+          <h3>"Hurry! The clock is counting down."</h3>
+          <p> "The clock is your challenge—beat it!".</p>
+          <form method="post" action="check_availability.php">
+            <div class="row g-3">
+              <div class="col">
+                <p class="text-info">In this time-based quiz, each question tests your quick thinking.<br>You’ll have limited time to answer each one.</p>
+                <p>Remember, every second counts—good luck!</p>
+              </div>
+              
+            </div><br>
+            <a href="<?= WEB_URL ?>quiz/index.php" class="btn btn-warning">Start Now</a>
+            
+          </form>
+        </div>
+            </div>
+        </div>
+
+       
+
+      </div>
+    </section><!-- End Cta Section -->
     
 
     <!-- ======= Portfolio Section ======= -->
@@ -499,3 +528,6 @@ include '../function.php';
         document.getElementById('categoriesList').classList.toggle('show-categories');
     });
 </script>
+<?php
+ob_end_flush();
+?>

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $result = $db->query($sql);
     $row = $result->fetch_assoc();
 
-    $SupplierName = $row['SupplierName'];
+    $id = $row['id'];
     $Email = $row['Email'];
     $Addressline1 = $row['Addressline1'];
     $Addressline2 = $row['Addressline2'];
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $SupplierName = dataClean($SupplierName);
+    $id = dataClean($id);
     $Email = dataClean($Email);
     $Addressline1 = dataClean($Addressline1);
     $Addressline2 = dataClean($Addressline2);

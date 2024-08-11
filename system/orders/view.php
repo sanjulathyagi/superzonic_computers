@@ -64,20 +64,20 @@ $row = $result->fetch_assoc();
                     </div>
                 </div>
 
-                <!-- <?php
-                $db = dbConn();
-                $sql = "SELECT o.order_id,o.item_id,o.qty,i.item_name,o.unit_price
-                (COALESCE(stock_totals.total_qty,0) - COALESCE(stock_totals.total_issued_qty,0)) AS balance_qty
-                FROM order_items o 
-                INNER JOIN items i 
-                    ON i.id=o.item_id
-                LEFT JOIN (SELECT item_id,unit_price,SUM(qty) AS total_qty, SUM(issued_qty) AS total_issued_qty
-                    FROM item_stock
-                    GROUP BY item_id,unit_price) AS stock_totals ON stock_totals.item_id= o.item_id and stock_totals.unit_price= o.unit_price
-                WHERE o.order_id='$order_id'
-                GROUP BY o.order_id,o.item_id,o.unit_price;";
-                $result = $db->query($sql);
-                ?> -->
+                <?php
+                // $db = dbConn();
+                // $sql = "SELECT o.order_id,o.item_id,o.qty,i.item_name,o.unit_price
+                // (COALESCE(stock_totals.total_qty,0) - COALESCE(stock_totals.total_issued_qty,0)) AS balance_qty
+                // FROM order_items o 
+                // INNER JOIN items i 
+                //     ON i.id=o.item_id
+                // LEFT JOIN (SELECT item_id,unit_price,SUM(qty) AS total_qty, SUM(issued_qty) AS total_issued_qty
+                //     FROM item_stock
+                //     GROUP BY item_id,unit_price) AS stock_totals ON stock_totals.item_id= o.item_id and stock_totals.unit_price= o.unit_price
+                // WHERE o.order_id='$order_id'
+                // GROUP BY o.order_id,o.item_id,o.unit_price;";
+                // $result = $db->query($sql);
+                ?> 
                 <form action="../inventory/issue.php" method="post">
                     <table class="table table-hover text-nowrap">
                         <thead>

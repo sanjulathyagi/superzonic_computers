@@ -1,3 +1,12 @@
+<?php
+
+include '../config.php';
+include 'header.php';
+include '../function.php';
+?>
+
+
+
 <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -39,7 +48,12 @@
       <div class="container">
           <h1>Unauthorized Access</h1>
           <p>Sorry, you are not authorized to access this page.</p>
-          <p>Please <a href="web/login.php">go back</a> and try logging in with the correct credentials.</p>
+          <p>Please <a href="<?= WEB_URL ?>login.php">go back</a> and try logging in with the correct credentials.</p>
       </div>
   </body>
   </html>
+
+  <?php
+include 'footer.php';
+?>
+

@@ -7,6 +7,23 @@ $link = "Inventory Management";
 $breadcrumb_item = "Items ";
 $breadcrumb_item_active = "Manage";
 $alert=false;
+$limit=10;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    extract($_POST);
+    
+
+    if (!empty($id) && isset($status)) {
+        $db =dbConn();
+        $sql = "UPDATE items SET status='$status' WHERE id='$id'";
+        $result1 = $db->query($sql);
+         if($result1){
+            $alert=true;
+         } else{
+            $alert =false;
+         }  
+        }
+    }
+
 ?>
 
 <div class="row">
@@ -16,8 +33,18 @@ $alert=false;
         <a href="<?= SYS_URL ?>inventory/add_report.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
             Item Report</a>
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
-            <input type="date" name="from_date" class="btn-sm btn bg-secondary">
-            <input type="date" name="to_date" class="btn-sm btn bg-secondary">
+        <label for="">&nbsp;&nbsp; Select Top</label>
+            <select name="limit" id="limit" style="width:50px !important;">
+                <option value="">--</option>
+                <?php
+                        for ($i=1; $i<=20; $i++){
+                        ?>
+                <option value="<?= $i ?>" <?=$limit==$i?'selected':'' ?>><?= $i ?></option>
+                <?php
+                        }
+                        ?>
+            </select>
+        <input type="text" class="btn-sm btn light border-dark" name="item_name" placeholder="Enter Item Name" name="Name" placeholder="Enter District Name">
 
             <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i> Search</button>
         </form>
@@ -32,8 +59,9 @@ $alert=false;
                 $where = null;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     extract($_POST);
-                    
-                    
+                    if(!empty($item_name)){
+                        $where.=" item_name='$item_name' AND";
+                    }
                     
                     if(!empty($where)){
                         $where= substr($where, 0,-3);
@@ -47,7 +75,7 @@ $alert=false;
                 INNER JOIN item_category ic ON ic.id = i.item_category 
                 INNER JOIN brands b ON b.id = i.brand_id 
                 INNER JOIN models m ON m.id = i.model_id 
-                LEFT JOIN itemimages im ON im.ItemID = i.id GROUP BY i.id $where";
+                INNER JOIN itemimages im ON im.ItemID = i.id $where GROUP BY i.id  ORDER BY item_name ASC LIMIT $limit ";
                 $result = $db->query($sql);
                 ?>
 
@@ -56,8 +84,7 @@ $alert=false;
                         <tr>
                             <th>Serial Number</th>
                             <th>Item </th>
-                            <th>Item Image</th>
-                            <th>Colour</th>
+                            <th>Image</th>
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Model</th>
@@ -74,10 +101,8 @@ $alert=false;
                                 ?>
                         <tr>
                             <td><?= $row['serial_number'] ?></td>
-                            <td><?= $row['item_name'] ?></td>
-                            <td><img src="<?= SYS_URL ?>uploads/<?=  $row['ImagePath'] ?>" alt="item_image"></td>
-
-                            <td><?= $row['colour'] ?></td>
+                            <td width="50"><?= $row['item_name'] ?></td>
+                            <td><img src= ../../uploads/<?=  $row['ImagePath'] ?> alt="item_image" width="60px"></td>
                             <td><?= $row['category_name'] ?></td>
                             <td><?= $row['brand']?></td>
                             <td><?= $row['model_name']?></td>
@@ -116,36 +141,14 @@ $alert=false;
                                     </select>
                                     <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                 </form>
-                                <?php
                                 
-                                
-                                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                                    extract($_POST);
-                                    $id = $_POST['id'];
-                                    $status = $_POST['status'];
-                                
-                                    if (!empty($id) && isset($status)) {
-                                        $db =dbConn();
-                                        $sql = "UPDATE items SET status='$status' WHERE id='$id'";
-                                        $result1 = $db->query($sql);
-                                         if($result1){
-                                            $alert=true;
-                                         } else{
-                                            $alert =false;
-                                         }  
-                                        }
-                                    }
-                                }
-                                
-                                ?>
-
 
                             </td>
                         </tr>
 
                         <?php
                             }
-                        
+                        }
                         ?>
                     </tbody>
                 </table>
@@ -162,7 +165,7 @@ if($alert){
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     Swal.fire({
-        position: "top-end",
+        position: "top-middle",
         icon: "success",
         title: "status has been updated  ",
         showConfirmButton: false,

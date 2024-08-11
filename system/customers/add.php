@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($Gender)) {
         $message['Gender'] = "The Gender should not be blank...!";
     }
-    
+   
   
  
 }

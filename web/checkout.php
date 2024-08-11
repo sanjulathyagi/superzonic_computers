@@ -1,16 +1,28 @@
 <?php
+ob_start();
+include '../config.php';
 include 'header.php';
-// session_start();
-
 include '../function.php';
+
+if (!isset($_SESSION['USERID'])) {
+    header("Location:login.php");
+}
+// $total = $_SESSION['total'];
+// $discount = $_SESSION['discount'];
+// $net = $_SESSION['net'];
+
+
 //submit form data clean 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
     $delivery_name = dataClean($delivery_name);
     $delivery_address = dataClean($delivery_address);
+    $delivery_email = dataClean($delivery_email);
     $delivery_phone = dataClean($delivery_phone);
+
     $billing_name = dataClean($billing_name);
     $billing_address = dataClean($billing_address);
+    $billing_email = dataClean($billing_email);
     $billing_phone = dataClean($billing_phone);
 
     $message = array();
@@ -21,14 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($delivery_address)) {
         $message['delivery_address'] = "The delivery address is required";
     }
+    if (empty($delivery_email)) {
+        $message['delivery_email'] = "The email is required";
+    }
     if (empty($delivery_phone)) {
         $message['delivery_phone'] = "The delivery phone should not be blank...!";
     }
+    
     if (!isset($billing_name)) {
         $message['billing_name'] = "The billing name is required";
     }
     if (empty($billing_address)) {
         $message['billing_address'] = "The billing address is required";
+    }
+    if (empty($billing_email)) {
+        $message['billing_email'] = "The email is required";
     }
     if (empty($billing_phone)) {
         $message['billing_phone'] = "The billing phone is required";
@@ -44,13 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $order_date = date('Y-m-d');
         $order_number = date('Y') . date('m') . date('d') . $customerid;
         
-        $sql = "INSERT INTO 'orders'('order_date','customer_id','delivery_name','delivery_address','delivery_phone','billing_name','billing_address','billing_phone','order_number') VALUES ('$order_date','$customerid','$delivery_name','$delivery_address','$delivery_phone','$billing_name','$billing_address','$billing_phone','$order_number')";
+        // last insert order id of last record
+        $sql = "INSERT INTO orders(order_date,customer_id,delivery_name,delivery_address,delivery_email,delivery_phone,billing_name,billing_address,billing_email,billing_phone,order_number,delivery_method,payment_method) 
+        VALUES ('$order_date','$customerid','$delivery_name','$delivery_address','$delivery_email','$delivery_phone','$billing_name','$billing_address','$billing_email','$billing_phone','$order_number','$delivery_method','$payment_method')";
         $db->query($sql);
         // last insert order id of last record
         $order_id = $db->insert_id;
 
         $cart = $_SESSION['cart'];
         $_SESSION['order_number']=$order_number;
+        
 
         foreach ($cart as $key => $value) {
             $stock_id = $value['stock_id'];
@@ -61,28 +83,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->query($sql);
         }
         header("Location:order_success.php");
+        unset($_SESSION['cart']);
     }
 }
 ?>
+<section class="breadcrumbs">
+    <div class="container">
 
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="container">
 
-<main id="main">
-
-    <!-- ======= Breadcrumbs ======= -->
-    <section class="breadcrumbs">
-        <div class="container">
-
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="container">
-                    <h4>Checkout form</h4>
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <a href="cart.php" style="margin-left:1150px !important;text-align:right;"><i
-                                class="fa fa-shopping-cart"></i></a>
-                        <a href="appointment.php" style="text-align:right;"><i class="fas fa-laptop-house"></i></a>
-                        <a href="contact.php"><i class="fas fa-phone"></i></a>
-
-                    </div>
+                <div class="d-flex justify-content-between align-items-center">
 
                 </div>
 
@@ -90,160 +101,190 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         </div>
 
-    </section><br><!-- End Breadcrumbs -->
+    </div>
 
+</section><br>
+
+<main id="main">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <div class="row">
+                <div class="col-lg-8">
+
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-lg-8">
                             <h3>Delivery Details</h3>
-                            <div class="form-group">
-                                <label for="delivery_name">Name:</label>
-                                <input type="text" class="form-control" id="delivery_name" name="delivery_name"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="delivery_address">AddressLine1:</label>
-                                <input type="text" class="form-control" id="delivery_address1" name="delivery_address1"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="delivery_address">AddressLine2:</label>
-                                <input type="text" class="form-control" id="delivery_address2" name="delivery_address2"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="delivery_address">City:</label>
-                                <input type="text" class="form-control" id="delivery_address3" name="delivery_address3"
-                                    required>
+                            <label for="delivery_name">Name:</label>
+                            <input type="text" id="delivery_name" name="delivery_name" class="form-control"
+                                required><br>
+
+                            <label for="delivery_address">Address:</label>
+                            <textarea id="delivery_address" name="delivery_address" class="form-control"
+                                required></textarea><br>
+
+                            <label for="delivery_phone">Email:</label>
+                            <input type="text" class="form-control" id="delivery_email" name="delivery_email"
+                                class="form-control" required>
+
+                            <label for="delivery_phone">Phone:</label>
+                            <input type="text" id="delivery_phone" name="delivery_phone" class="form-control"
+                                required><br>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                    <label for="Payment Methods"><b>Delivery Method</b></label><br>
+                                    <input type="radio" id="delivery" value="delivery" name="delivery_method">Delivery
+                                    within Kegalle
+                                    <br>
+                                    <input type="radio" id="pickup" value="pickup" name="delivery_method">Pickup from
+                                    store
+
+
+                                </div>
+                                <div class="col-lg-6">
+
+                                    <label for="Payment Methods"><b>Payment Method</b></label><br>
+                                    <input type="radio" id="cod" value="cod" name="payment_method"> Cash On Delivery
+                                    (COD)<br>
+                                    <input type="radio" id="bank" value="bank" name="payment_method"> Bank Transfer
+
+
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="delivery_email">Email:</label>
-                                <input type="text" class="form-control" id="delivery_email" name="delivery_email"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="delivery_phone">Phone:</label>
-                                <input type="text" class="form-control" id="delivery_phone" name="delivery_phone"
-                                    required>
-                            </div>
                         </div>
-                        <div class="col-md-5">
-                            <h3>Billing Details</h3>
-                            <div class="form-group">
-                                <label for="billing_name">Name:</label>
-                                <input type="text" class="form-control" id="billing_name" name="billing_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="billing_address">AddressLine1:</label>
-                                <input type="text" class="form-control" id="billing_address1" name="billing_address1"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="billing_address">AddressLine2:</label>
-                                <input type="text" class="form-control" id="billing_address2" name="billing_address2"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="billing_address">City:</label>
-                                <input type="text" class="form-control" id="billing_address3" name="billing_address3"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="billing_email">Email:</label>
-                                <input type="text" class="form-control" id="billing_email" name="billing_email">
-                            </div>
-                            <div class="form-group">
-                                <label for="billing_phone">Phone:</label>
-                                <input type="text" class="form-control" id="billing_phone" name="billing_phone"
-                                    required>
-                            </div>
-                        </div>
-
                     </div>
-
                     <div class="form-group">
                         <input type="checkbox" id="same_as_delivery" name="same_as_delivery" class="form-check-input">
                         <label for="same_as_delivery" class="form-check-label">Same as Delivery Details</label>
                     </div><br>
-                    <button type="submit" class="btn btn-warning">Checkout</button>
-            </div>
-            <div class="col-lg-3" style="border: 1px solid">
-                <div class="row ">
-                    <br>
-                    <h3>Payment Summary</h3>
-                    <p>Accepted method</p>
-                    <img src="assets/download.jpeg" alt="" width="50%">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h3>Billing Details</h3>
+                            <label for="billing_name">Name:</label>
+                            <input type="text" id="billing_name" name="billing_name" class="form-control" required><br>
 
-                    <div class="form-group">
-                        <input type="checkbox" id="same_as_delivery" name="same_as_delivery" class="form-check-input">
-                        <label for="same_as_delivery" class="form-check-label">I have read and agree to the
-                            website</label>
-                            
-                    </div><br><br>
-                    <label for="payemnt slip">Upload Payment Slip</label>
-                    <input type="file" required>
-                    
+                            <label for="billing_address">Address:</label>
+                            <textarea id="billing_address" name="billing_address" class="form-control"
+                                required></textarea><br>
+
+                            <label for="billing_phone">Email:</label>
+                            <input type="text" class="form-control" id="billing_email" name="billing_email"
+                                class="form-control" required>
+
+                            <label for="billing_phone">Phone:</label>
+                            <input type="text" id="billing_phone" name="billing_phone" class="form-control"
+                                required><br>
+
+                        </div>
+                    </div><br>
 
                 </div>
+                <div class="col-lg-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="row bg-light ">
+                            <div class="col-lg-8  align-items-stretch" data-aos="zoom-in">
+                                <div class="icon-box" style="width:400 !important;">
+                                    <img src="<?= WEB_URL ?>assets/img/credit-card.avif" alt="laptop" class="first-img"
+                                        style="height:200px !important;width:200px !important;">
+                                    <h5>Seal the deal—checkout now!</h5>
+                                    <table class="cart-table ">
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4">Total</td>
+                                                <td colspan="2"><?= number_format($total, 2) ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">Discount(3%)</td>
+                                                <td colspan="2"><?= number_format($total * 0.03, 2) ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">Net</td>
+                                                <td colspan="2">
+                                                    <?= number_format(($total - $total * 0.03), 2) ?>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br><br>
+                    <div class="col-lg-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="row bg-light">
+                                <div class="col-lg-8  align-items-stretch" data-aos="zoom-in">
+                                    <div class="icon-box" style="width:400 !important;">
+                                        <h4>Bank Payment Details</h4>
+                                        If you choose Direct Bank Transfer, <br>please make your payment directly to our
+                                        bank account. Ensure that you include your order ID as the payment reference.
+                                        Please note that your order will be processed and dispatched only after the
+                                        funds
+                                        have been successfully cleared in our account.<br><br>
+                                        Bank : Commercial Bank<br>
+                                        Branch : Kegalle<br>
+                                        Account Name : Superzonic computer store<br>
+                                        Account Number : 8019327459<br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+
+                    <!-- <div class="col-lg-3" style="border: 1px solid">
+                    <div class="row ">
+                        <br>
+                        <h3>Payment Summary</h3>
+                        <p>Accepted method</p>
+                        <img src="<?= WEB_URL ?>assets/download.jpeg" alt="" width="50%">
+
+                        <div class="form-group">
+                            <input type="checkbox" id="same_as_delivery" name="same_as_delivery"
+                                class="form-check-input">
+                            <label for="same_as_delivery" class="form-check-label">I have read and agree to the
+                                website</label>
+
+                        </div><br><br>
+                        <label for="payemnt slip">Upload Payment Slip</label>
+                        <input type="file">
+
+
+                    </div>
+
+
+                </div> -->
+                </div>
 
             </div>
-        </div>
-
-
-
-
-
-
-
-
-
-    </div>
-
-
-    </form>
-
-
+            <button type="submit" class="btn btn-warning">Checkout</button>
+        </form>
     </div><br>
-
-
-
-
-
-
-    <script>
-        // Script to copy delivery details to billing details
-        document.getElementById('same_as_delivery').addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById('billing_name').value = document.getElementById('delivery_name')
-                    .value;
-                document.getElementById('billing_address1').value = document.getElementById(
-                    'delivery_address1').value;
-                document.getElementById('billing_address2').value = document.getElementById(
-                    'delivery_address2').value;
-                document.getElementById('billing_address3').value = document.getElementById(
-                    'delivery_address3').value;
-                document.getElementById('billing_email').value = document.getElementById(
-                    'delivery_email').value;
-                document.getElementById('billing_phone').value = document.getElementById('delivery_phone')
-                    .value;
-            } else {
-                document.getElementById('billing_name').value = '';
-                document.getElementById('billing_address1').value = '';
-                document.getElementById('billing_address2').value = '';
-                document.getElementById('billing_address3').value = '';
-                document.getElementById('billing_email').value = '';
-                document.getElementById('billing_phone').value = '';
-            }
-        });
-    </script>
-
 </main>
+<script>
+    // Script to copy delivery details to billing details
+    document.getElementById('same_as_delivery').addEventListener('change', function () {
+        if (this.checked) {
+            document.getElementById('billing_name').value = document.getElementById('delivery_name').value;
+            document.getElementById('billing_address').value = document.getElementById('delivery_address')
+                .value;
+            document.getElementById('billing_email').value = document.getElementById('delivery_email')
+                .value;
+            document.getElementById('billing_phone').value = document.getElementById('delivery_phone')
+                .value;
+        } else {
+            document.getElementById('billing_name').value = '';
+            document.getElementById('billing_address').value = '';
+            document.getElementById('billing_email').value = '';
+            document.getElementById('billing_phone').value = '';
+        }
+    });
+</script>
+
+
 
 <?php
 include 'footer.php';
+ob_end_flush();
 ?>

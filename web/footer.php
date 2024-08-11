@@ -7,7 +7,7 @@
                   <div class="col-lg-3 col-md-6">
                       <div class="footer-info">
                           <h3><span></span></h3>
-                          <img src="assets/img/logo design.jpeg" alt="" class="img-fluid" width="100%"></a>
+                          <img src="<?= WEB_URL ?>assets/img/logo design.jpeg" alt="" class="img-fluid" width="100%"></a>
                           <p>
                               NO. 50/1 <br>
                               NIDHAS MAWATHA<br>
@@ -80,17 +80,18 @@
           class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="<?= WEB_URL ?>assets/js/jquery-3.7.1.min.js"></script>
+  <script src="<?= WEB_URL ?>assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="<?= WEB_URL ?>assets/vendor/aos/aos.js"></script>
+  <script src="<?= WEB_URL ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="<?= WEB_URL ?>assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="<?= WEB_URL ?>assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="<?= WEB_URL ?>assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/js/all.min.js"></script>
 
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="<?= WEB_URL ?>assets/js/main.js"></script>
 
   </body>
 

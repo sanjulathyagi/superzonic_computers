@@ -1,6 +1,6 @@
 <?php
 ob_start();
-// session_start();
+include '../config.php';
 include 'header.php';
 include '../function.php';
 include '../mail.php';
@@ -38,11 +38,21 @@ include '../mail.php';
                     if (!isset($gender)) {
                         $message['gender'] = "Gender is required";
                     }
-                    if (!isset($mobile_no)) {
+
+                    if (empty($mobile_no)) {
                         $message['mobile_no'] = "mobile_no is required";
+                    }else{
+                        $msg=validateMobileNumber($mobile_no);
+                        if($msg!=true){
+                            $message['mobile_no'] = $msg;
+                        }
+                        
                     }
                     if (empty($user_name)) {
                         $message['user_name'] = "User Name is required";
+                    }
+                    if (empty($telno)) {
+                        $message['telno']=validateTelePhoneNumber($telno);
                     }
                     if (empty($password)) {
                         $message['password'] = "Password is required";
@@ -90,18 +100,37 @@ include '../mail.php';
                         }
                     }
 
+                    if ($password !== $confirm_password){
+                        $message['confirm_password'] = "passwords do not match. please try again";
+                    }
+
+
+                    //check password strength
+                    if (!empty($Password)) {
+                    $uppercase = preg_match('@[A-Z]@', $Password);
+                    $lowercase = preg_match('@[a-z]@', $Password);
+                    $number = preg_match('@[0-9]@', $Password);
+                    $specialChars = preg_match('@[^\w]@', $Password);
+
+                    if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($Password) < 8) {
+                        $message['Password'] = 'Password should be at least 8 characters in length and should include at least one uppercase letter, one lowercase letter, one number, and one special character.';
+                        }
+                    }
+
+print_r($message);
+
                     if (empty($message)) {
                         //Use bcrypt hasing algorithem
                         $pw= password_hash($password,PASSWORD_DEFAULT);
                         $db = dbConn();
-                        $sql = "INSERT INTO users('UserName','Password','FirstName','LastName','UserType','status') VALUES ('$user_name','$pw','$first_name','$last_name','customer','1')";
+                        $sql = "INSERT INTO users(UserName,Password,FirstName,LastName,UserType,status) VALUES ('$user_name','$pw','$first_name','$last_name','customer','1')";
                         $db->query($sql);
 
                         $user_id = $db->insert_id;
                         
                         $reg_number=date('Y').date('m').date('d').$user_id;
                         $_SESSION['RNO']=$reg_number;
-                        $sql = "INSERT INTO customers('FirstName', 'LastName', 'Email', 'AddressLine1', 'AddressLine2', 'AddressLine3', 'TelNo', 'MobileNo', 'Gender', 'DistrictId','RegNo','UserId') VALUES ('$first_name','$last_name','$email','$address_line1','$address_line2','$address_line3','$telno','$mobile_no','$gender','$district','$reg_number','$user_id')";
+                        $sql = "INSERT INTO customers(FirstName, LastName, Email, AddressLine1, AddressLine2, AddressLine3, TelNo, MobileNo, Gender, DistrictId,RegNo,UserId) VALUES ('$first_name','$last_name','$email','$address_line1','$address_line2','$address_line3','$telno','$mobile_no','$gender','$district','$reg_number','$user_id')";
                         $db->query($sql);
                         $msg="<h1>SUCCESS</h1>";
                         $msg.="<h2>Congratulations</h2>";
@@ -116,7 +145,7 @@ include '../mail.php';
                   ?>
                     <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form"
                         class="border php-email-form border-1" novalidate>
-                        <div class="row">
+                        <div class="row bg-light">
                             <div class="form-group col-md-6">
                                 <label for="first_name">First Name</label>
                                 <input type="text" name="first_name" class="border form-control border-1 border-dark "
@@ -126,7 +155,7 @@ include '../mail.php';
                             <div class="mt-3 form-group col-md-6 mt-md-0">
                                 <label for="last_name">Last Name</label>
                                 <input type="text" class="border form-control border-1 border-dark" name="last_name"
-                                    id="last_name" value="<?= @$last_name ?>"  placeholder="Last Name" required>
+                                    id="last_name" value="<?= @$last_name ?>" placeholder="Last Name" required>
                                 <span class="text-danger"><?= @$message['last_name'] ?></span>
                             </div>
                         </div>
@@ -147,20 +176,22 @@ include '../mail.php';
                             <div class="form-group col-md-6 ">
                                 <label for="address_line1">Address Line 1</label>
                                 <input type="text" class="border form-control border-1 border-dark" name="address_line1"
-                                    id="address_line1" value="<?= @$address_line1 ?>" placeholder="Address Line 1" required>
+                                    id="address_line1" value="<?= @$address_line1 ?>" placeholder="Address Line 1"
+                                    required>
                             </div>
                             <div class="mt-3 form-group col-md-6 mt-md-0">
                                 <label for="mobile_no">Mobile No.</label>
                                 <input type="text" class="border form-control border-1 border-dark" name="mobile_no"
-                                    id="mobile_no" value="<?= @$last_name ?>" placeholder="Mobile No" required>
-                                    <span class="text-danger"><?= @$message['mobile_no'] ?></span>
+                                    id="mobile_no" value="<?= @$mobile_no ?>" placeholder="Mobile No" required>
+                                <span class="text-danger"><?= @$message['mobile_no'] ?></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="address_line2">Address Line 2</label>
                                 <input type="text" class="border form-control border-1 border-dark" name="address_line2"
-                                    id="address_line2" placeholder="Address Line 2" value="<?= @$address_line2 ?>" required>
+                                    id="address_line2" placeholder="Address Line 2" value="<?= @$address_line2 ?>"
+                                    required>
                             </div>
                             <div class="mt-3 form-group col-md-6 mt-md-0">
                                 <label for="address_line3">City</label>
@@ -229,8 +260,9 @@ include '../mail.php';
                                 </div>
                                 <div class="mt-3 form-group">
                                     <label for="confirm_password">Confirm Password</label>
-                                    <input type="confirm_password" class="border form-control border-1 border-dark"
-                                        name="confirm_password" id="confirm_password" placeholder="confirm_password" required>
+                                    <input type="password" class="border form-control border-1 border-dark"
+                                        name="confirm_password" id="confirm_password" placeholder="confirm_password"
+                                        required>
                                     <span class="text-danger"><?= @$message['confirm_password'] ?></span>
                                 </div>
                             </div>

@@ -1,6 +1,8 @@
 <?php
-session_start();
+
+include '../config.php';
 include 'header.php';
+include '../function.php';
 ?>
 <script>
     Swal.fire({

@@ -51,7 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($AppDate)) {
         $message['AppDate'] = "The App. Date should not be blank...!";
     }
-       
+   
+
+     //Advance validation------------------------------------------------
+     if (ctype_alpha(str_replace(' ', '', $FirstName)) === false) {
+        $message['$FirstName'] = "Only letters and white space allowed";
+    }
+    if (ctype_alpha(str_replace(' ', '', $LastName)) === false) {
+        $message['LastName'] = "Only letters and white space allowed";
+    }
    
     if (empty($message)) {
               

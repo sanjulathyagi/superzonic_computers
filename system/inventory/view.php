@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 include_once '../init.php';
 
 $link = "Inventory Management";
@@ -43,7 +44,7 @@ $row = $result->fetch_assoc();
                                 <h3>Item Details</h3>
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <h6><b>Serail Number :</b></h6>
+                                        <h6><b>Serial Number :</b></h6>
                                         <?= $row['serial_number'] ?><br><br>
                                         <h6><b>Item Name:</b></h6>
                                         <?= $row['item_name'] ?><br><br>

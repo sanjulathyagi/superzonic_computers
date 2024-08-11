@@ -1,4 +1,6 @@
 <?php
+session_start();
+include '../config.php';
 include 'header.php';
 include '../function.php';
 ?>
@@ -48,39 +50,17 @@ include '../function.php';
                 $_SESSION['date']=$date;
                 $_SESSION['time']=$start_time;
                 if(isset($_SESSION['USERID'])){
-                    echo "Book Now";
+                    echo "<a href='<?= WEB_URL ?>dashboard.php'>Book Now</a>";
                     
                 }else{
-                    echo "<a href='login.php'>Please Login before make booking</a>";
+                    echo "<a href='<?= WEB_URL ?>login.php'>Please Login before make booking</a>";
                 }
             }
 
             
             ?>
 </section>
-<section class="inner-page">
 
-    <div class="container" data-aos="zoom-in">
-
-        <div class="text-center">
-
-            <form method="post" action="check_availability.php">
-                <div class="row g-3">
-                    <div class="col-lg-6">
-                        <input type="text" class="form-control" placeholder="Enter Item Name" name="date" width="30px">
-                    </div>
-                    <div class="col-lg-6">
-                        <input type="text" class="form-control" placeholder="Enter Item Brand" name="start_time"
-                            width="30px">
-                    </div>
-                </div><br>
-                <button type="submit" class="btn btn-warning">Book Now </button>
-
-            </form>
-        </div>
-
-    </div>
-<section>
 <?php
 include 'footer.php';
 ?>

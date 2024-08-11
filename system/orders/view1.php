@@ -22,13 +22,7 @@ $order_status = $row['order_status'];
             <div class="card-header">
                 <h3 class="card-title">Order Item Details</h3>
 
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="float-right form-control" placeholder="Search">
-
-                       
-                    </div>
-                </div>
+                
             </div>
             <!-- /.card-header -->
             <div class="p-0 card-body table-responsive">
@@ -71,13 +65,13 @@ $order_status = $row['order_status'];
 
                 <?php
                 $db = dbConn();
-                 $sql = "SELECT 
+                echo $sql = "SELECT 
     o.order_id,
     o.item_id,
     o.unit_price,
     o.qty,
     i.item_name,
-   
+    o.issued_qty,
     (COALESCE(stock_totals.total_qty, 0) - COALESCE(stock_totals.total_issued_qty, 0)) AS balance_qty
 FROM 
     order_items o 
@@ -100,8 +94,7 @@ WHERE
 GROUP BY 
     o.order_id, o.item_id, o.unit_price;
 ";
-                $result = $db->query($sql);
-                ?>
+                 ?>
                 <form action="../inventory/issue.php" method="post">
                     <table class="table table-hover text-nowrap">
                         <thead>
@@ -148,7 +141,7 @@ GROUP BY
                             ?>
                         </tbody>
                     </table>
-                    <button type="submit" class="btn btn-primary">Issue</button>
+                    <button type="submit" class="btn btn-warning btn-sm">Issue</button>
                 </form>
             </div>
             <!-- /.card-body -->

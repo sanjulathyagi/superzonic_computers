@@ -15,20 +15,9 @@ $breadcrumb_item_active = "Manage";
             <div class="card-header">
                 <h3 class="card-title">Appointments Details</h3>
 
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
+            <div class="p-0 card-body table-responsive">
                 <?php
                 $db= dbConn ();
                 $sql = "SELECT appointments.AppId,customers.FirstName,customers.LastName,customers.Email,customers.MobileNo,appointments.date,
@@ -42,7 +31,7 @@ $breadcrumb_item_active = "Manage";
                 <table  id="appointments" class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>App ID</th>
+                           
                             <th>Name</th>
                             <th>Email</th>
                             <th>Mobile No</th>
@@ -60,7 +49,7 @@ $breadcrumb_item_active = "Manage";
                             while ($row=$result->fetch_assoc()) {
                         ?>
                         <tr>
-                            <td><?= $row['AppId'] ?></td>
+                            
                             <td><?= $row['FirstName'] ?> <?= $row['LastName'] ?></td>
                             <td><?= $row['Email'] ?></td>
                             <td><?= $row['MobileNo'] ?></td>
@@ -71,19 +60,17 @@ $breadcrumb_item_active = "Manage";
 
                                              
                             <td>
-                                <div class="dropdown no-arrow mb-1">
+                                <div class="mb-1 dropdown no-arrow">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-cog"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in"
+                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
                                         style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
 
 
-                                        <a href="<?= SYS_URL ?>appointments/edit.php?appid=<?= $row['AppId'] ?>"
-                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-info btn-sm"
+                                        <a class="btn btn-danger btn-sm"
                                             href="<?= SYS_URL ?>appointments/delete.php?appid=<?= $row['AppId'] ?>"
                                             onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
 

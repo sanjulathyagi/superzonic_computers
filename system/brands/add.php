@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 include_once '../init.php';
 
 $link = "Brands Management";
@@ -25,7 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $message['item_quantity'] = "The item quantity should not be blank...!";
     }
     
-  
+    if (!empty($brand)) {
+        $db = dbConn();
+        $sql = "SELECT * FROM brands WHERE brand='$brand'";
+        $result = $db->query($sql);
+        if ($result->num_rows > 0) {
+            $message['brand'] = "This brand already exist...!";
+        }
+    }
 }
 ?>
 <div class="row">

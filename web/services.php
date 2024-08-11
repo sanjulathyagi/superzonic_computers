@@ -1,7 +1,9 @@
 <?php 
+
+include '../config.php';
 include 'header.php';
 include '../function.php';
-session_start(); 
+
 
 ?>
 <!-- ======= Services Section ======= -->
@@ -25,7 +27,7 @@ session_start();
             <div class="row">
                 <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
                     <div class="icon-box">
-                        <img src="assets/img/download image/OIP.jpg" alt="laptop" class="first-img"
+                        <img src="<?= WEB_URL ?>assets/img/download image/OIP.jpg" alt="laptop" class="first-img"
                             style="height:90px !important;width:90px !important;">
                         <!-- <div class="icon"><i class="bx bxl-dribbble"></i></div> -->
                         <h4><a href="">Home delivery</a></h4>
@@ -38,7 +40,7 @@ session_start();
                 <div class="mt-4 col-lg-3 col-md-4 d-flex align-items-stretch mt-md-0" data-aos="zoom-in"
                     data-aos-delay="200">
                     <div class="icon-box">
-                        <img src="assets/img/Aboutus_laptop.jpg" alt="laptop" class="first-img"
+                        <img src="<?= WEB_URL ?>assets/img/Aboutus_laptop.jpg" alt="laptop" class="first-img"
                             style="height:90px !important;width:90px !important;">
                         <!-- <div class="icon"><i class="bx bx-file"></i></div> -->
                         <h4><a href="">Laptop Repairing</a></h4>
@@ -52,7 +54,7 @@ session_start();
                 <div class="mt-4 col-lg-3 col-md-6 d-flex align-items-stretch mt-lg-0" data-aos="zoom-in"
                     data-aos-delay="300">
                     <div class="icon-box">
-                        <img src="assets/img/Aboutus_onsite.jpg" alt="laptop" class="first-img"
+                        <img src="<?= WEB_URL ?>assets/img/Aboutus_onsite.jpg" alt="laptop" class="first-img"
                             style="height:90px !important;width:90px !important;">
                         <!-- <div class="icon"><i class="bx bx-tachometer"></i></div> -->
                         <h4><a href="">warranty assured</a></h4>
@@ -65,7 +67,7 @@ session_start();
                     data-aos-delay="300">
                     <div class="icon-box">
                         <!-- <div class="icon"><i class="bx bx-tachometer"></i></div> -->
-                        <img src="assets/img/Aboutus_network.jpg" alt="laptop" class="first-img"
+                        <img src="<?= WEB_URL ?>assets/img/Aboutus_network.jpg" alt="laptop" class="first-img"
                             style="height:90px !important;width:90px !important;">
                         <h4><a href="">Network Solutions</a></h4>
                         <p>Networking your PCs? Will do a good job weather
@@ -86,4 +88,3 @@ session_start();
   include 'footer.php';
   ?>
 
-</html>
