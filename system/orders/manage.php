@@ -27,8 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="col-12">
     <!-- <a href="<?= SYS_URL ?>orders/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
             Add New order</a> -->
-        <a href="<?= SYS_URL ?>orders/order_details_report.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
-            Order Details Report</a>
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
             <input type="date" class="btn-sm btn bg-secondary" name="from_date">
             <input type="date" class="btn-sm btn bg-secondary" name="to_date">
@@ -97,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <td><?= $row['order_number'] ?></td>
                             <td><?= ($row['order_status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Paid</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">pending</button>'; ?></td>
                             
-                            <td><a href="<?= SYS_URL ?>orders/view1.php?order_id=<?= $row['id'] ?>"
+                            <td><a href="<?= SYS_URL ?>orders/view_order_items.php?order_id=<?= $row['id'] ?>"
                                             class="btn btn-info btn-sm" style="width: 90px;"><i class="fas fa-eye"></i> view</a>
                                
                             </td>

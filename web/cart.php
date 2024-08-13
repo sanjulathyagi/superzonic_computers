@@ -2,13 +2,21 @@
 
 include '../config.php';
 include 'header.php';
-include '../function.php';
+extract($_POST);
+// if ($_SERVER['REQUEST_METHOD'] == 'POST' && @$action == "coupon"){
+//     $db = dbConn();
+//     $sql = "SELECT * 
+//     FROM coupons 
+//     WHERE code = '$coupon_code' AND status = 1";
+//     $result = $db->query($sql);
+//     if ($result->num_rows > 0) {
+//         $row = $result->fetch_assoc();
+//         $userid=$_SESSION['userid'];
 
-extract($_POST); 
-if(!isset($_SESSION['USERID'])){
-    header("Location:login.php");
-}
 
+        
+   
+// }
 
 // submit data through hyperlink used extract
 // remove the array and subarray record when unset
@@ -22,29 +30,18 @@ if($_SERVER['REQUEST_METHOD']=='GET' && @$action=='empty'){
     $_SESSION['cart']=array();
 }
 // check the method is get and if action parameter exists ,equal to update qty
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['action'] == 'update_qty') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'update_qty') {
     $cart = $_SESSION['cart'];
-    $cart = $_GET['id'];
-    $qty = $_GET['qty'];
-    
-
-  $db = dbConn();
-  $sql = "SELECT (issued_qty-qty) FROM item_stocks
-  where item=id";
-  $result = $db->query($sql);
-  $row = $result->fetch_assoc();
-  $available_qty=$row['available_qty'];
-  if($available_qty<= $qty){
-    $qty=$available_qty;
-  }
-  
-                                
+  echo  $id = $_POST['id'];
+    $qty = $_POST['qty'];
+                        
     if (isset($cart[$id])) {
         $cart[$id]['qty'] = $qty;
         $_SESSION['cart'] = $cart;
     }
 }
 // if ($_SERVER['REQUEST_METHOD']== 'GET' && @$action == 'update_qty'){
+
 //     $current_qty = $_SESSION['cart'][$id]['qty'];
 //     if(!empty($qty)) {
 //         $current_qty= $qty;
@@ -112,11 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
                             <tr>
                                 <td><?= $key ?></td>
                                 <td><img src="../uploads/<?=  $value['ImagePath'] ?>" alt="Item Image"
-                                        width="10%" height="10%"></td>
+                                        width="100" height="100"></td>
                                 <td><?= $value['item_name'] ?></td>
                                 <td><?= $value['unit_price'] ?></td>
                                 <td>
-                                    <form method="get" action="cart.php">
+                                    <form method="post" action="cart.php">
                                         <input type="hidden" name="id" value="<?= $key ?>">
                                         <input type="hidden" name="action" value="update_qty">
                                         <input type="number" value="<?= $value['qty'] ?>" name="qty" min="1"
@@ -133,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
                                 </td>
                             </tr>
                             <?php
-                            $total += $value['unit_price'] * $value['qty'];
+                             
                         }
                     
                         ?>
@@ -165,7 +162,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group "><br>
-                                    <button type="submit" class="btn btn-warning btn-sm ">Apply Coupon</button>
+                                <input type="hidden" name="coupon" value="coupon_update">
+                                    <button type="submit" class="btn btn-warning btn-sm " name="coupon">Apply Coupon</button>
                                 </div>
                             </div>
                         </div>

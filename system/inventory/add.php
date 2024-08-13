@@ -102,7 +102,7 @@ if($alert){
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>inventory/items.php" class="mb-2 btn bg-warning"><i class="fas fa-plus-circle"></i> View
+        <a href="<?= SYS_URL ?>inventory/items.php" class="mb-2 btn bg-warning"><i class="fas fa-arrow-alt-circle-left"></i> View
             Items</a>
         <div class="card card-dark">
             <div class="card-header">

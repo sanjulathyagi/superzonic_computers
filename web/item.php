@@ -27,10 +27,10 @@ include '../function.php';
                 $sql = "SELECT i.*, b.brand, m.model_name, ic.category_name,im.ImagePath,s.*,s.qty-s.issued_qty as ava_qty
                 FROM items i 
                 LEFT JOIN item_stock s ON s.item_id = i.id
-                INNER JOIN item_category ic ON ic.id = i.item_category 
-                INNER JOIN brands b ON b.id = i.brand_id 
-                INNER JOIN models m ON m.id = i.model_id 
-                INNER JOIN itemimages im ON im.ItemID = i.id  GROUP BY i.id;";
+                LEFT JOIN item_category ic ON ic.id = i.item_category 
+                LEFT JOIN brands b ON b.id = i.brand_id 
+                LEFT JOIN models m ON m.id = i.model_id 
+                LEFT JOIN itemimages im ON im.ItemID = i.id  GROUP BY i.id;";
                 $result1 = $db->query($sql);
                 ?>
     <div class="container">
@@ -106,7 +106,7 @@ include '../function.php';
                                             class="price-value"><?= number_format($row['unit_price'], 2) ?></b></span>
                                 </div>
                             </div>
-                            
+
                             <div class="display: flex; gap:10px;">
 
                                 <form method="post" action="shopping_cart.php">
@@ -124,8 +124,12 @@ include '../function.php';
                                     </button>
 
                                 </form>
-                                <!-- <input type="checkbox" name="ItemIds[]" value="<?= $row['id'] ?>" class="compare">
-                                    </a>Compare -->
+                                <form action="compare.php" method="post">
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                    <input type="checkbox" name="compare" value="compare_cart" onchange="this.form.submit()">
+                                    </a>Compare
+                                </form>
+
 
 
 
@@ -137,36 +141,20 @@ include '../function.php';
                     }
                     ?>
                 </div>
-                <!-- <div id="compareButton" style="position:fixed;bottom:20px;right:20px;display:none;">
-                        <button type="submit" class="btn btn-warning btn-sm">
-                            compare
-                        </button> -->
+                <div id="compareButton">
+                    <button type="submit" class="btn btn-info btn-sm">
+                        Compare
+                    </button>
+                </div>
+
             </div>
+
+
 
         </div>
 
 
-
     </div>
-
-
-    </div>
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const checkboxes = document.querySelectorAll('.compare');
-            const compareButton = document.getElementById('compareButton');
-            checkboxes.foreach(checkbox = > {
-                checkbox.addEventListener('change', function () {
-                    if (checkboxes.filter(c => c.checked).length > 1) {
-                        compareButton.style.display = 'block';
-                    } else {
-                        compareButton.style.display = 'none';
-                    }
-                });
-            });
-
-        });
-    </script> -->
 
     <?php
 include 'footer.php';

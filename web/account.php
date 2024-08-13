@@ -5,6 +5,16 @@ include 'header.php';
 include '../function.php';
 extract($_GET); 
 
+
+if (empty($message)) {
+  $db = dbConn();
+  $userid = $_SESSION['USERID'];
+ echo $sql = "SELECT CustomerId FROM customers WHERE UserId='$userid'";
+  $result = $db->query($sql);
+  $row = $result->fetch_assoc();
+  echo $customerid = $row['CustomerId'];
+
+}
 ?>
 <!-- ======= Services Section ======= -->
 <section class="breadcrumbs">
@@ -13,7 +23,7 @@ extract($_GET);
       <h2>My Account Dashboard</h2>
       <ol>
         <li><a href="index.html">customer</a></li>
-        <li>Dashboard</li>
+        <li>My Account</li>
       </ol>
     </div>
   </div>
@@ -24,10 +34,10 @@ $db = dbConn();
 $sql = "SELECT o.*,c.FirstName,c.LastName 
 FROM orders o 
 INNER JOIN customers c 
-    ON c.CustomerId=o.customer_id";
-
-$result = $db->query($sql);
-$row = $result->fetch_assoc();
+    ON c.CustomerId=o.customer_id;
+WHERE o.CustomerId='$customerid'";
+$result1 = $db->query($sql);
+$row = $result1->fetch_assoc();
 ?>
 
 

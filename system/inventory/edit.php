@@ -22,9 +22,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { //to get previous data from item file
     $item_category =$row['item_category'];
     $brand_id = $row['brand_id'];
     $model_id = $row['model_id'];
+
+    $sql ="SELECT * FROM itemImages WHERE itemID ='$id'";
+    $result = $db->query($sql);
+    $existingimages =[];
+    while($row = $result->fetch_assoc()){
+        $existingimages[] = $row['ImagePath'];
+    }
+}
+
+
+
     
-   
-     
+if(isset($_FILES['itemImages'])) {  //check any uploaded images 
+    $itemImages = $_FILES['itemImages'];  //assign these images
+    $uploadResult = uploadFiles($itemImages); //call to function
+    foreach($uploadResult as $key => $value){
+        if (@$value['upload']) {
+            $ImagePath=$value['file'];
+            $sql ="INSERT INTO itemImages(itemID,ImagePath) VALUES('$itemID','$ImagePath')";
+            $db->query($sql);
+        } else{
+            foreach ($value as $result) {
+            //     echo $result;
+             }
+        }
+    }
 }
 
 //check post and data clean
@@ -53,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $message['item_category'] = "The category should not be blank...!";
     }
     
-
    
    
     if (empty($message)) {
@@ -175,6 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- /.card-body -->
 
     <div class="card-footer ">
+        <input type="hidden" name="" value="<?=$ImagePath?>">
          <input type="hidden" name="id" value="<?= $id?>">
         <button type="submit" class="btn btn-warning ">Submit</button>
     </div>

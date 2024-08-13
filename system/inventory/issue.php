@@ -11,7 +11,7 @@ foreach ($issued_qty as $key => $qty) { //multiple item issued_qty
     $price=$prices[$key];
     
     while ($issue_qty > 0) {  //run until issue_qty get 0
-        // Select the stock with available quantity, ordered by purchase date (FIFO)
+        // Select the stock with available quantity, ordered by purchase date (FIFO),first record
         $sql = "SELECT *
                 FROM item_stock
                 WHERE item_id = '$item' 
@@ -36,10 +36,10 @@ foreach ($issued_qty as $key => $qty) { //multiple item issued_qty
             $i_qty = $issue_qty;
             $s_id = $row['id']; //stockId store in s_id
 
-            $sql = "UPDATE 'item_stock' SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE id = $s_id";
+        echo  $sql = "UPDATE item_stock SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE id = $s_id";
             $db->query($sql);
             
-            $sql = "UPDATE 'order_items' SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE order_id = '$order_id' AND item_id='$item_id'";
+            $sql = "UPDATE order_items SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE order_id = '$order_id' AND item_id='$item_id'";
             $db->query($sql);
             
             $sql = "INSERT INTO order_items_issue(order_id, item_id, stock_id, unit_price, issued_qty, issue_date) 
@@ -50,10 +50,10 @@ foreach ($issued_qty as $key => $qty) { //multiple item issued_qty
             $i_qty = $remaining_qty;  //if the issue_qty is greater than remaining_qty
             $s_id = $row['id'];
 
-            $sql = "UPDATE 'item_stock' SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE id = $s_id";
+            $sql = "UPDATE item_stock SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE id = $s_id";
             $db->query($sql);
             
-            $sql = "UPDATE 'order_items' SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE order_id = '$order_id' AND item_id='$item_id'";
+            $sql = "UPDATE order_items SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE order_id = '$order_id' AND item_id='$item_id'";
             $db->query($sql);
             
             $sql = "INSERT INTO order_items_issue(order_id, item_id, stock_id, unit_price, issued_qty, issue_date) 
@@ -65,7 +65,7 @@ foreach ($issued_qty as $key => $qty) { //multiple item issued_qty
 }
  $sql = "UPDATE orders SET order_status='1' WHERE id = $order_id";
  $db->query($sql);
-header("Location:../orders/view1.php?order_id=$order_id");
+header("Location:../orders/view_order_items.php?order_id=$order_id");
 
 
 

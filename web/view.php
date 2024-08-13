@@ -5,7 +5,7 @@ include '../function.php';
 extract($_POST);
 extract($_GET); 
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'view_cart') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && $_POST['operate'] == 'view_cart') {
     $db= dbConn ();
     $sql = "SELECT i.*
     FROM items i
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'view_cart') {
 
         <?php 
           $db = dbConn();
-          $sql = "SELECT i.*, b.brand, m.model_name, ic.category_name,im.ImagePath,s.*,d.*
+        echo  $sql = "SELECT i.*, b.brand, m.model_name, ic.category_name,im.ImagePath,s.*,d.*
           FROM items i 
           INNER JOIN item_stock s ON s.item_id = i.id
           INNER JOIN item_category ic ON ic.id = i.item_category 
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'view_cart') {
           INNER JOIN models m ON m.id = i.model_id 
           INNER JOIN itemimages im ON im.ItemID = i.id
           LEFT JOIN item_descriptions d ON d.item_id=i.id
-            WHERE i.id = '$id'";
+            WHERE i.id = '$id' LIMIT 1";
           $result = $db->query($sql)
                 ?>
  
@@ -62,29 +62,29 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'view_cart') {
             <div class="container">
                 <?php
                         
-                        foreach ($_SESSION['cart'] as $key => $value) {
+                        if($row=$result->fetch_assoc()) {
                         ?>
                 <div class="row gy-4">
 
                     <div class="col-lg-6">
                         <div class="portfolio-details-slider swiper">
-                            <img id="mainImage" src="../uploads/<?=  $value['ImagePath'] ?>" alt="Main Image" width="600">
+                            <img id="mainImage" src="../uploads/<?=  $row['ImagePath'] ?>" alt="Main Image" width="600">
                         </div>
 
                         <div>
                             <?php
                             $counter=0;
-                            $sql= "SELECT ImagePath From itemimages
+                           $sql= "SELECT ImagePath From itemimages
                             WHERE ItemID = '$id'";
                             $imageResult = $db->query($sql);
                             while ($imageRow = $imageResult->fetch_assoc()) {
-                                if($counter<3){
+                                
                                     ?>
                             <img class="thumbnail" src="../uploads/<?=  $imageRow['ImagePath']?>" alt="Thumbnail">
 
                             <?php 
                             
-                            }
+                            
                         }
                     
                             ?>
@@ -131,11 +131,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'view_cart') {
         <section>
             <?php
             $db= dbConn ();
-                $sql = "SELECT f.item_features,ff.*
+                $sql1 = "SELECT f.item_features,ff.*
                 FROM item_features ff 
                 LEFT JOIN features f ON f.id = ff.feature_name 
                 WHERE ff.item_id = '$id' ";
-                $result = $db->query($sql);
+                $result2 = $db->query($sql1);
                 ?>
 
             <div class="container">
@@ -150,8 +150,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'view_cart') {
                             <tbody>
                             <?php
                         
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
+                        
+                            while ($row = $result2->fetch_assoc()) {
                                 ?>
                                 <tr>
                                 <td width="200px"><?= $row['item_features']?></td>
@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $operate == 'view_cart') {
                             </tbody>
                             <?php
                             }
-                        }
+                        
                         ?>
                                 </tr>
                                 

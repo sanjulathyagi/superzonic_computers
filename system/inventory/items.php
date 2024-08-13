@@ -72,9 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $db= dbConn ();
                 $sql = "SELECT i.*, b.brand, m.model_name, ic.category_name,im.ImagePath 
                 FROM items i 
-                INNER JOIN item_category ic ON ic.id = i.item_category 
-                INNER JOIN brands b ON b.id = i.brand_id 
-                INNER JOIN models m ON m.id = i.model_id 
+                LEFT  JOIN item_category ic ON ic.id = i.item_category 
+                LEFT  JOIN brands b ON b.id = i.brand_id 
+                LEFT JOIN models m ON m.id = i.model_id 
                 INNER JOIN itemimages im ON im.ItemID = i.id $where GROUP BY i.id  ORDER BY item_name ASC LIMIT $limit ";
                 $result = $db->query($sql);
                 ?>

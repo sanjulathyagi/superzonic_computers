@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>inventory/stock_receive.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-plus-circle"></i> View
+        <a href="<?= SYS_URL ?>inventory/stock_receive.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-arrow-alt-circle-left"></i> View
             stock</a>
             
         <div class="card card-dark">

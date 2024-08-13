@@ -17,7 +17,8 @@ $order_status = $row['order_status'];
 ?> 
 <div class="row">
     <div class="col-12">
-
+    <a href="<?= SYS_URL ?>orders/manage.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-arrow-alt-circle-left"></i>
+    View Orders</a>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Order Item Details</h3>
