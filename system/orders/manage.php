@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <th>Order Number</th>
                             <th>Status</th>
                             <th>Actions</th>
-                            <th>Change status</th>
+                            
 
                             <th></th>
                             <th></th>
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <tbody>
                         <?php
 
-                        $status=1;
+                        
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 ?>
@@ -93,24 +93,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <td><?= $row['order_date'] ?></td>
                             <td><?= $row['FirstName'] ?> <?= $row['LastName'] ?></td>
                             <td><?= $row['order_number'] ?></td>
-                            <td><?= ($row['order_status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Paid</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">pending</button>'; ?></td>
+                            <td>
+                                <?php 
+                                if ($row['order_status'] == 0) {
+                                    echo '<span class="badge badge-warning">Pending</span>';
+                                } elseif($row['order_status'] == 1) {
+                                    echo '<span class="badge badge-info">Issued</span>';
+                                    
+                                } elseif($row['order_status'] == 2) {
+                                        echo '<span class="badge badge-danger">Shipping</span>';
+                                    
+                                } elseif($row['order_status'] == 3) {
+                                        echo '<span class="badge badge-success">Delivered</span>';
+                                }
+                             
+                                ?>
+                            </td>
                             
                             <td><a href="<?= SYS_URL ?>orders/view_order_items.php?order_id=<?= $row['id'] ?>"
                                             class="btn btn-info btn-sm" style="width: 90px;"><i class="fas fa-eye"></i> view</a>
                                
                             </td>
-                            <td>
-                                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                                    <select name="status" id="order_status" class="form-control-sm"
-                                        onchange="this.form.submit()">
-                                        <option value="1" <?= ($row['order_status']==1)?'selected': '' ?>>Paid</option>
-                                        <option value="0" <?= ($row['order_status']==0) ? 'selected' : '' ?>>Pending</option>
-                                    </select>
-                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                </form>
-                                
-
-                            </td>
+                           
                         </tr>
 
                         <?php

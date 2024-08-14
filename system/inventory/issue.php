@@ -36,7 +36,7 @@ foreach ($issued_qty as $key => $qty) { //multiple item issued_qty
             $i_qty = $issue_qty;
             $s_id = $row['id']; //stockId store in s_id
 
-        echo  $sql = "UPDATE item_stock SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE id = $s_id";
+         $sql = "UPDATE item_stock SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE id = $s_id";
             $db->query($sql);
             
             $sql = "UPDATE order_items SET issued_qty = COALESCE(issued_qty, 0) + $i_qty WHERE order_id = '$order_id' AND item_id='$item_id'";

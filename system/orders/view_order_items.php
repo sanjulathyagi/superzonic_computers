@@ -14,6 +14,7 @@ $sql = "SELECT o.*,c.FirstName,c.LastName FROM orders o INNER JOIN customers c O
 $result = $db->query($sql);
 $row = $result->fetch_assoc();
 $order_status = $row['order_status'];
+
 ?> 
 <div class="row">
     <div class="col-12">
@@ -140,7 +141,7 @@ GROUP BY
                             ?>
                         </tbody>
                     </table>
-                    <button type="submit" class="btn btn-primary">Issue</button>
+                    <button type="submit" class="btn btn-warning btn-sm">Issue</button>
                 </form>
             </div>
             <!-- /.card-body -->
