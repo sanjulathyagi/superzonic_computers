@@ -5,6 +5,8 @@ include '../function.php';
 extract($_POST);
 extract($_GET); 
 
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && $_POST['operate'] == 'view_cart') {
     $db= dbConn ();
     $sql = "SELECT i.*
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && $_POST['opera
 
         <?php 
           $db = dbConn();
-        echo  $sql = "SELECT i.*, b.brand, m.model_name, ic.category_name,im.ImagePath,s.*,d.*
+         $sql = "SELECT i.*, b.brand, m.model_name, ic.category_name,im.ImagePath,s.*,d.*
           FROM items i 
           INNER JOIN item_stock s ON s.item_id = i.id
           INNER JOIN item_category ic ON ic.id = i.item_category 
@@ -54,89 +56,82 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && $_POST['opera
           INNER JOIN itemimages im ON im.ItemID = i.id
           LEFT JOIN item_descriptions d ON d.item_id=i.id
             WHERE i.id = '$id' LIMIT 1";
-          $result = $db->query($sql)
+          $result = $db->query($sql);
+    
                 ?>
- 
 
+        <!-- Portfolio Details Section -->
         <section id="portfolio-details" class="portfolio-details">
             <div class="container">
                 <?php
-                        
-                        if($row=$result->fetch_assoc()) {
-                        ?>
+                // Check if there is a result from the query
+                if ($row = $result->fetch_assoc()) {
+                ?>
                 <div class="row gy-4">
-
                     <div class="col-lg-6">
+                        <!-- Main Image Display -->
                         <div class="portfolio-details-slider swiper">
-                            <img id="mainImage" src="../uploads/<?=  $row['ImagePath'] ?>" alt="Main Image" width="600">
+                            <img id="mainImage" src="../uploads/<?= htmlspecialchars($row['ImagePath']) ?>" alt="Main Image" width="600">
                         </div>
 
                         <div>
                             <?php
-                            $counter=0;
-                           $sql= "SELECT ImagePath From itemimages
-                            WHERE ItemID = '$id'";
+                            // Query to get all images related to the item
+                            $counter = 0;
+                            $sql = "SELECT ImagePath FROM itemimages WHERE ItemID = '$id'";
                             $imageResult = $db->query($sql);
+
+                            // Display each image as a thumbnail
                             while ($imageRow = $imageResult->fetch_assoc()) {
-                                
-                                    ?>
-                            <img class="thumbnail" src="../uploads/<?=  $imageRow['ImagePath']?>" alt="Thumbnail">
-
-                            <?php 
-                            
-                            
-                        }
-                    
                             ?>
-
+                            <img class="thumbnail" src="../uploads/<?= htmlspecialchars($imageRow['ImagePath']) ?>" alt="Thumbnail">
+                            <?php 
+                            }
+                            ?>
                         </div>
                     </div>
-                    <?php
-                    }
-                    ?>
+
                     <div class="col-lg-6">
-                        <?php
-                         while ($row = $result->fetch_assoc()) {
-                        ?>
                         <div class="portfolio-info">
                             <h3>Item Details</h3>
-
                             <ul>
-                                <li><strong><?= $row['item_name'] ?></strong></li>
-                                <li><strong>Serial No</strong>: <?= $row['serial_number'] ?></li>
-                                <li><strong>Category</strong>: <?= $row['category_name'] ?></li>
-                                <li><strong>Brand</strong>: <?= $row['brand']?></li>
-                                <li><strong>Model</strong>: <?= $row['model_name']?></li>
-
+                                <!-- Display item details -->
+                                <li><strong><?= htmlspecialchars($row['item_name']) ?></strong></li>
+                                <li><strong>Serial No</strong>: <?= htmlspecialchars($row['serial_number']) ?></li>
+                                <li><strong>Category</strong>: <?= htmlspecialchars($row['category_name']) ?></li>
+                                <li><strong>Brand</strong>: <?= htmlspecialchars($row['brand']) ?></li>
+                                <li><strong>Model</strong>: <?= htmlspecialchars($row['model_name']) ?></li>
                             </ul>
-                            <span class="badge bg-success">Available</span> - <b><?= $row['balanced_qty']?></b><br>
+                            <!-- Display availability and quantity -->
+                            <span class="badge bg-success">Available</span> - <b><?= htmlspecialchars($row['balanced_qty']) ?></b><br>
                         </div>
 
                         <div class="portfolio-description">
-                            <h2> Item details</h2>
+                            <h2>Item details</h2>
                             <ul>
-                                <li><?= $row['warranty_details']?></li>
-                                <li><?= $row['delivery_details']?></li>
+                                <!-- Display warranty and delivery details -->
+                                <li><?= htmlspecialchars($row['warranty_details']) ?></li>
+                                <li><?= htmlspecialchars($row['delivery_details']) ?></li>
                             </ul>
-
-
                         </div>
                     </div>
                 </div>
                 <?php
-                    }
-                    ?>
+                }
+                ?>
             </div>
         </section>
+
+        <!-- Item Features Section -->
         <section>
             <?php
-            $db= dbConn ();
-                $sql1 = "SELECT f.item_features,ff.*
-                FROM item_features ff 
-                LEFT JOIN features f ON f.id = ff.feature_name 
-                WHERE ff.item_id = '$id' ";
-                $result2 = $db->query($sql1);
-                ?>
+            // Query to get item features
+            $sql1 = "SELECT f.item_features, ff.*
+                     FROM item_features ff 
+                     LEFT JOIN features f ON f.id = ff.feature_name 
+                     WHERE ff.item_id = '$id'";
+            $result2 = $db->query($sql1);
+            ?>
 
             <div class="container">
                 <div class="row">
@@ -149,26 +144,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && $_POST['opera
                             </thead>
                             <tbody>
                             <?php
-                        
-                        
+                            // Loop through each feature and display it
                             while ($row = $result2->fetch_assoc()) {
-                                ?>
-                                <tr>
-                                <td width="200px"><?= $row['item_features']?></td>
-                                <td><?= $row['feature_value']?></td>
-                                
-                            </tbody>
+                            ?>
+                            <tr>
+                                <td width="200px"><?= htmlspecialchars($row['item_features']) ?></td>
+                                <td><?= htmlspecialchars($row['feature_value']) ?></td>
+                            </tr>
                             <?php
                             }
-                        
-                        ?>
-                                </tr>
-                                
+                            ?>
+                            </tbody>
                         </tr>
                        </table>
                     </div>
-                    
-
                 </div>
             </div>
         </section>

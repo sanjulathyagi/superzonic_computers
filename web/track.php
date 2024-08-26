@@ -4,6 +4,23 @@ include '../config.php';
 include 'header.php';
 include '../function.php';
 
+
+if (!isset($_SESSION['USERID'])) {
+    // Redirect to login page if not logged in
+    header("Location: login.php");
+    exit();
+}
+
+// Fetch logged-in user details
+$userid = $_SESSION['USERID'];
+
+// Fetch user’s customer ID from the database
+$db = dbConn();
+$sql = "SELECT CustomerId FROM customers WHERE UserId='$userid'";
+$result = $db->query($sql);
+$row = $result->fetch_assoc();
+$customerid = $row['CustomerId'];
+
 ?>
 <main id="main">
     <section class="breadcrumbs">
@@ -11,7 +28,7 @@ include '../function.php';
             <div class="justify-content-between align-items-center">
                 <div class="col-lg-12">
 
-                    <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post"
+                    <!-- <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post"
                         style="text-align:right">
                         <input type="date" class="btn-sm btn bg-secondary" name="from_date">
                         <input type="date" class="btn-sm btn bg-secondary" name="to_date">
@@ -20,7 +37,7 @@ include '../function.php';
 
                         <button type="submit" class="btn-sm btn bg-dark"><i class="fas fa-search"></i>
                             Search</button>
-                    </form>
+                    </form> -->
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Order Details</h3>
@@ -48,7 +65,8 @@ include '../function.php';
                 $sql = "SELECT o.*,c.FirstName,c.LastName 
                 FROM orders o 
                 INNER JOIN customers c 
-                    ON c.CustomerId=o.customer_id $where";
+                    ON c.CustomerId=o.customer_id
+                    Where c.CustomerId='$customerid' $where";
 
                 $result = $db->query($sql);
                 ?>

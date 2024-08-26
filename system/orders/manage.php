@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <th>Order Date</th>
                             <th>Customer</th>
                             <th>Order Number</th>
+                            <th>Amount(Rs.)</th>
                             <th>Status</th>
                             <th>Actions</th>
                             
@@ -93,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <td><?= $row['order_date'] ?></td>
                             <td><?= $row['FirstName'] ?> <?= $row['LastName'] ?></td>
                             <td><?= $row['order_number'] ?></td>
+                            <td><?= $row['total_amount'] ?></td>
                             <td>
                                 <?php 
                                 if ($row['order_status'] == 0) {
@@ -101,12 +103,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo '<span class="badge badge-info">Issued</span>';
                                     
                                 } elseif($row['order_status'] == 2) {
-                                        echo '<span class="badge badge-danger">Shipping</span>';
+                                        echo '<span class="badge badge-secondary">Shipping</span>';
                                     
                                 } elseif($row['order_status'] == 3) {
                                         echo '<span class="badge badge-success">Delivered</span>';
+                                } elseif($row['order_status'] == 4) {
+                                    echo '<span class="badge badge-danger">Canceled</span>';
                                 }
-                             
                                 ?>
                             </td>
                             
@@ -114,6 +117,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             class="btn btn-info btn-sm" style="width: 90px;"><i class="fas fa-eye"></i> view</a>
                                
                             </td>
+                            <?php
+                            if($row['order_status'] == 1) {
+                                ?>
+                                <td><a href="<?= SYS_URL ?>customers/coupon.php"
+                                class="btn btn-secondary btn-sm" style="width: 120px;"><i class="fas fa-circle"></i> Issue coupons</a></td>
+                            <?php
+                            }
+                            
+                                ?>
+                            
+      
                            
                         </tr>
 

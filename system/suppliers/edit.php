@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <select class="form-control" id="id" name="id">
                                     <option value="">--</option>
                                     <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <option value="<?= $row['id'] ?>" <?= @$id == $row['id'] ? 'selected' : '' ?>>
+                                    <option value="<?= $row['id'] ?>" <?= @$supplier_id == $row['id'] ? 'selected' : '' ?>>
                                         <?= $row['SupplierName'] ?></option>
                                     <?php } ?>
                                 </select>

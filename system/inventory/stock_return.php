@@ -9,10 +9,7 @@ $breadcrumb_item_active = "Manage";
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>order/add_stock.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
-            Add New Return</a>
-        <a href="<?= SYS_URL ?>inventory/add.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
-            Item Return Report</a>
+       
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
             <input type="date" name="from_date" class="btn-sm btn bg-secondary">
             <input type="date" name="to_date" class="btn-sm btn bg-secondary">
@@ -58,7 +55,6 @@ $breadcrumb_item_active = "Manage";
                             <th>Quantity</th>
                             <th>Return type</th>
                             <th>Return Date</th>
-                            <th>Status</th>
                             <th>Actions</th>
                     </thead>
                     <tbody>
@@ -73,27 +69,9 @@ $breadcrumb_item_active = "Manage";
                             <td><?= $row['qty'] ?></td>
                             <td><?= $row['return_type'] ?></td>
                             <td><?= $row['return_date'] ?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Approved</button>' :'' ; ?></td>
-                            <td>
-                                <div class="mb-1 dropdown no-arrow">
-                                    <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
-                                        aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
 
-
-                                        <a class="btn btn-danger btn-sm"
-                                            href="<?= SYS_URL ?>inventory/delete_stock_return.php?id=<?= $row['id'] ?>"
-                                            onclick="return confirmDelete();"><i class="fas fa-trash"></i> Delete</a>
-                                        <a class="btn btn-info btn-sm"
-                                            href="<?= SYS_URL ?>inventory/view.php?id=<?= $row['id'] ?>">
-                                           <i class="fas fa-eye"></i> View</a>&nbsp;&nbsp;
-                                    </div>
-                                </div>
-                            </td>
+                            
                         </tr>
 
                         <?php

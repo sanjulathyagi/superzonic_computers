@@ -7,7 +7,7 @@ $link = "Suppliers Management";
 $breadcrumb_item = "Suppliers";
 $breadcrumb_item_active = "Add";
 
-
+extract($_GET);
 //check post and data clean
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);

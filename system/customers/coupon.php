@@ -43,7 +43,7 @@ if (!empty($coupon_id) && isset($status)) {
 
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Customer details</h3>
+                <h3 class="card-title">Coupon details</h3>
 
 
             </div>
@@ -66,11 +66,12 @@ if (!empty($coupon_id) && isset($status)) {
                     }
                 }
                 $db= dbConn ();
-                $sql = "SELECT c.*
+                $sql = "SELECT c.*,d.*,cc.*
                 FROM coupons c
-                ";
-        
-
+                INNER jOIN customers cc
+                ON cc.CustomerId = c.customer_id
+                LEFT JOIN discount_criteria d
+                ON d.id = c.discount_criteria_id ";
                 $result=$db->query($sql);
 
                 ?>
@@ -78,12 +79,12 @@ if (!empty($coupon_id) && isset($status)) {
 
                 <table class="table table-hover text-nowrap">
                     <thead>
-                        <tr>
-                            <th>Id</th>
+                        <tr><th>Id</th>
+                            <th>Customer</th>
                             <th>Coupon_code</th>
-                            <th>Discount</th>
+                            <th>Discount (%)</th>
                             <th>Start Date</th>
-                            <th>Valid Period</th>
+                            <th>Valid Period(years)</th>
                             <th>Used Count</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -94,15 +95,16 @@ if (!empty($coupon_id) && isset($status)) {
                     </thead>
                     <tbody>
                         <?php
-                        $Status=1;
+                        $status=1;
                         if($result->num_rows> 0){
                             while ($row=$result->fetch_assoc()) {
                         ?>
                         <tr>
 
-                            <td><?= $row['coupon_id'] ?></td>
+                            <td><?= $row['customer_id'] ?></td>
+                            <td><?= $row['FirstName'] ?>&nbsp;<?= $row['LastName'] ?></td>
                             <td><?= $row['coupon_code'] ?></td>
-                            <td><?= $row['discount'] ?></td>
+                            <td><?= $row['discount_percentage'] ?></td>
                             <td><?= $row['start_date'] ?></td>
                             <td><?= $row['valid_period'] ?></td>
                             <td><?= $row['used_count'] ?></td>

@@ -34,14 +34,14 @@ include '../function.php';
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
               <div class="icon-box">
                 <img src="<?= WEB_URL ?>assets/img/shopping-cart-home-appliances-electronics-vector-illus-illustration-114490947.webp" alt="laptop" class="first-img"
-                  style="height:200px !important;width:200px !important;">
+                  style="height:200px !important;width:300px !important;">
                 
-                <h5><a href="<?= WEB_URL ?>checkout.php">Cart and Checkout</a></h5>
+                <h5><a href="<?= WEB_URL ?>cart.php">Cart and Checkout</a></h5>
                 
               </div>
             </div>
 
-            <div class="mt-4 col-lg-3 col-md-4 d-flex align-items-stretch mt-md-0" data-aos="zoom-in"
+            <!-- <div class="mt-4 col-lg-3 col-md-4 d-flex align-items-stretch mt-md-0" data-aos="zoom-in"
               data-aos-delay="200">
               <div class="icon-box">
                 <img src="<?= WEB_URL ?>assets/img/SS1.png" alt="laptop" class="first-img"
@@ -50,14 +50,14 @@ include '../function.php';
                 <h5><a href="<?= WEB_URL ?>check_availability.php">Appointment Bookings</a></h5>
                 
               </div>
-            </div>
+            </div> -->
 
 
             <div class="mt-4 col-lg-3 col-md-6 d-flex align-items-stretch mt-lg-0" data-aos="zoom-in"
               data-aos-delay="300">
               <div class="icon-box">
                 <img src="<?= WEB_URL ?>assets/img/OIP.jpeg" alt="laptop" class="first-img"
-                  style="height:200px !important;width:200px !important;">
+                  style="height:200px !important;width:300px !important;">
                 
                 <h5><a href="<?= WEB_URL ?>account.php">My account History</a></h5>
                 
@@ -69,8 +69,8 @@ include '../function.php';
               <div class="icon-box">
                 
                 <img src="<?= WEB_URL ?>assets/img/ecommerce-marketing-900.jpg" alt="laptop" class="first-img"
-                  style="height:200px !important;width:200px !important;">
-                <h5><a href="<?= WEB_URL ?>payments.php">Payment Details</a></h5>
+                  style="height:200px !important;width:300px !important;">
+                <h5><a href="<?= WEB_URL ?>payment.php">Payment Details</a></h5>
                 
               </div>
             </div>

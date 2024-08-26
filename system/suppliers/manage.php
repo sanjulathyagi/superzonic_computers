@@ -7,15 +7,32 @@ $link = "Supplier Management";
 $breadcrumb_item = "Supplier";
 $breadcrumb_item_active = "Manage";
 $alert=false;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    extract($_POST);
+    
+
+    if (!empty($id) && isset($Status)) {
+        $db =dbConn();
+        $sql = "UPDATE supplier SET Status='$Status' WHERE id='$id'";
+        $result1 = $db->query($sql);
+         if($result1){
+            $alert=true;
+         } else{
+            $alert =false;
+         }  
+        }
+    }
+
 ?>
 
 <div class="row">
     <div class="col-12">
-    <a href="<?= SYS_URL ?>suppliers/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
+        <a href="<?= SYS_URL ?>suppliers/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
             Add New Supplier</a>
-        <a href="<?= SYS_URL ?>suppliers/add_report.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
-            Supplier Details Report</a>
-            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
+        <a href="<?= SYS_URL ?>suppliers/price_request_list.php" class="mb-2 btn bg-dark btn-sm"><i
+                class="fas fa-th-list"></i>
+            Price Request list</a>
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
             <input type="date" class="btn-sm btn bg-secondary" name="from_date">
             <input type="date" class="btn-sm btn bg-secondary" name="to_date">
             <input type="text" class="btn-sm btn light border-dark" name="supplier_name"
@@ -26,7 +43,7 @@ $alert=false;
             <div class="card-header">
                 <h3 class="card-title">Supplier details</h3>
 
-                
+
             </div>
             <!-- /.card-header -->
             <div class="p-0 card-body table-responsive">
@@ -69,6 +86,7 @@ $alert=false;
                             <th>Register Date</th>
                             <th>Status</th>
                             <th>Actions</th>
+                            <th></th>
                             <th>Change status</th>
 
                             <th></th>
@@ -89,7 +107,8 @@ $alert=false;
                             <td><?= $row['Addressline3'] ?></td>
                             <td><?= $row['TelNo'] ?></td>
                             <td><?= $row['RegisterDate'] ?></td>
-                            <td><?= ($row['Status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?></td>                    
+                            <td><?= ($row['Status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
+                            </td>
                             <td>
                                 <div class="mb-1 dropdown no-arrow">
                                     <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
@@ -98,7 +117,8 @@ $alert=false;
                                     </a>
                                     <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
                                         aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">&nbsp;&nbsp;
+                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        &nbsp;&nbsp;
 
 
                                         <a href="<?= SYS_URL ?>suppliers/edit.php?id=<?= $row['id'] ?>"
@@ -109,6 +129,15 @@ $alert=false;
 
                                     </div>
                                 </div>
+                            </td>
+                            <td>
+                                <?php if ($row['Status'] === '1'): ?>
+                                <a href="<?= SYS_URL ?>suppliers/price_request.php?id=<?= $row['id'] ?>"
+                                    class="btn btn-warning btn-sm">
+                                    <i class="fas fa-plus-circle"></i> Add Price Request
+                                </a>
+                                <?php endif; ?>
+
                             </td>
                             <td>
                                 <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
@@ -122,22 +151,7 @@ $alert=false;
                                 <?php
                                 
                                 
-                                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                                    extract($_POST);
-                                    
-                                
-                                    if (!empty($id) && isset($Status)) {
-                                        $db =dbConn();
-                                        $sql = "UPDATE supplier SET Status='$Status' WHERE id='$id'";
-                                        $result1 = $db->query($sql);
-                                         if($result1){
-                                            $alert=true;
-                                         } else{
-                                            $alert =false;
-                                         }  
-                                        }
-                                    }
-                                }
+                               
                                 
                                 ?>
 
@@ -146,7 +160,7 @@ $alert=false;
                         </tr>
 
                         <?php
-                            }
+                              }  }
                         
                         ?>
                     </tbody>
@@ -184,4 +198,3 @@ include '../layouts.php';
         return confirm("Are you sure you want to delete this record?");
     }
 </script>
-

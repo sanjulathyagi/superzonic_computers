@@ -130,7 +130,8 @@ GROUP BY
                                                 <input type="hidden" name="items[]" value="<?= $row['item_id'] ?>">
                                                 <input type="hidden" name="order_id" value="<?= $row['order_id'] ?>">
                                                 <input type="hidden" name="prices[]" value="<?= $row['unit_price'] ?>">                                           
-                                                <input type="text" name="issued_qty[]" max="<?= $row['balance_qty'] ?>">
+                                                <input type="number" name="issued_qty[]" max="<?= $row['balance_qty'] ?>"
+                                                 class="form-control">
                                             <?php } ?>
                                         </td>
                                     </tr>

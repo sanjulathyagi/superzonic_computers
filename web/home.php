@@ -2,7 +2,38 @@
 ob_start();
 include '../function.php';
 ?>
+<style>
+    /* Adjust the size of the entire section */
+    #testimonials {
+        padding: 20px 0; /* Adjust padding as needed */
+        max-width: 100%; /* Ensure the section takes full width */
+        height: auto; /* Adjust height as needed */
+    }
 
+    /* Adjust the size of the swiper slides */
+    .swiper-wrapper {
+        width: 100%; /* Adjust width as needed */
+        height: 200px; /* Adjust height as needed */
+    }
+
+    /* Adjust the size of each item grid */
+    .item-grid {
+        text-align: center;
+        padding: 10px;
+    }
+
+    /* Adjust the size of the item images */
+    .item-image img {
+        width: 150px; /* Adjust width as needed */
+        height: 150px; /* Adjust height as needed */
+        object-fit: cover; /* Ensure the images maintain aspect ratio */
+    }
+
+    /* Ensure pagination aligns properly */
+    .swiper-pagination {
+        margin-top: 20px;
+    }
+</style>
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center justify-content-center">
     <div class="container" data-aos="fade-up">
@@ -203,7 +234,7 @@ include '../function.php';
 
     <!-- ======= Portfolio Section ======= -->
     <section id="portfolio" class="portfolio">
-        <div class="container" data-aos="fade-up">
+        <!-- <div class="container" data-aos="fade-up">
 
             <div class="section-title">
                 <h2>Portfolio</h2>
@@ -220,148 +251,47 @@ include '../function.php';
                     </ul>
                 </div>
             </div>
+            <?php
+            $db = dbConn();
+$sql = "SELECT i.*, b.brand, m.model_name, ic.category_name, im.ImagePath, s.*, s.qty - s.issued_qty AS ava_qty
+        FROM items i 
+        LEFT JOIN item_stock s ON s.item_id = i.id
+        LEFT JOIN item_category ic ON ic.id = i.item_category 
+        LEFT JOIN brands b ON b.id = i.brand_id 
+        LEFT JOIN models m ON m.id = i.model_id 
+        LEFT JOIN itemimages im ON im.ItemID = i.id  
+        GROUP BY i.id;";
+$result1 = $db->query($sql);
+?>
 
-            <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/1.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>App 1</h4>
-                            <p>App</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/1.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
+<div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+    <?php
+    if ($result1->num_rows > 0) {
+        while ($row = $result1->fetch_assoc()) {
+    ?>
+        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div>
+                <img src="../uploads/<?= htmlspecialchars($row['ImagePath']) ?>" class="img-fluid" alt="<?= htmlspecialchars($row['model_name']) ?>">
+                <div class="portfolio-info">
+                    <h4><?= htmlspecialchars($row['model_name']) ?></h4>
+                    <p><?= htmlspecialchars($row['category_name']) ?></p>
+                    <div class="portfolio-links">
+                        <a href="../uploads/<?= htmlspecialchars($row['ImagePath']) ?>" data-gallery="portfolioGallery" class="portfolio-lightbox" title="<?= htmlspecialchars($row['model_name']) ?>"><i class="bx bx-plus"></i></a>
+                        <a href="portfolio-details.php?id=<?= htmlspecialchars($row['id']) ?>" title="More Details"><i class="bx bx-link"></i></a>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/2.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Web 3</h4>
-                            <p>Web</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/2.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/3.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>App 2</h4>
-                            <p>App</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/3.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/4.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Card 2</h4>
-                            <p>Card</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/4.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="Card 2"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/5.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Web 2</h4>
-                            <p>Web</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/5.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="Web 2"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/6.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>App 3</h4>
-                            <p>App</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/6.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="App 3"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/7.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Card 1</h4>
-                            <p>Card</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/7" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="Card 1"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/download image/8.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Card 3</h4>
-                            <p>Card</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/download image/8.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="Card 3"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                    <div class="portfolio-wrap">
-                        <img src="assets/img/image11.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Web 3</h4>
-                            <p>Web</p>
-                            <div class="portfolio-links">
-                                <a href="assets/img/image11.jpg" data-gallery="portfolioGallery"
-                                    class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
-                                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-
         </div>
-    </section><!-- End Portfolio Section -->
+    <?php
+        }
+    }
+    ?>
+</div>
+
+        </div> -->
+    </section>
+    
+    
 
     <!-- ======= Counts Section ======= -->
 
@@ -425,32 +355,38 @@ include '../function.php';
             </div>
 
         </div>
-    </section> -->
+    </section> 
 
     <!-- End Counts Section -->
 
     <!-- ======= Testimonials Section ======= -->
-    <section id="testimonials" class="testimonials">
+    <section id="testimonials" class="testimonials" style="width:100px:height:100px; !important">
         <div class="container" data-aos="zoom-in">
             <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-                <div class="swiper-wrapper">
+                <div class="swiper-wrapper" style="width:100px:height:100px; !important">
                     <div class="swiper-slide">
                         <div class="testimonial-item">
                             <div class="row" id="item-row">
                                 <?php
-                        $db = dbConn();
-                        $model_id = 1; 
-                        $sql = "SELECT * FROM items WHERE model_id = $model_id";
-                        $result = $db->query($sql);
+                        $sql = "SELECT i.*, b.brand, m.model_name, ic.category_name,im.ImagePath,s.*,s.qty-s.issued_qty as ava_qty
+                        FROM items i 
+                        LEFT JOIN item_stock s ON s.item_id = i.id
+                        LEFT JOIN item_category ic ON ic.id = i.item_category 
+                        LEFT JOIN brands b ON b.id = i.brand_id 
+                        LEFT JOIN models m ON m.id = i.model_id 
+                        LEFT JOIN itemimages im ON im.ItemID = i.id 
+                       
+                     GROUP BY i.id";
+                        $result1 = $db->query($sql);
 
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
+                        if ($result1->num_rows > 0) {
+                            while ($row = $result1->fetch_assoc()) {
                         ?>
                                 <div class="col-md-3">
                                     <div class="item-grid">
                                         <div class="item-image">
                                             <a href="">
-                                                <img src="assets/img/<?= $row['item_image'] ?>" width="200px"
+                                                <img src="../uploads/<?=  $row['ImagePath'] ?>" width="200px"
                                                     height="200px">
                                             </a>
                                         </div>

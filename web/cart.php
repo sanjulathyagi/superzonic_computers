@@ -1,22 +1,67 @@
 <?php
+ob_start();
+
+
 
 include '../config.php';
+include '../function.php';
 include 'header.php';
 extract($_POST);
-// if ($_SERVER['REQUEST_METHOD'] == 'POST' && @$action == "coupon"){
-//     $db = dbConn();
-//     $sql = "SELECT * 
-//     FROM coupons 
-//     WHERE code = '$coupon_code' AND status = 1";
-//     $result = $db->query($sql);
-//     if ($result->num_rows > 0) {
-//         $row = $result->fetch_assoc();
-//         $userid=$_SESSION['userid'];
 
 
-        
+// Ensure that 'cart' is always an array
+if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
+    $_SESSION['cart'] = array();
+}
+?>
+<?php
+$discount_percentage=0;
+
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST' && @$operate=='calcoupon'){
+    $_SESSION['action']="check_coupon";
+    if(!isset($_SESSION['USERID'])){
+        header("Location: login.php");
+        exit();
+    }
+    $coupon_code=$_POST['coupon'];
+
+    $db = dbConn();
+    $user_id = $_SESSION['USERID'];
+
+
+   echo $sql_customer = "SELECT CustomerId
+    FROM customers
+    WHERE UserId = '$user_id'";
+    $result_customer = $db->query($sql_customer);
+    
+  if($result_customer->num_rows>0){
+    $customer=$result_customer->fetch_assoc();
+    $CustomerId=$customer['CustomerId'];
+  }  
+ //check the coupon table for a match record
    
-// }
+    $sql_coupon = "SELECT c.customer_id,c.coupon_code ,d.discount_percentage
+    FROM coupons c
+    LEFT JOIN discount_criteria d
+    ON d.id = c.discount_criteria_id
+    WHERE status = 1 AND customer_id='$CustomerId' AND coupon_code='$coupon_code'";
+    $result_coupon = $db->query($sql_coupon);
+
+    if($result_coupon->num_rows >0){
+        $coupon = $result_coupon->fetch_assoc();
+        $discount_percentage=$coupon['discount_percentage'];
+        
+    }else{
+        $discount_percentage =0;
+    }
+
+
+  }
+//   $_SESSION['total']=$total;  
+//   $_SESSION['discount']=$discount;
+//   $_SESSION['net_total']=$net_total;  
+    
 
 // submit data through hyperlink used extract
 // remove the array and subarray record when unset
@@ -40,16 +85,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $_SESSION['cart'] = $cart;
     }
 }
-// if ($_SERVER['REQUEST_METHOD']== 'GET' && @$action == 'update_qty'){
+$discount = ($total * $discount_percentage) / 100;
+$net_total = $total - $discount;
 
-//     $current_qty = $_SESSION['cart'][$id]['qty'];
-//     if(!empty($qty)) {
-//         $current_qty= $qty;
-//     }
-//     $_SESSION['cart']['$id']['qty'] = $current_qty;
-// }
-
+$_SESSION['total'] = $total;
+$_SESSION['discount'] = $discount;
+$_SESSION['net_total'] = $net_total;
 ?>
+
 <style>
     .cart_count {
         background-color: red;
@@ -80,13 +123,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
             </div>
 
         </div>
-       
+
     </section><br>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="cart-wrapper">
-
+                <?php if (empty($_SESSION['cart'])): ?>
+                        <p>Your cart is empty.</p>
+                        <a href="item.php" class="btn btn-warning">Go to Shop</a>
+                    <?php else: ?>
                     <table class="cart-table">
                         <thead>
                             <tr>
@@ -103,13 +149,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                             <!-- foreach used to read associative array in cart session array of array -->
                             <?php
                         $total = 0;
-                        
+                       
                         foreach ($_SESSION['cart'] as $key => $value) {
                         ?>
                             <tr>
                                 <td><?= $key ?></td>
-                                <td><img src="../uploads/<?=  $value['ImagePath'] ?>" alt="Item Image"
-                                        width="100" height="100"></td>
+                                <td><img src="../uploads/<?=  $value['ImagePath'] ?>" alt="Item Image" width="100"
+                                        height="100"></td>
                                 <td><?= $value['item_name'] ?></td>
                                 <td><?= $value['unit_price'] ?></td>
                                 <td>
@@ -135,18 +181,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                     
                         ?>
                         </tbody>
+
                         <tfoot>
                             <tr>
                                 <td colspan="4">Total</td>
-                                <td colspan="2"><?= number_format($total, 2) ?></td>
+                                <td colspan="2"><?= number_format($_SESSION['total'], 2) ?></td>
+
                             </tr>
                             <tr>
-                                <td colspan="4">Discount(3%)</td>
-                                <td colspan="2"><?= number_format($total * 0.03, 2) ?></td>
+                                <td colspan="4">Discount(coupon)</td>
+                                <td colspan="2"><?= number_format($_SESSION['discount'] ,2)?></td>
                             </tr>
                             <tr>
-                                <td colspan="4">Net</td>
-                                <td colspan="2"><?= number_format(($total - $total * 0.03), 2) ?></td>
+                                <td colspan="4">Net Total</td>
+                                <td colspan="2"><?= number_format($_SESSION['net_total'], 2) ?>
+                                </td>
                             </tr>
                         </tfoot>
                     </table>
@@ -162,13 +211,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group "><br>
-                                <input type="hidden" name="coupon" value="coupon_update">
-                                    <button type="submit" class="btn btn-warning btn-sm " name="coupon">Apply Coupon</button>
+                                    <button type="submit" class="btn btn-warning btn-sm " name="operate"
+                                        value="calcoupon">Apply
+                                        Coupon</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                     <a href="cart.php?action=empty" class="empty-cart-btn bg-danger btn-sm">Empty Cart</a>
+                    <?php endif; ?>
                 </div>
                 <section id="services" class="services">
                     <div class="container" data-aos="fade-up">
@@ -187,24 +238,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="4">Total</td>
-                                                    <td colspan="2"><?= number_format($total, 2) ?></td>
+                                                    <td colspan="2"><?= number_format($_SESSION['total'], 2) ?></td>
+
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="4">Discount(3%)</td>
-                                                    <td colspan="2"><?= number_format($total * 0.03, 2) ?></td>
+                                                    <td colspan="4">Discount(coupon)</td>
+                                                    <td colspan="2"><?= number_format($_SESSION['discount'] ,2)?></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="4">Net</td>
-                                                    <td colspan="2"><?= number_format(($total - $total * 0.03), 2) ?>
-                                                    </td>
+                                                    <td colspan="4">Net Total</td>
+                                                    <td colspan="2"><?= number_format($_SESSION['net_total'], 2) ?></td>
+                                                   
                                                 </tr>
                                             </tfoot>
                                         </table>
+          
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <a href="checkout.php" class="checkout-btn bg-dark btn-sm">Checkout</a>
+                        <form action="checkout.php" method="post">
+                            <input type="hidden" name="total" value="<?= number_format($_SESSION['total'], 2) ?>">
+                            <input type="hidden" name="discount" value="<?= number_format($_SESSION['discount'] ,2)?>">
+                            <input type="hidden" name="net_total" value="<?= number_format($_SESSION['net_total'], 2) ?>">
+                            <button type="submit" class="btn btn-warning btn-sm" name="operate"
+                                value="checkout">Checkout</button>
+                        </form>
+
+                        <!-- <a href="checkout.php" class="btn btn warning">checkout</a> -->
                     </div>
                 </section>
             </div>
@@ -214,4 +275,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 
     <?php
 include 'footer.php';
+ob_end_flush();
 ?>

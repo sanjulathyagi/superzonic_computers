@@ -82,12 +82,12 @@ if(isset($_SESSION['cart'])) {
                     <li><a class="nav-link scrollto active" style="color:black !important;" href="<?= WEB_URL ?>index.php">Home</a></li>
                     <li><a class="nav-link scrollto"style="color:black !important;" href="<?= WEB_URL ?>item.php">Shop</a></li>
                     <li><a class="nav-link scrollto" style="color:black !important;"href="<?= WEB_URL ?>services.php">Services</a></li>
-                    <li><a class="nav-link scrollto" style="color:black !important;"href="<?= WEB_URL ?>appointment.php">Appointments</a></li>
+                    <!-- <li><a class="nav-link scrollto" style="color:black !important;"href="<?= WEB_URL ?>appointment.php">Appointments</a></li> -->
                     <li><a class="nav-link scrollto" style="color:black !important;"href="<?= WEB_URL ?>contact.php">Contacts</a></li>
                     <li><a href="<?= WEB_URL ?>account.php "style="color:black !important;"><i class="fas fa-user-alt"></i></a></li>
                     <li><a href="<?= WEB_URL ?>chat/index.php "style="color:black !important;"><i class="fas fa-comment-alt"></i></a></li>
                     <li><a href="<?= WEB_URL ?>cart.php "style="color:black !important;"><span class="cart_count"><?=$noitems ?></span><i class="fa fa-shopping-cart"></i></a></li>
-
+                    <li><a href="<?= WEB_URL ?>dashboard.php "style="color:black !important;"><i class="fas fa-columns"></i></a></li>
 
 
                 </ul>
@@ -98,13 +98,13 @@ if(isset($_SESSION['cart'])) {
             <?php 
                 if(isset($_SESSION['USERID'])){
                   ?>
-            <a href="<?= WEB_URL ?>register.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;margin-right:-240px">Welcome,
+            <a href="<?= WEB_URL ?>register.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;margin-right:-220px">Welcome,
                 <?= $_SESSION['FIRSTNAME'] ?></a>
             <a href="<?= WEB_URL ?>logout.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Logout</a>
             <?php
                 }else {
                 ?>
-            <a href="<?= WEB_URL ?>register.php" class="get-started-btn bg-dark register-btn scrollto"  style=" margin-right:-280px !important;">Register</a>
+            <a href="<?= WEB_URL ?>register.php" class="get-started-btn bg-dark register-btn scrollto"  style=" margin-right:-260px !important;">Register</a>
             <a href="<?= WEB_URL ?>login.php" class="get-started-btn bg-dark scrollto" style="border-radius: 50px !important;">Login</a>
             <?php
               	}

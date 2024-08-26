@@ -46,13 +46,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($message)) {
        
         $db = dbConn(); 
+        foreach ($item_id as $key => $value){  //pass array values
+        $q=$qty[$key];
+        $price =$unit_price[$key];
         $sql = "INSERT INTO purchase_order(supplier,item_name,unit_price,quantity,date) VALUES ('$supplier_id','$item_name','$unit_price','$qty','$date')";
         $db->query($sql);
-       
+        $msg="<h1>Purchase Order</h1>";
+        $msg.="<h2>Dear Supplier,</h2>";
+        $msg.="<p>We would like to place and order for the following Items:</p>";
+        $msg.="<h2>Item Name:</h2>";
+        $msg.="<h2>Dear Supplier,</h2>";
+         $msg.="<h2>Dear Supplier,</h2>";
+        $msg="<a href='http://localhost/SIRMS/verify.php'>Click here to verify your account</a>";
+        sendEmail($email,$first_name,"Account Verification",$msg);
         
         header("Location:purchase_order.php");
 
         }
+    }
     }
     
 
@@ -157,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="card-footer ">
 
-    <button type="submit" class="btn btn-warning ">Submit</button>
+    <button type="submit" class="btn btn-warning btn-sm ">Submit</button>
 </div>
 </form>
 

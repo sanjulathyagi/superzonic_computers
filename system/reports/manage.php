@@ -17,12 +17,12 @@ $breadcrumb_item_active = "manage";
         <div class="small-box bg-info">
             <div class="inner">
                 <h3 id="NumberOfOrders"></h3>
-                <p>New Orders</p>
+                <p>Item Report</p>
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="item_report.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -31,12 +31,12 @@ $breadcrumb_item_active = "manage";
         <div class="small-box bg-success">
             <div class="inner">
                 <h3 id="NumberOfItems"></h3>
-                <p>Total Active Items</p>
+                <p>stock report</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="stock_report.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <div class="col-lg-4 ">
@@ -44,12 +44,12 @@ $breadcrumb_item_active = "manage";
         <div class="small-box bg-info">
             <div class="inner">
                 <h3 id="NumberOfOrders"></h3>
-                <p>New Orders</p>
+                <p>customer Report</p>
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="customer_details_report.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
 </div>
@@ -64,7 +64,7 @@ $breadcrumb_item_active = "manage";
             <div class="icon">
                 <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="user_details_report.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -73,32 +73,18 @@ $breadcrumb_item_active = "manage";
         <div class="small-box bg-danger">
             <div class="inner">
                 <h3 id="NumberOfAppointments"></h3>
-                <p>New Appointments</p>
+                <p>Supplier Reports</p>
             </div>
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="supplier_report.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
-    <div class="col-lg-4 ">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3 id="NumberOfUsers"></h3>
-                <p>User Registrations</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
+   
     <!-- ./col -->
 </div>
 
-
-</div>
 
 <?php
 $content = ob_get_clean();

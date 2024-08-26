@@ -73,14 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Supplier </th>
-                            <th>Item</th>
-                            <th>Unit Price</th>
-                            <th>Quantity</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                            <th>Change status</th>
+                            <th>Quotation Id</th>
+                            <th>Supplier</th>
+                            <th>Order Date</th>
+                            <th>Total Amount</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -91,13 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 ?>
                         <tr>
                             <td><?= $row['id'] ?></td>
-                            <td ><?= $row['supplier'] ?></td>
-                            <td><?= $row['item_name'] ?></td>
-                            <td><?= $row['unit_price'] ?></td>
-                            <td><?= $row['quantity']?></td>
-                            <td><?= $row['date']?></td>
-                            <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Approved</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Pending</button>'; ?>
-
+                            <td ><?= $row['quotation_id'] ?></td>
+                            <td><?= $row['supplier_id'] ?></td>
+                            <td><?= $row['order_date'] ?></td>
+                            <td><?= $row['total_amount'] ?></td>
+                    
+                    
                             <td><a class="btn btn-info btn-sm"
                                             href="<?= SYS_URL ?>inventory/purchase_order_view.php?id=<?= $row['id'] ?>"
                                             ><i class="fas fa-eye"></i>

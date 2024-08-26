@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="form-group">
                                 <label for="AppDate">Appointment Date</label>
                                 <input type="date" class="form-control" id="AppDate" name="AppDate"min="<?=date('Y-m-d')?>"
-                                max="<?=date('Y-m-d') ?>"value="<?= @$AppDate ?>">
+                                value="<?= @$AppDate ?>">
                                 <span class="text-danger"><?= @$message['AppDate'] ?></span>
                             </div>
                         </div>

@@ -30,8 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="col-12">
         <a href="<?= SYS_URL ?>inventory/add.php" class="mb-2 btn bg-warning btn-sm"><i class="fas fa-plus-circle"></i>
             New Item</a>
-        <a href="<?= SYS_URL ?>inventory/add_report.php" class="mb-2 btn bg-dark btn-sm"><i class="fas fa-th-list"></i>
-            Item Report</a>
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" style="text-align:right">
         <label for="">&nbsp;&nbsp; Select Top</label>
             <select name="limit" id="limit" style="width:50px !important;">
@@ -89,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <th>Brand</th>
                             <th>Model</th>
                             <th>Status</th>
-                            <th>Actions</th>
                             <th>Change status</th>
                         </tr>
                     </thead>
@@ -108,30 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <td><?= $row['model_name']?></td>
                             <td><?= ($row['status'] == 1) ? '<button class="btn btn-success btn-sm " style="width: 80px;">Active</button>' : '<button class="btn btn-danger btn-sm" style="width: 80px;">Disable</button>'; ?>
 
-                            <td>
-                                <div class="mb-1 dropdown no-arrow">
-                                    <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                    <div class="shadow dropdown-menu dropdown-menu-left animated--fade-in"
-                                        aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
-                                        style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                        &nbsp;&nbsp;
-
-
-                                        <a href="<?= SYS_URL ?>inventory/view.php?id=<?= $row['id'] ?>"
-                                            class="btn btn-info btn-sm"><i class="fas fa-eye"></i> view</a>
-                                        <a href="<?= SYS_URL ?>inventory/edit.php?id=<?= $row['id'] ?>"
-                                            class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>Edit</a>
-                                        <a class="btn btn-danger btn-sm"
-                                            href="<?= SYS_URL ?>inventory/delete.php?id=<?= $row['id'] ?>"
-                                            onclick="return confirmDelete();"><i class="fas fa-trash"></i>
-                                            Delete</a>&nbsp;&nbsp;
-
-                                    </div>
-                                </div>
-                            </td>
+                           
                             <td>
                                 <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                                     <select name="status" id="status" class="form-control-sm"

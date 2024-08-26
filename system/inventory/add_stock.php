@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $brand_id = dataClean($brand_id);
     $purchase_date = dataClean($purchase_date);
     $supplier_id = dataClean($supplier_id);
+    $invoice_number = dataClean($invoice_number);
 
    
     if (empty($category_id)) {
@@ -33,6 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($supplier_id)) {
         $message['supplier_id'] = "The SupplierName should not be blank...!";
     }
+    if (empty($invoice_number)) {
+        $message['invoice_number'] = "The invoice_number should not be blank...!";
+    }
 
     if (empty($message)) {
 
@@ -41,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $q=$qty[$key];
             $price =$unit_price[$key];
             $buying_price =$buying_price[$key];
-            $sql = "INSERT INTO item_stock (item_id,qty,buying_price,unit_price,category_id,brand_id,purchase_date,supplier_id) VALUES ('$value','$q','$buying_price','$price','$category_id','$brand_id','$purchase_date','$supplier_id')";
+            $sql = "INSERT INTO item_stock (item_id,qty,buying_price,unit_price,category_id,brand_id,purchase_date,supplier_id,invoice_number) VALUES ('$value','$q','$buying_price','$price','$category_id','$brand_id','$purchase_date','$supplier_id','$invoice_number')";
             $db->query($sql);
 
         }
@@ -52,9 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>inventory/stock_receive.php" class="btn bg-warning btn-sm mb-2"><i class="fas fa-arrow-alt-circle-left"></i> View
+        <a href="<?= SYS_URL ?>inventory/stock_receive.php" class="btn bg-warning btn-sm mb-2"><i
+                class="fas fa-arrow-alt-circle-left"></i> View
             stock</a>
-            
+
         <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title">Add New item</h3>
@@ -85,12 +90,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group ">
+                                <label for="inputinvoice_number">Invoice Number</label>
+                                <input type="text" class="form-control" id="invoice_number" name="invoice_number"
+                                    placeholder="Enter invoice_number"
+                                    value="<?= @$invoice_number ?>">
+                                <span class="text-danger"><?= @$message['invoice_number'] ?></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group ">
                                 <label for="inputPurchaseDate">Purchase Date</label>
                                 <input type="date" class="form-control" id="purchase_date" name="purchase_date"
-                                    placeholder="Enter purchase_date"max="<?=date('Y-m-d') ?>" value="<?= @$purchase_date ?>">
+                                    placeholder="Enter purchase_date" max="<?=date('Y-m-d') ?>"
+                                    value="<?= @$purchase_date ?>">
                                 <span class="text-danger"><?= @$message['purchase_date'] ?></span>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group ">
                                 <label for="inputCategory Name">Category Name</label>
@@ -103,8 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                    <option value="<?= $row['id']?>"<?= @$category_id==$row['id']? 'selected':''?>
-                                        ><?= $row['category_name']?></option>
+                                    <option value="<?= $row['id']?>" <?= @$category_id==$row['id']? 'selected':''?>>
+                                        <?= $row['category_name']?></option>
                                     <?php
                                         }
                                     }
@@ -112,11 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        
-
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group ">
                                 <label for="inputBrand ">Brand </label>
                                 <select name="brand_id" id="brand_id" class="form-control" required>
@@ -128,8 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                    <option value="<?= $row['id']?>"<?= @$brand_id==$row['id']? 'selected':''?>
-                                        ><?= $row['brand']?></option>
+                                    <option value="<?= $row['id']?>" <?= @$brand_id==$row['id']? 'selected':''?>>
+                                        <?= $row['brand']?></option>
                                     <?php
                                         }
                                     }
@@ -140,74 +153,73 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                 </div>
-                <div class="row">
-                    <table class="table table-stripped" id="items">
-                        <thead>
-                            <tr>
-                                <th>Item Name</th>
-                                <th>Quantity</th>
-                                <th>Buying Price</th>
-                                <th>Selling Price</th>
-                             
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="items-row">
-                                <td>
-                                    <select name="item_id[]" id="item_id" class="form-control" required>
-                                        <option value=""></option>
-                                        <?php
+        </div>
+        <div class="row">
+            <table class="table table-stripped" id="items">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Buying Price</th>
+                        <th>Selling Price</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="items-row">
+                        <td>
+                            <select name="item_id[]" id="item_id" class="form-control" required>
+                                <option value=""></option>
+                                <?php
                                     $db = dbConn();
                                     $sql = "SELECT id,item_name FROM items";
                                     $result = $db->query($sql);
                                     if($result->num_rows>0){
                                         while ($row = $result->fetch_assoc()) {
                                         ?>
-                                        <option value="<?= $row['id']?>"><?= $row['item_name']?></option>
-                                        <?php
+                                <option value="<?= $row['id']?>"><?= $row['item_name']?></option>
+                                <?php
                                         }
                                     }
                                     ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control" id="qty" name="qty[]" min="1" required>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" id="qty" name="qty[]" min="1" required>
 
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" id="buying_price" name="buying_price[]"
-                                        required>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" id="unit_price" name="unit_price[]"
-                                        required>
-                                </td>
-                               
-                                <td>
-                                    <button type="button" class="removeBtn btn btn-danger"><i
-                                            class="fas fa-trash-alt"></i></button>
-                                </td>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" id="buying_price" name="buying_price[]" required>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" id="unit_price" name="unit_price[]" required>
+                        </td>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                        <td>
+                            <button type="button" class="removeBtn btn btn-danger"><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </td>
 
-                </div>
-                <button type="button" id="addBtn" class="btn btn-dark  btn-sm">Add Item</button>
-
-                
-
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
-        <!-- /.card-body -->
+        <button type="button" id="addBtn" class="btn btn-dark  btn-sm">Add Item</button>
 
-        <div class="card-footer ">
-            <input type="hidden" name="UserId" value="<?= $UserId ?>">
-            <button type="submit" class="btn btn-warning btn-sm ">Submit</button>
-        </div>
-        </form>
+
+
+
     </div>
-    <!-- /.card -->
+    <!-- /.card-body -->
+
+    <div class="card-footer ">
+        <input type="hidden" name="UserId" value="<?= $UserId ?>">
+        <button type="submit" class="btn btn-warning btn-sm ">Submit</button>
+    </div>
+    </form>
+</div>
+<!-- /.card -->
 </div>
 </div>
 
@@ -224,7 +236,8 @@ include '../layouts.php';
 
             newRow.find('input').val(''); //blank the copy row data
             newRow.find('.select2-container').remove();
-            newRow.find('select').removeClass('select2-hidden-accessible').removeAttr('data-select2-id tabindex aria-hidden');
+            newRow.find('select').removeClass('select2-hidden-accessible').removeAttr(
+                'data-select2-id tabindex aria-hidden');
             newRow.find('select').select2();
 
             tableBody.append(newRow); //add new row copy of previous copied row without data
@@ -245,6 +258,6 @@ include '../layouts.php';
             function () { //validate items
                 validateData(this);
             });
-$('.select2').select2();
+        $('.select2').select2();
     });
 </script>
